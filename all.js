@@ -1,4 +1,5 @@
 let loadedImages = 0;
+let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
 
 
@@ -25,20 +26,20 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //document.getElementById('game1-stylesheet').disabled = true;
     //document.getElementById('game2-stylesheet').disabled = false;
     //document.getElementById('game1-script').disabled = true;
-    const script = document.getElementById('game2-script');
-    script.src = 'major/game.js';  // 設定腳本來源
+    //const script = document.getElementById('game2-script');
+    //script.src = 'major/game.js';  // 設定腳本來源
   }
   function loadGame1() {
     console.log("已經切換到巧虎遊戲！");
     document.getElementById('game1').style.display = 'block';
     document.getElementById('game2').style.display = 'none';
 
-    const script1 = document.getElementById('game1-script1');
-    script1.src = 'littlegame/new/game.js';
-    const script2 = document.getElementById('game1-script2');
-    script2.src = 'littlegame/new/script.js';
-    const script3 = document.getElementById('game1-script3');
-    script3.src = 'littlegame/new/sound.js';
+    //const script1 = document.getElementById('game1-script1');
+    //script1.src = 'littlegame/new/game.js';
+    //const script2 = document.getElementById('game1-script2');
+    //script2.src = 'littlegame/new/script.js';
+    //const script3 = document.getElementById('game1-script3');
+    //script3.src = 'littlegame/new/sound.js';
     const startButton = document.getElementById('start-btn');
     const rect = startButton.getBoundingClientRect();
     console.log(rect.x,rect.y)
@@ -61,6 +62,17 @@ const imagesToPreload = [
     url+'/littlegame/new/images/up2.png',
     url+'/littlegame/new/images/up3.png',
 ];
+const soundsToPreload = [
+
+  url+'/littlegame/new/sound/clickbutton.mp3',
+  url+'/littlegame/new/sound/countdown.mp3',
+  url+'/littlegame/new/sound/dig.mp3',
+  url+'/littlegame/new/sound/finalcountdown.mp3',
+  url+'/littlegame/new/sound/generatehole.mp3',
+  url+'/littlegame/new/sound/get.mp3',
+  url+'/littlegame/new/sound/getrare.mp3',
+  url+'/littlegame/new/sound/wave.mp3',
+];
 
 
 
@@ -74,11 +86,28 @@ function preloadImages() {
             // 当所有图片加载完毕后，可以开始渲染或启动动画
             if (loadedImages === imagesToPreload.length) {
                 //loadGame1();
+                preloadSounds();
                 hideLoadingScreen();
             }
         };
     });
 }
+
+function preloadSounds() {
+  soundsToPreload.forEach((src) => {
+      const audio = new Audio();
+      audio.src = src;
+      audio.preload = 'auto'; // 確保音效文件提前加載
+      audio.onload = () => {
+          loadedSounds++;
+          console.log(audio.src);
+          if (loadedSounds === soundsToPreload.length) {
+              // 所有音效已加載完成，可以開始遊戲   
+          }
+      };
+  });
+}
+
 
 const dialogBox = document.getElementById('dialogBox');
 const dialogText = document.getElementById('dialogText');
