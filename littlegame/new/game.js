@@ -504,10 +504,10 @@ function launchBall(ball,startX, startY, targetX, targetY) {
         transform: translate(${0}px, ${-5}px) ;
       }
       50% {
-        transform: translate(${0}px, ${-30}px) ;
+        transform: translate(${midX}px, ${midY}px) ;
       }
       100% {
-        transform: translate(${0}px, ${-50}px) scale(0.5);
+        transform: translate(${x}px, ${y}px) scale(0.5);
       }
     }
   `, style.sheet.cssRules.length);
