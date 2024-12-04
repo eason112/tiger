@@ -1,13 +1,13 @@
-const url="https://eason112.github.io/tiger";
+const url3="https://eason112.github.io/tiger";
 const soundEffects = {
-    clickbutton: url+'/littlegame/new/sound/clickbutton.mp3',
-    countdown: url+'/littlegame/new/sound/countdown.mp3',
-    finalcountdown: url+'/littlegame/new/sound/finalcountdown.mp3',
-    dig:url+'/littlegame/new/sound/dig.mp3',
-    get:url+'/littlegame/new/sound/get.mp3',
-    getrare:url+'/littlegame/new/sound/getrare.mp3',
-    generatehole:url+'/littlegame/new/sound/generatehole.mp3',
-    wave:url+'/littlegame/new/sound/wave.mp3',
+    clickbutton: url3+'/littlegame/new/sound/clickbutton.mp3',
+    countdown: url3+'/littlegame/new/sound/countdown.mp3',
+    finalcountdown: url3+'/littlegame/new/sound/finalcountdown.mp3',
+    dig:url3+'/littlegame/new/sound/dig.mp3',
+    get:url3+'/littlegame/new/sound/get.mp3',
+    getrare:url3+'/littlegame/new/sound/getrare.mp3',
+    generatehole:url3+'/littlegame/new/sound/generatehole.mp3',
+    wave:url3+'/littlegame/new/sound/wave.mp3',
   };
 
 function playSound(type,volume=1) {
