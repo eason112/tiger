@@ -105,6 +105,7 @@ function startGame() {
     clickedHoles.clear();  // 清空已點擊的洞
     holeElements.length = 0;  // 清空洞元素陣列
     const maxRetries = 10;
+    playSound('generatehole',0.1);
     // 隨機生成可點擊的叉叉
     for (let i = 0; i < MaxnumberOfImages; i++) {
       //console.log(i);
@@ -141,7 +142,7 @@ function startGame() {
         continue;
       }
       // 創建圖片元素
-      playSound('generatehole',0.1);
+      
       const img = document.createElement('img');
       img.src = url4+'/littlegame/new/images/hole.png';  // 初始的可點擊叉叉
       //console.log(img.src);
