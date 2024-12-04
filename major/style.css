@@ -24,7 +24,8 @@ body {
 }
 
 #gameCanvas {
-    background: url('images/back.png'),url('images/front.png'),url('images/middle.png'),url('images/minimap.png');
+    background: url('images/back.png'),url('images/front.png'),url('images/middle.png'),url('images/minimap.png'),
+                url('images/NPC.png'),url('images/player.png');
     position: absolute;
     top: 50%;
     left: 50%;
