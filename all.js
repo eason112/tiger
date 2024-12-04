@@ -81,12 +81,14 @@ function preloadImages() {
         const img = new Image();
         img.src = src;
         img.onload = () => {
-           // console.log(img.src);
+            console.log(img.src);
             loadedImages++;
             // 当所有图片加载完毕后，可以开始渲染或启动动画
             if (loadedImages === imagesToPreload.length) {
                 //loadGame1();
-                preloadSounds();
+                //loadCSS();
+                
+                
                 hideLoadingScreen();
             }
         };
@@ -95,17 +97,37 @@ function preloadImages() {
 
 function preloadSounds() {
   soundsToPreload.forEach((src) => {
+    
       const audio = new Audio();
       audio.src = src;
+      audio.load();
       audio.preload = 'auto'; // 確保音效文件提前加載
       audio.onload = () => {
           loadedSounds++;
-          console.log(audio.src);
+          console.log(loadedSounds);
           if (loadedSounds === soundsToPreload.length) {
-              // 所有音效已加載完成，可以開始遊戲   
+              // 所有音效已加載完成，可以開始遊戲  
+               
           }
       };
   });
+}
+
+function loadCSS() {
+  const cssFiles = [
+      url+'/littlegame/new/styles.css',
+      url+'/major/style.css',
+      url+'/style.css'  // 你需要載入的所有CSS檔案
+  ];
+  console.log('所有CSS檔案已經載入');
+  cssFiles.forEach((file) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = file;
+      document.head.appendChild(link);
+  });
+
+  console.log('所有CSS檔案已經載入');
 }
 
 

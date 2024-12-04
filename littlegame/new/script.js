@@ -1,6 +1,7 @@
 window.onload = function() {
   loadgame();
   preloadImages();
+  preloadSounds();
 };
 
 function loadgame(){
