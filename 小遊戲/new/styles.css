@@ -1,0 +1,477 @@
+.clickable-image, .ball, #timer-container, .background,.tool,.guide-arrow {
+    user-select: none;  /* 禁止選中 */
+    -webkit-user-select: none;  /* 適用於 Safari */
+    -ms-user-select: none;  /* 適用於 IE/Edge */
+    -webkit-user-drag: none;
+  }
+/* 設置全頁面無邊距 */
+#game-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 確保它在遊戲畫面上方 */
+  }
+  
+  #game-info-background {
+    position: absolute;
+    width: 100%;
+    height: 100%; /* 背景圖片 */
+    background-size: contain;  /* 背景圖片覆蓋整個區域 */
+    background-position: center center;  /* 背景圖片居中 */
+    background-repeat: no-repeat;  /* 防止背景圖片重複 */
+    animation: slideBackground 10s steps(10) infinite;  /* 背景切換動畫 */
+    z-index: -1;  /* 保證背景在內容後面 */
+  }
+  
+  #game-info .info-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    z-index: 1; /* 使文字顯示在背景上面 */
+  }
+  
+  #game-info h1 {
+    font-size: calc(2vw + 2vh);
+    margin-bottom: calc(2vw + 2vh);
+  }
+  
+  #game-info p {
+    font-size: calc(1vw + 1vh);
+    margin-bottom: calc(2vw + 2vh);
+  }
+  
+  #game-info button {
+    font-size: calc(1vw + 1vh);
+    padding: calc(0.5vw + 0.5vh) calc(1vw + 1vh);
+    background-color: #f1c40f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #game-info button:hover {
+    background-color: #f39c12;
+  }
+  #game-info button:active {
+    background-color: #ba770b;
+  }
+
+  /* 為難度選擇畫面設置相同的背景樣式 */
+#difficulty-selection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: slideBackground 10s steps(10) infinite;  /* 相同的背景動畫 */
+}
+
+#difficulty-selection .difficulty-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.difficulty-content h1 {
+    font-size: calc(2vw + 2vh);
+    margin-bottom: calc(1vw + 1vh);
+}
+
+.difficulty-content button {
+    font-size: calc(1vw + 1vh);
+    padding: calc(0.7vw + 0.7vh);
+    margin: calc(0.5vw + 0.5vh);
+    cursor: pointer;
+    background-color: #f1c40f;  /* 按鈕背景色 */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.difficulty-content button:hover {
+    background-color: #f39c12;  /* 鼠標懸停時的背景色 */
+}
+
+.difficulty-content button:active {
+  background-color: #ba770b;
+}
+
+
+
+#game-over {
+  position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    animation: slideBackground 10s steps(10) infinite; 
+}
+
+.game-over-content {
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.game-over-content h1 {
+  font-size: calc(2vw + 2vh);
+  margin-bottom: calc(2vw + 2vh);
+}
+
+.game-over-content p {
+  font-size: calc(1.2vw + 1.2vh);
+  margin-bottom: calc(2vw + 2vh);
+}
+
+.game-over-content button {
+  font-size: calc(1vw + 1vh);
+  padding: calc(0.5vw + 0.5vh) calc(1vw + 1vh);
+  margin: calc(0.5vw + 0.5vh);
+  background-color: #f1c40f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game-over-content button:hover {
+  background-color: #f39c12;
+}
+.game-over-content button:active {
+  background-color: #ba770b;
+}
+
+
+  .countdown-display {
+    position: absolute;
+    pointer-events:none;
+    user-select: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: calc(3vw + 3vh);
+    color: white;
+    font-weight: bold;
+    display: none;  /* 開始時隱藏倒數顯示 */
+    z-index: 1000;
+  }
+
+  .tide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* 背景圖片 */
+    background-size: contain;  /* 背景圖片覆蓋整個區域 */
+    background-position: center center;  /* 背景圖片居中 */
+    background-repeat: no-repeat;  /* 禁用圖片的點擊事件 */
+    pointer-events: none;  
+    z-index: 1000;
+  }
+  .tide-message {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: calc(2vw + 2vh);
+    color: red;
+    opacity: 0;  /* 初始不顯示 */
+    animation: none; /* 初始沒有動畫 */
+    pointer-events: none;
+    font-weight: bold;
+    z-index: 1000;
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1); /* 初始大小 */
+    }
+    50% {
+      transform: scale(1.2); /* 放大 */
+    }
+    100% {
+      transform: scale(1); /* 恢復到正常大小 */
+    }
+  }
+  
+  
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* 背景設定 */
+  .background {
+    background: url('images/up0.png'),url('images/up1.png'),url('images/up2.png'),url('images/up3.png')
+                url('images/image1.png'),url('images/image2.png'),url('images/image3.png'),url('images/image4.png'),url('images/image5.png');
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* 背景圖片 */
+    background-size: contain;  /* 背景圖片覆蓋整個區域 */
+    background-position: center center;  /* 背景圖片居中 */
+    background-repeat: no-repeat;  /* 防止背景圖片重複 */
+    animation: slideBackground 10s steps(10) infinite;  /* 背景切換動畫 */
+  }
+
+  #timer-container {
+    position: fixed;
+    top: calc(1vw + 1vh);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: calc(1vw + 1vh);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;  /* 確保倒數計時顯示在最上層 */
+  }
+  
+  #timer {
+    font-weight: bold;
+  }
+
+  #score-container {
+    position: fixed;
+    top: calc(4vw + 4vh);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: calc(1vw + 1vh);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;  /* 確保倒數計時顯示在最上層 */
+  }
+  
+  /* 背景圖片循環動畫 */
+  @keyframes slideBackground {
+    0% { background-image: url('images/image1.png'); }
+    10% { background-image: url('images/image2.png'); }
+    20% { background-image: url('images/image3.png'); }
+    30% { background-image: url('images/image4.png'); }
+    40% { background-image: url('images/image5.png'); }
+    50% { background-image: url('images/image5.png'); }
+    60% { background-image: url('images/image4.png'); }
+    70% { background-image: url('images/image3.png'); }
+    80% { background-image: url('images/image2.png'); }
+    90% { background-image: url('images/image1.png'); }
+    100% { background-image: url('images/image1.png'); }
+  }
+  @keyframes upBackground {
+    0% { background-image: url('images/up0.png'); }
+    10% { background-image: url('images/up1.png'); }
+    20% { background-image: url('images/up2.png'); }
+    30% { background-image: url('images/up2.png'); }
+    40% { background-image: url('images/up3.png'); }
+    50% { background-image: url('images/up3.png'); }
+    60% { background-image: url('images/up3.png'); }
+    70% { background-image: url('images/up2.png'); }
+    80% { background-image: url('images/up2.png'); }
+    90% { background-image: url('images/up1.png'); }
+    100% { background-image: url('images/up0.png'); }
+  }
+  
+  /* 沙灘區域設定 */
+  .beach-area {
+    position: absolute;
+    bottom: 10%;  /* 沙灘區域從底部開始 */
+    left: 40%;  /* 左側對齊 */
+    width: calc(15vw + 15vh);  /* 沙灘區域佔滿整個寬度 */
+    height: 25vh;  /* 沙灘區域佔滿背景的 25% 高度 */
+    /*background-color: rgba(255, 255, 0, 0.5); /* 使沙灘區域顯示半透明黃色 (可視化沙灘區域) */
+  }
+  
+  /* 可點擊圖片設定 */
+  .clickable-image {
+    position: absolute;
+    cursor: pointer;
+    width: calc(2vw + 2vh);  /* 圖片寬度 */
+    height: calc(2vw + 2vh); /* 圖片高度 */
+    transition: transform 0.3s ease-in-out; /* 動畫效果 */
+    z-index: 1; /* 確保圖片在背景之上 */
+  }
+  
+  /* 懸停時圖片變大 */
+  .clickable-image:hover {
+    transform: scale(1.2);
+  }
+
+  .ball {
+    position: absolute;
+    width: calc(2vw + 2vh);
+    height: calc(2vw + 2vh);
+    background-color: transparent;  /* 這裡不再需要背景顏色，因為圖片會顯示 */
+    border-radius: 50%;  /* 圓形 */
+    transform: scale(0);  /* 開始時球的大小為0，隱藏 */
+    z-index: 2;
+  }
+  
+  /* 球彈跳的動畫 */
+  @keyframes ballBounce {
+    0% {
+      transform: scale(0) translateY(0);  /* 開始時球是小的並且在原地 */
+    }
+    50% {
+      transform: scale(1.2) translateY(-50px);  /* 球彈起來 */
+    }
+    100% {
+      transform: scale(1) translateY(-10px);  /* 球回到原來的位置 */
+    }
+  }
+
+  @keyframes ballleave {
+    0% {
+      transform: scale(1) translateY(0);  /* 開始時球是小的並且在原地 */
+    }
+    50% {
+      transform: scale(1) translateY(-50px);  /* 球彈起來 */
+    }
+    100% {
+      transform: scale(1) translateY(-100px);  /* 球回到原來的位置 */
+    }
+  }
+  @keyframes parabola {
+    0% { 
+      transform: translateX(var(--start-x)) translateY(var(--start-y));
+    }
+    50% { 
+      transform: translateX(var(--mid-x)) translateY(var(--mid-y));
+    }
+    100% { 
+      transform: translateX(var(--end-x)) translateY(var(--end-y));
+    }
+  }
+  
+  .tool {
+    position: absolute;
+    width: calc(2vw + 2vh); /* 根據耙子圖片的大小調整 */
+    height: calc(2vw + 2vh);
+    background-size: cover;
+    animation: rakeSwing 1s ease-in-out forwards; /* 播放揮動動畫 */
+    display: block; /* 預設隱藏，點擊時顯示 */
+    z-index: 10;
+  }
+  @keyframes rakeSwing {
+    0% {
+      transform: rotate(0deg); /* 初始位置 */
+    }
+    50% {
+      transform: rotate(30deg); /* 向右揮動 */
+    }
+    100% {
+      transform: rotate(0deg); /* 揮動回來 */
+    }
+  }
+
+  .score-text {
+    position: absolute;
+    font-size: calc(1vw + 1vh);
+    color: rgb(8, 184, 17);
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  
+  @keyframes scorePopup {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-20px) scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px) scale(1);
+    }
+  }
+
+  .guide-arrow {
+    position: absolute;
+    width: calc(1.5vw + 1.5vh); /* 箭頭的寬度 */
+    height: calc(1.5vw + 1.5vh); /* 箭頭的高度 */
+    background-image: url('images/teach.png'); /* 可以放置箭頭圖片 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: pulse 1.5s ease-in-out infinite;  /* 放大縮小的動畫 */
+    display: none; /* 默認隱藏指引箭頭 */
+    z-index: 1000;
+    pointer-events: none; 
+  }
+  
+  /* 放大縮小動畫 */
+  @keyframes arrowpulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes arrowmove {
+    0% {
+      transform: translate(0px,0px);  /* 從左邊開始 */
+    }
+    16.7% {
+      transform: translate(50%,-50%);   /* 到達右邊 */
+    }
+    33.4% {
+      transform: translate(50%,50%);   /* 到達右邊 */
+    }
+    50% {
+      transform: translate(0px,0px);  /* 再返回到左邊 */
+    }
+    66.7% {
+      transform: translate(-50%,-50%);  /* 再返回到左邊 */
+    }
+    83.4% {
+      transform: translate(-50%,50%);   /* 到達右邊 */
+    }
+    100% {
+      transform: translate(0px,0px);  /* 再返回到左邊 */
+    }
+  }
+  .bucket {
+    position: absolute;  /* 設置為絕對定位 */
+    width: calc(3vw + 3vh);  /* 桶子的寬度 */
+    height: calc(3vw + 3vh); /* 桶子的高度 */ /* 設置桶子的圖片 */
+    background-size: cover;  /* 確保圖片覆蓋整個元素 */
+    background-position: center;  /* 設置圖片居中 */
+    background-repeat: no-repeat;  /* 防止圖片重複 */
+  }
+  
+
