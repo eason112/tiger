@@ -354,17 +354,6 @@ body, html {
       transform: scale(1) translateY(-100px);  /* 球回到原來的位置 */
     }
   }
-  @keyframes parabola {
-    0% { 
-      transform: translateX(var(--start-x)) translateY(var(--start-y));
-    }
-    50% { 
-      transform: translateX(var(--mid-x)) translateY(var(--mid-y));
-    }
-    100% { 
-      transform: translateX(var(--end-x)) translateY(var(--end-y));
-    }
-  }
   
   .tool {
     position: absolute;
