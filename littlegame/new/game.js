@@ -486,8 +486,8 @@ function startNewGame() {
 function launchBall(ball,startX, startY, targetX, targetY) {
 
   // 設定起始位置
-  const x=600-ball.x;
-  const y=364-ball.y;
+  const x=targetX-ball.x;
+  const y=targetY-ball.y;
   const midX = (x - startX) / 2 + startX;
   const midY = startY - 150;
   console.log(targetX,targetY);
@@ -501,13 +501,13 @@ function launchBall(ball,startX, startY, targetX, targetY) {
    style.sheet.insertRule(`
     @keyframes ${animationName} {
       0% {
-        transform: translate(${0}px, ${0}px) ;
+        transform: translate(${0}px, ${-5}px) ;
       }
       50% {
-        transform: translate(${midX}px, ${midY}px) ;
+        transform: translate(${0}px, ${-30}px) ;
       }
       100% {
-        transform: translate(${x}px, ${y}px) scale(0.5);
+        transform: translate(${0}px, ${-50}px) scale(0.5);
       }
     }
   `, style.sheet.cssRules.length);
