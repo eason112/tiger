@@ -1,9 +1,6 @@
 let loadedImages = 0;
 const url="https://eason112.github.io/tiger";
-function isMobileDevice() {
-  const userAgent = navigator.userAgent.toLowerCase();
-  return /iphone|ipod|android|windows phone|blackberry|iemobile/.test(userAgent);
-}
+
 
 document.getElementById('exit-btn').addEventListener('click', function() {
     //loadedImages = imagesToPreload.length;

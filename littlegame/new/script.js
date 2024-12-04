@@ -111,3 +111,8 @@ function startCountdown() {
     const guideArrow = document.getElementById('guide-arrow');
     guideArrow.style.display = 'none';  // 顯示指引箭頭
   }
+
+  function isMobileDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return /iphone|ipod|android|windows phone|blackberry|iemobile/.test(userAgent);
+  }

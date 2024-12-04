@@ -1,4 +1,4 @@
-const url="https://eason112.github.io/tiger";
+//const url="https://eason112.github.io/tiger";
 // time.js 也可以選擇只保留倒數計時的邏輯
 let holes = [];
 let score = 0;  // 初始化分數
