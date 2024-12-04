@@ -486,8 +486,8 @@ function startNewGame() {
 function launchBall(ball,startX, startY, targetX, targetY) {
 
   // 設定起始位置
-  const x=targetX-ball.x;
-  const y=targetY-ball.y;
+  const x=600-ball.x;
+  const y=364-ball.y;
   const midX = (x - startX) / 2 + startX;
   const midY = startY - 150;
   console.log(targetX,targetY);
@@ -507,7 +507,7 @@ function launchBall(ball,startX, startY, targetX, targetY) {
         transform: translate(${midX}px, ${midY}px) ;
       }
       100% {
-        transform: translate(${x}px, ${y}px) scale(0.5);
+        transform: translate(${0}px, ${0}px) scale(0.5);
       }
     }
   `, style.sheet.cssRules.length);
