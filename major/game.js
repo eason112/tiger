@@ -1,3 +1,5 @@
+const url="https://eason112.github.io/tiger";
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -8,25 +10,25 @@ canvas.height = 940;
 
 // 加載背景圖像
 const background1 = new Image();
-background1.src = '/major/images/middle.png';  // 第一層背景
+background1.src = url+'/major/images/middle.png';  // 第一層背景
 
 const background2 = new Image();
-background2.src = '/major/images/front.png';  // 第二層背景
+background2.src = url+'/major/images/front.png';  // 第二層背景
 
 const background3 = new Image();
-background3.src = '/major/images/back.png';  // 第三層背景
+background3.src = url+'/major/images/back.png';  // 第三層背景
 
 const playerImage = new Image();
-playerImage.src = '/major/images/player.png';
+playerImage.src = url+'/major/images/player.png';
 
 const npcImage = new Image();
-npcImage.src = '/major/images/NPC.png';
+npcImage.src = url+'/major/images/NPC.png';
 
 const petImage = new Image();
-petImage.src = '/major/images/NPC.png';
+petImage.src = url+'/major/images/NPC.png';
 
 const minimapImage = new Image();
-minimapImage.src = '/major/images/minimap.png';  // 替換成你的圖像路徑
+minimapImage.src = url+'/major/images/minimap.png';  // 替換成你的圖像路徑
 
 
 let background1X = 0;

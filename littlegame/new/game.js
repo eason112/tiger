@@ -1,3 +1,4 @@
+const url="https://eason112.github.io/tiger";
 // time.js 也可以選擇只保留倒數計時的邏輯
 let holes = [];
 let score = 0;  // 初始化分數
@@ -142,7 +143,7 @@ function startGame() {
       // 創建圖片元素
       playSound('generatehole',0.1);
       const img = document.createElement('img');
-      img.src = '/littlegame/new/images/hole.png';  // 初始的可點擊叉叉
+      img.src = url+'/littlegame/new/images/hole.png';  // 初始的可點擊叉叉
       //console.log(img.src);
       img.dataset.canclick='false';
       img.alt = 'Click me!';
@@ -186,14 +187,14 @@ function startGame() {
           showGuideArrow(beachRect.left + randomX ,beachRect.top + randomY,true)
           first=2;
         }
-        img.src = '/littlegame/new/images/newhole.png';  // 新的圖片來源
+        img.src = url+'/littlegame/new/images/newhole.png';  // 新的圖片來源
   
         // 禁用點擊事件，使圖片不能再點擊
         img.removeEventListener('click', handleClick);  // 移除點擊事件
         img.style.pointerEvents = 'none';  // 禁用點擊（使其不可再點擊）
         const tool = document.createElement('img');
         tool.classList.add('tool');
-        tool.src = '/littlegame/new/images/tool.png';
+        tool.src = url+'/littlegame/new/images/tool.png';
         tool.style.left = beachRect.left + randomX+20 + 'px';  // 設置耙子的位置（與圖片相同）
         tool.style.top = beachRect.top + randomY+10 + 'px';
         tool.addEventListener('animationend', function() {
@@ -208,7 +209,7 @@ function startGame() {
           const ball = document.createElement('img');
           ball.classList.add('ball');  // 添加球的樣式
           ball.dataset.scored='false';
-          ball.src = '/littlegame/new/images/rareball.png';  // 設定球的圖片
+          ball.src = url+'/littlegame/new/images/rareball.png';  // 設定球的圖片
           ball.alt = 'Ball';
           ball.style.left = beachRect.left + randomX + 'px';  // 設置球的位置（與圖片相同）
           ball.style.top = beachRect.top + randomY + 'px';
@@ -283,7 +284,7 @@ function startGame() {
         {
           const ball = document.createElement('img');
           ball.classList.add('ball');  // 添加球的樣式
-          ball.src = '/littlegame/new/images/ball.png';  // 設定球的圖片
+          ball.src = url+'/littlegame/new/images/ball.png';  // 設定球的圖片
           ball.dataset.scored='false';
           ball.alt = 'Ball';
           ball.style.left = beachRect.left + randomX + 'px';  // 設置球的位置（與圖片相同）
@@ -539,7 +540,7 @@ function launchBall(ball,startX, startY, targetX, targetY) {
 function placeBucket(background,x, y) {
   const rect = background.getBoundingClientRect();
   const bucket = document.createElement('img');  // 創建一個新的 img 元素
-  bucket.src = '/littlegame/new/images/box.png';  // 設置桶子的圖片路徑
+  bucket.src = url+'/littlegame/new/images/box.png';  // 設置桶子的圖片路徑
   bucket.alt = 'Bucket';  // 設置圖片的替代文字
   bucket.classList.add('bucket');  // 設定為絕對定位
 

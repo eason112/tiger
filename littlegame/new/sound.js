@@ -1,12 +1,12 @@
 const soundEffects = {
-    clickbutton: '/littlegame/new/sound/clickbutton.mp3',
-    countdown: '/littlegame/new/sound/countdown.mp3',
-    finalcountdown: '/littlegame/new/sound/finalcountdown.mp3',
-    dig:'/littlegame/new/sound/dig.mp3',
-    get:'/littlegame/new/sound/get.mp3',
-    getrare:'/littlegame/new/sound/getrare.mp3',
-    generatehole:'/littlegame/new/sound/generatehole.mp3',
-    wave:'/littlegame/new/sound/wave.mp3',
+    clickbutton: url+'/littlegame/new/sound/clickbutton.mp3',
+    countdown: url+'/littlegame/new/sound/countdown.mp3',
+    finalcountdown: url+'/littlegame/new/sound/finalcountdown.mp3',
+    dig:url+'/littlegame/new/sound/dig.mp3',
+    get:url+'/littlegame/new/sound/get.mp3',
+    getrare:url+'/littlegame/new/sound/getrare.mp3',
+    generatehole:url+'/littlegame/new/sound/generatehole.mp3',
+    wave:url+'/littlegame/new/sound/wave.mp3',
   };
 
 function playSound(type,volume=1) {
