@@ -269,17 +269,17 @@ body, html {
   
   /* 背景圖片循環動畫 */
   @keyframes slideBackground {
-    0% { background-image: url('images/image1.png'); }
-    10% { background-image: url('images/image2.png'); }
-    20% { background-image: url('images/image3.png'); }
-    30% { background-image: url('images/image4.png'); }
-    40% { background-image: url('images/image5.png'); }
-    50% { background-image: url('images/image5.png'); }
-    60% { background-image: url('images/image4.png'); }
-    70% { background-image: url('images/image3.png'); }
-    80% { background-image: url('images/image2.png'); }
-    90% { background-image: url('images/image1.png'); }
-    100% { background-image: url('images/image1.png'); }
+    0% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image1.png'); }
+    10% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image2.png'); }
+    20% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image3.png'); }
+    30% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image4.png'); }
+    40% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image5.png'); }
+    50% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image5.png'); }
+    60% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image4.png'); }
+    70% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image3.png'); }
+    80% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image2.png'); }
+    90% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image1.png'); }
+    100% { background-image: url('https://eason112.github.io/tiger/littlegame/new/images/image1.png'); }
   }
   @keyframes upBackground {
     0% { background-image: url('images/up0.png'); }
