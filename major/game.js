@@ -221,7 +221,7 @@ document.getElementById('jumpBtn').addEventListener('touchstart', function (e) {
         }
     }
 });
-document.addEventListener('touchend', () => {
+joystickKnob.addEventListener('touchend', () => {
     // 根據觸摸結束的區域停止移動
     keys.left = false;
     keys.right = false;
