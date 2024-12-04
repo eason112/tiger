@@ -104,7 +104,7 @@ function startGame() {
     usedPositions.length = 0;  // 清空位置
     clickedHoles.clear();  // 清空已點擊的洞
     holeElements.length = 0;  // 清空洞元素陣列
-    const maxRetries = 100;
+    const maxRetries = 10;
     // 隨機生成可點擊的叉叉
     for (let i = 0; i < MaxnumberOfImages; i++) {
       //console.log(i);
