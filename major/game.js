@@ -1,4 +1,4 @@
-const url2="";
+const url2="https://eason112.github.io/tiger";
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
