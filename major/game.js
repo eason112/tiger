@@ -79,21 +79,21 @@ joystickKnob.addEventListener('touchstart', (e) => {
     updateJoystick(e.touches[0]); // 使用觸摸點的第一個點
   });
   
-  document.addEventListener('touchmove', (e) => {
+  joystickKnob.addEventListener('touchmove', (e) => {
     if (isJoystickActive) {
       updateJoystick(e.touches[0]);
       //e.preventDefault(); // 防止觸摸移動時頁面滾動
     }
   });
   
-  document.addEventListener('touchend', () => {
+  joystickKnob.addEventListener('touchend', () => {
     isJoystickActive = false;
     joystickKnob.style.left = '50%';
     joystickKnob.style.top = '50%';
     joystickDirection = { x: 0, y: 0 }; // 停止移動
   });
   
-  document.addEventListener('touchcancel', () => {
+  joystickKnob.addEventListener('touchcancel', () => {
     isJoystickActive = false;
     joystickKnob.style.left = '50%';
     joystickKnob.style.top = '50%';
@@ -209,7 +209,6 @@ document.addEventListener('keyup', (e) => {
 
 
 document.getElementById('jumpBtn').addEventListener('touchstart', function (e) {
-    e.stopPropagation(); // 阻止事件冒泡
     if(this.textContent==='↑'){
         if (!player.isJumping) {
             player.dy = player.jumpPower;
