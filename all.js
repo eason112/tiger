@@ -1,5 +1,5 @@
 let loadedImages = 0;
-
+const url="https://eason112.github.io/tiger";
 function isMobileDevice() {
   const userAgent = navigator.userAgent.toLowerCase();
   return /iphone|ipod|android|windows phone|blackberry|iemobile/.test(userAgent);
@@ -29,7 +29,7 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //document.getElementById('game2-stylesheet').disabled = false;
     //document.getElementById('game1-script').disabled = true;
     const script = document.getElementById('game2-script');
-    script.src = '網頁/game.js';  // 設定腳本來源
+    script.src = 'major/game.js';  // 設定腳本來源
   }
   function loadGame1() {
     console.log("已經切換到巧虎遊戲！");
@@ -37,11 +37,11 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     document.getElementById('game2').style.display = 'none';
 
     const script1 = document.getElementById('game1-script1');
-    script1.src = '小遊戲/new/game.js';
+    script1.src = 'littlegame/new/game.js';
     const script2 = document.getElementById('game1-script2');
-    script2.src = '小遊戲/new/script.js';
+    script2.src = 'littlegame/new/script.js';
     const script3 = document.getElementById('game1-script3');
-    script3.src = '小遊戲/new/sound.js';
+    script3.src = 'littlegame/new/sound.js';
     const startButton = document.getElementById('start-btn');
     const rect = startButton.getBoundingClientRect();
     console.log(rect.x,rect.y)
@@ -54,15 +54,15 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //document.getElementById('game1-script').disabled = true;
   }
 const imagesToPreload = [
-    'https://eason112.github.io/tiger/小遊戲/new/images/image1.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/image2.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/image3.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/image4.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/image5.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/up0.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/up1.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/up2.png',
-    'https://eason112.github.io/tiger/小遊戲/new/images/up3.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/image1.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/image2.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/image3.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/image4.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/image5.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/up0.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/up1.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/up2.png',
+    'https://eason112.github.io/tiger/littlegame/new/images/up3.png',
 ];
 
 
