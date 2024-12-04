@@ -1,4 +1,4 @@
-const url2="https://eason112.github.io/tiger";
+const url2="";
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -103,6 +103,7 @@ joystickKnob.addEventListener('touchstart', (e) => {
 
 // 更新搖桿的邏輯
 function updateJoystick(e) {
+    joystickCenter = { x: joystickBackground.offsetWidth / 2, y: joystickBackground.offsetHeight / 2 };
   const offsetX = e.clientX - joystickBackground.getBoundingClientRect().left - joystickCenter.x;
   const offsetY = e.clientY - joystickBackground.getBoundingClientRect().top - joystickCenter.y;
   // 計算搖桿的最大可移動範圍（背景半徑）
@@ -207,7 +208,8 @@ document.addEventListener('keyup', (e) => {
 });
 
 
-document.getElementById('jumpBtn').addEventListener('touchstart', function () {
+document.getElementById('jumpBtn').addEventListener('touchstart', function (e) {
+    e.stopPropagation(); // 阻止事件冒泡
     if(this.textContent==='↑'){
         if (!player.isJumping) {
             player.dy = player.jumpPower;
