@@ -54,15 +54,15 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //document.getElementById('game1-script').disabled = true;
   }
 const imagesToPreload = [
-    '/小遊戲/new/images/image1.png',
-    '/小遊戲/new/images/image2.png',
-    '/小遊戲/new/images/image3.png',
-    '/小遊戲/new/images/image4.png',
-    '/小遊戲/new/images/image5.png',
-    '/小遊戲/new/images/up0.png',
-    '/小遊戲/new/images/up1.png',
-    '/小遊戲/new/images/up2.png',
-    '/小遊戲/new/images/up3.png',
+    '小遊戲/new/images/image1.png',
+    '小遊戲/new/images/image2.png',
+    '小遊戲/new/images/image3.png',
+    '小遊戲/new/images/image4.png',
+    '小遊戲/new/images/image5.png',
+    '小遊戲/new/images/up0.png',
+    '小遊戲/new/images/up1.png',
+    '小遊戲/new/images/up2.png',
+    '小遊戲/new/images/up3.png',
 ];
 
 
