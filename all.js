@@ -54,15 +54,15 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //document.getElementById('game1-script').disabled = true;
   }
 const imagesToPreload = [
-    'https://eason112.github.io/tiger/littlegame/new/images/image1.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/image2.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/image3.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/image4.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/image5.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/up0.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/up1.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/up2.png',
-    'https://eason112.github.io/tiger/littlegame/new/images/up3.png',
+    url+'/littlegame/new/images/image1.png',
+    url+'/littlegame/new/images/image2.png',
+    url+'/littlegame/new/images/image3.png',
+    url+'/littlegame/new/images/image4.png',
+    url+'/littlegame/new/images/image5.png',
+    url+'/littlegame/new/images/up0.png',
+    url+'/littlegame/new/images/up1.png',
+    url+'/littlegame/new/images/up2.png',
+    url+'/littlegame/new/images/up3.png',
 ];
 
 
