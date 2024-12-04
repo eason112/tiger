@@ -1,3 +1,4 @@
+const url="https://eason112.github.io/tiger";
 const soundEffects = {
     clickbutton: url+'/littlegame/new/sound/clickbutton.mp3',
     countdown: url+'/littlegame/new/sound/countdown.mp3',
