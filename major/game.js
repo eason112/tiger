@@ -52,13 +52,6 @@ function getTouchesByid(id) {
     let touch = Touches.find(touch => touch.identifier === id);
     return touch; // 如果找到則返回 index，否則返回 null
 }
-canvas.addEventListener('touchstart', function(e) {
-    for(let i=0;i<e.touches.length;i++){
-        console.log(i);
-        Touches[i]=e.touches[i];
-        console.log(Touches);
-    }
-}, { passive: true });
 /*const platforms = [
     { x: 100, y: 600, width: 200, height: 100 },
     { x: 700, y: 650, width: 500, height: 100 },
@@ -182,7 +175,7 @@ document.addEventListener('mouseup', (e) => {
 // 支援觸摸設備
 canvas.addEventListener('touchstart', (e) => {
     if(isMobileDevice()){
-        Touches.forEach(touch =>{
+        Array.from(e.touches).forEach(touch =>{
         //let touch = e.touches[0];
             let rect = canvas.getBoundingClientRect();
             let offsetX = (touch.clientX - rect.left) * (canvas.width / rect.width);
@@ -608,7 +601,7 @@ function handleMouseEvent(event,ishover) {
 // 處理觸控事件
 function handleTouchEvent(event) {
     // 只取第一個觸控點
-    Touches.forEach(touch =>{
+    Array.from(event.touches).forEach(touch =>{
         //let touch = event.touches[0];
         let rect = canvas.getBoundingClientRect();
         let touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
