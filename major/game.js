@@ -40,7 +40,25 @@ const minimapX = gameCanvas.width - minimapWidth - 10; // 右上角
 const minimapY = 10;
 
 const groundHeight =0;
-
+let Touches = [];
+let Touchesindex=[{name:'joystick',id:-1},
+                   {name:'button',id:-1}
+];
+function getTouchesByName(name) {
+    let touch = Touchesindex.find(touch => touch.name === name);
+    return touch; // 如果找到則返回 index，否則返回 null
+}
+function getTouchesByid(id) {
+    let touch = Touches.find(touch => touch.identifier === id);
+    return touch; // 如果找到則返回 index，否則返回 null
+}
+canvas.addEventListener('touchstart', function(e) {
+    for(let i=0;i<e.touches.length;i++){
+        console.log(i);
+        Touches[i]=e.touches[i];
+        console.log(Touches);
+    }
+}, { passive: true });
 /*const platforms = [
     { x: 100, y: 600, width: 200, height: 100 },
     { x: 700, y: 650, width: 500, height: 100 },
@@ -57,31 +75,31 @@ let joystickhover=false;
 
 // 設置搖桿背景和按鈕的初始位置
 function drawJoystick() {
-  // 清空畫布
-  // 繪製搖桿背景
-  if(joystickhover||isJoystickActive){
-    canvas.style.cursor = 'pointer';
+    // 清空畫布
+    // 繪製搖桿背景
+    if(joystickhover||isJoystickActive||buttonHovered){
+      canvas.style.cursor = 'pointer';
+    }
+    else{
+      canvas.style.cursor = 'default';
+    }
+    ctx.beginPath();
+    ctx.arc(joystickCenter.x, joystickCenter.y, joystickBackgroundRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
+  
+    // 繪製搖桿控制按鈕
+    ctx.beginPath();
+    ctx.arc(joystickCenter.x + joystickDirection.x * joystickBackgroundRadius, joystickCenter.y + joystickDirection.y * joystickBackgroundRadius, joystickKnobRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'gray';
+    ctx.fill();
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.stroke();
   }
-  else{
-    canvas.style.cursor = 'default';
-  }
-  ctx.beginPath();
-  ctx.arc(joystickCenter.x, joystickCenter.y, joystickBackgroundRadius, 0, Math.PI * 2);
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-  ctx.fill();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = 'black';
-  ctx.stroke();
-
-  // 繪製搖桿控制按鈕
-  ctx.beginPath();
-  ctx.arc(joystickCenter.x + joystickDirection.x * joystickBackgroundRadius, joystickCenter.y + joystickDirection.y * joystickBackgroundRadius, joystickKnobRadius, 0, Math.PI * 2);
-  ctx.fillStyle = 'gray';
-  ctx.fill();
-  ctx.strokeStyle = 'black';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-}
 
 // 檢查鼠標/觸摸點是否在搖桿範圍內
 function isInJoystickArea(x, y) {
@@ -164,20 +182,23 @@ document.addEventListener('mouseup', (e) => {
 // 支援觸摸設備
 canvas.addEventListener('touchstart', (e) => {
     if(isMobileDevice()){
-        let touch = e.touches[0];
-        let rect = canvas.getBoundingClientRect();
-        let offsetX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-        let offsetY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-        if(isInJoystickArea(offsetX,offsetY).isInArea){
-            isJoystickActive = true;
-            updateJoystick(offsetX,offsetY); // 使用觸摸點的第一個點
-        }
+        Touches.forEach(touch =>{
+        //let touch = e.touches[0];
+            let rect = canvas.getBoundingClientRect();
+            let offsetX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            let offsetY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+            if(isInJoystickArea(offsetX,offsetY).isInArea){
+                isJoystickActive = true;
+                getTouchesByName('joystick').id=touch.identifier;
+                updateJoystick(offsetX,offsetY); // 使用觸摸點的第一個點
+            }
+        });
     }
 });
 
 canvas.addEventListener('touchmove', (e) => {
     if (isJoystickActive) {
-        let touch = e.touches[0];
+        let touch = Array.from(e.touches).find(touch => touch.identifier === getTouchesByName('joystick').id);
         let rect = canvas.getBoundingClientRect();
         let offsetX = (touch.clientX - rect.left) * (canvas.width / rect.width);
         let offsetY = (touch.clientY - rect.top) * (canvas.height / rect.height);
@@ -187,17 +208,24 @@ canvas.addEventListener('touchmove', (e) => {
 });
 
 canvas.addEventListener('touchend', (e) => {
-    if (e.touches.length === 0) {
-        console.log('stop')
+    let touch = Array.from(e.changedTouches).find(touch => touch.identifier === getTouchesByName('joystick').id);
+    if (touch) {
+        //Touchesindex[0].index=-1;
+        getTouchesByName('joystick').id=-1;
         isJoystickActive = false;
         joystickDirection = { x: 0, y: 0 }; // 停止移動
         updateJoystick(0,0,true); // 使用觸摸點的第一個點
     }
 });
 
-canvas.addEventListener('touchcancel', () => {
-  isJoystickActive = false;
-  joystickDirection = { x: 0, y: 0 }; // 停止移動
+canvas.addEventListener('touchcancel', (e) => {
+    let touch = Array.from(e.changedTouches).find(touch => touch.identifier === getTouchesByName('joystick').id);
+    if (touch) {
+        getTouchesByName('joystick').id=-1;
+        isJoystickActive = false;
+        joystickDirection = { x: 0, y: 0 }; // 停止移動
+        updateJoystick(0,0,true); // 使用觸摸點的第一個點
+    }
 });
 
 
@@ -300,8 +328,6 @@ const dialogBox = {
         return canvas.height - this.height - 30; // 使對話框靠近畫布底部
     }
 };
-
-
 
 
 const minimapScale = 1;
@@ -486,10 +512,11 @@ const buttonHeight = 200;
 const padding = 50;  // 按鈕距離右下角的邊距
 const buttonX = canvas.width - buttonWidth - padding;
 const buttonY = canvas.height - buttonHeight - padding;
+let buttonHovered=false;
 
 let buttons = [
-    {draw:true, name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHovered : false},// 按鈕1
-    {draw:false, name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false ,buttonHovered : false},// 按鈕2
+    {draw:true, name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false },// 按鈕1
+    {draw:false, name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false },// 按鈕2
 ]
 
 function getButtonByName(name) {
@@ -636,9 +663,9 @@ function checkButtonHover(x, y) {
 
             let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
 
-            button.buttonHovered = distance <= radius;
+            buttonHovered = distance <= radius;
                 
-            if (button.buttonHovered) {
+            if (buttonHovered) {
                 console.log("hover"+button.name)  // 只要有一個按鈕被 hover，就設置 isHovering 為 true
             }
         }
@@ -729,3 +756,4 @@ function isClickInDialog(x, y) {
 
     }
 }
+
