@@ -194,6 +194,7 @@ canvas.addEventListener('touchstart', (e) => {
             }
         });
     }
+    e.preventDefault(); // 防止觸摸移動時頁面滾動
 });
 
 canvas.addEventListener('touchmove', (e) => {
@@ -203,8 +204,9 @@ canvas.addEventListener('touchmove', (e) => {
         let offsetX = (touch.clientX - rect.left) * (canvas.width / rect.width);
         let offsetY = (touch.clientY - rect.top) * (canvas.height / rect.height);
         updateJoystick(offsetX,offsetY);
-        e.preventDefault(); // 防止觸摸移動時頁面滾動
+        
     }
+    e.preventDefault(); // 防止觸摸移動時頁面滾動
 });
 
 canvas.addEventListener('touchend', (e) => {
@@ -600,20 +602,22 @@ function handleMouseEvent(event,ishover) {
         isClickInDialog(mouseX, mouseY);
     }
     else checkButtonHover(mouseX, mouseY);
+
 }
 
 // 處理觸控事件
 function handleTouchEvent(event) {
     // 只取第一個觸控點
-    let touch = event.touches[0];
-    let rect = canvas.getBoundingClientRect();
-    let touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    let touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    checkButtonClick(touchX, touchY, false);
-    isClickInDialog(touchX, touchY);
+    Touches.forEach(touch =>{
+        //let touch = event.touches[0];
+        let rect = canvas.getBoundingClientRect();
+        let touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+        let touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        checkButtonClick(touchX, touchY, false);
+        isClickInDialog(touchX, touchY);
 
-    // 防止觸控事件同時觸發滾動或其他默認行為
-    //event.preventDefault();
+    });
+    e.preventDefault(); // 防止觸摸移動時頁面滾動
 }
 
 // 檢查是否點擊在圓形按鈕上
