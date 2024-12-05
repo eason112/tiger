@@ -7,17 +7,8 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //loadedImages = imagesToPreload.length;
     loadGame2();
   });
-  document.getElementById('jumpBtn').addEventListener('click', function() {
-    console.log(this.textContent)
-    if(this.textContent==='對話'){
-      showDialog("你好，玩家！一起去挖蛤蠣吧！");
-      //loadGame1();
-    }
-    
-    //preloadImages();
-  });
   // 初始化遊戲2的邏輯
-  function loadGame2() {
+function loadGame2() {
     console.log("已經切換到巧虎遊戲！");
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
@@ -29,7 +20,7 @@ document.getElementById('exit-btn').addEventListener('click', function() {
     //const script = document.getElementById('game2-script');
     //script.src = 'major/game.js';  // 設定腳本來源
   }
-  function loadGame1() {
+function loadGame1() {
     console.log("已經切換到巧虎遊戲！");
     document.getElementById('game1').style.display = 'block';
     document.getElementById('game2').style.display = 'none';
@@ -131,30 +122,8 @@ function loadCSS() {
 }
 
 
-const dialogBox = document.getElementById('dialogBox');
-const dialogText = document.getElementById('dialogText');
-const receiveDialogBtn = document.getElementById('receiveDialogBtn');
 
-receiveDialogBtn.addEventListener('click', function() {
-  hideDialog();  // 點擊後隱藏對話框
-  loadGame1();
-});
 
-document.getElementById("dialogBox").addEventListener("click", function(e) {
-  // 確保點擊的是對話框的背景區域，而不是內容
-  hideDialog();
-  
-});
-
-function showDialog(text) {
-  dialogBox.style.display = 'block';  // 顯示對話框
-  dialogText.textContent = text;      // 更新對話框內容
-}
-
-// 隱藏對話框的函數
-function hideDialog() {
-  dialogBox.style.display = 'none';   // 隱藏對話框
-}
 
 function hideLoadingScreen() {
   document.getElementById('loadingScreen').style.display = 'none';
