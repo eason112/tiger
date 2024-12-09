@@ -518,7 +518,7 @@ const uiElements = [
                             this.finalcountdown=false;
                         }
                     }
-                    if(elapsedTime==60){
+                    if(elapsedTime>=60){
                         gameState="gameOver";
                     }
                 }
@@ -1261,6 +1261,7 @@ const uiElements = [
 // 遊戲參數
 
 function updateGame(timestamp){
+    console.log(gameState);
     ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
     drawBackground(timestamp);
 
