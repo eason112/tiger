@@ -43,7 +43,7 @@ const otherImages = [
 const soundsToPreload = [
     url5+'/littlegame/new/sound/clickbutton.mp3',
     url5+'/littlegame/new/sound/countdown.mp3',
-    url5+'/littlegame/new/sound/dig.mp3',
+    url5+'/littlegame/new/sound/dig.ogg',
     url5+'/littlegame/new/sound/finalcountdown.mp3',
     url5+'/littlegame/new/sound/generatehole.mp3',
     url5+'/littlegame/new/sound/get.mp3',
@@ -131,9 +131,10 @@ const uiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
+                    playSound('clickbutton');
+                    console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        playSound('clickbutton');
                         playBGM(bgm);
                         gameState="difficulty";
                         
@@ -231,9 +232,10 @@ const uiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
+                    playSound('clickbutton');
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        playSound('clickbutton');
+                        
                         playSound('countdown');
                         gameState="gameStart";
                         
@@ -444,7 +446,7 @@ const uiElements = [
                             getUI('beach').tide=true;
                         }
                     }
-                    if(elapsedTime==50){
+                    if(elapsedTime==51){
                         if(this.finalcountdown){
                             playSound('finalcountdown');
                             this.finalcountdown=false;
@@ -715,7 +717,7 @@ const uiElements = [
                         }
                         if(this.tideImageIndex===tideImages.length){
                             this.tideImageIndex=-1;
-                            pauseBGM(bgm);
+                            playBGM(bgm);
                             this.tide=false;
                             this.canteach1=false;
                         }
@@ -1072,6 +1074,7 @@ const uiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
+                    playSound('clickbutton');
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         gameState="difficulty";
@@ -1129,6 +1132,7 @@ const uiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
+                    playSound('clickbutton');
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         getUI('countdown').reset();
