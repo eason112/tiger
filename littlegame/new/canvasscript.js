@@ -72,10 +72,13 @@ const uiElements = [
         color: 'white',
         draw: function() {
             if(gameState===this.State){
-                canvas.style.cursor = 'default';
+
                 ctx.font = `${this.fontSize}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
+                ctx.lineWidth = 5;  // 外框的寬度
+                ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                ctx.strokeText(this.text, this.x-2, this.y-2); // 繪製外框
                 ctx.fillStyle = this.color;
                 ctx.fillText(this.text, this.x, this.y);
             }
@@ -104,12 +107,17 @@ const uiElements = [
         imageHeight: 50,  // 图像的初始高度
         draw: function() {
             if(gameState===this.State){
+
+                canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
+                
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
+                
                 ctx.fillText(this.text, this.x, this.y);
                 this.updateImageScale();
                 this.image.src=url5+'/littlegame/new/images/teach.png';
@@ -173,9 +181,13 @@ const uiElements = [
         color: 'white',
         draw: function() {
             if(gameState===this.State){
+                canvas.style.cursor =(getUI('easyButton').isHovered||getUI('normalButton').isHovered||getUI('difficultButton').isHovered) ? 'pointer' : 'default';
                 ctx.font = `${this.fontSize}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
+                ctx.lineWidth = 5;  // 外框的寬度
+                ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                ctx.strokeText(this.text, this.x-2, this.y-2); // 繪製外框
                 ctx.fillStyle = this.color;
                 ctx.fillText(this.text, this.x, this.y);
             }
@@ -204,6 +216,7 @@ const uiElements = [
         imageHeight: 50,  // 图像的初始高度
         draw: function() {
             if(gameState===this.State){
+                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
                 ctx.fillStyle = this.color;
@@ -277,6 +290,7 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
+                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
                 ctx.fillStyle = this.color;
@@ -326,6 +340,7 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
+                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
                 ctx.fillStyle = this.color;
@@ -761,7 +776,7 @@ const uiElements = [
             
                         // 如果不重叠，则添加新图片
                         if (!isOverlapping) {
-                            console.log(this.canteach1)
+                            //console.log(this.canteach1)
                             holeArray.push({ x: randomX, y: randomY, image: new Image(),newhole:false,holeteach:this.canteach1});
                             this.canteach1=false;
                             holeArray[holeArray.length - 1].image.src = this.holeSource;
@@ -1012,8 +1027,8 @@ const uiElements = [
                 ctx.fillStyle = this.color;
                 ctx.lineWidth = 5;  // 外框的寬度
                 ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
-                ctx.strokeText(this.text, this.x+2, this.y+2); // 繪製外框
-                ctx.fillText(this.text, this.x, this.y);
+                ctx.strokeText(this.text, this.x, this.y); // 繪製外框
+                ctx.fillText(this.text, this.x+2, this.y+2);
             }
         }
     },
@@ -1028,15 +1043,15 @@ const uiElements = [
         color: 'white',
         draw: function() {
             if(gameState===this.State){
-                canvas.style.cursor = 'default';
+                canvas.style.cursor =(getUI('againButton').isHovered||getUI('exitButton').isHovered) ? 'pointer' : 'default';
                 ctx.font = `${this.fontSize}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = this.color;
                 ctx.lineWidth = 5;  // 外框的寬度
                 ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
-                ctx.strokeText(this.text+getUI('score').score, this.x+2, this.y+2); // 繪製外框
-                ctx.fillText(this.text+getUI('score').score, this.x, this.y);
+                ctx.strokeText(this.text+getUI('score').score, this.x, this.y); // 繪製外框
+                ctx.fillText(this.text+getUI('score').score, this.x+2, this.y+2);
             }
         }
     },
@@ -1057,6 +1072,7 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
+                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
                 ctx.fillStyle = this.color;
@@ -1078,7 +1094,7 @@ const uiElements = [
                     playSound('clickbutton');
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        gameState="difficulty";
+                        gameState="gameStart";
                         uiElements.forEach(element => {
                             element.isPressed=false;
                             element.isHovered=false;
@@ -1115,6 +1131,7 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
+                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
                 ctx.fillStyle = this.color;
@@ -1140,6 +1157,8 @@ const uiElements = [
                         getUI('timer').reset();
                         getUI('score').reset();
                         getUI('beach').reset();
+                        getUI('beach').canteach1=true;
+                        getUI('beach').canteach2=true;
                         uiElements.forEach(element => {
                             element.isPressed=false;
                             element.isHovered=false;
