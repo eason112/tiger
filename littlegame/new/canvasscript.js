@@ -917,7 +917,7 @@ const uiElements = [
                         if (offsetX >= clam.x && offsetX <= clam.x + clam.width && offsetY >= clam.y && offsetY <= clam.y + clam.height&&clam.canget) {
                             if (!clam.isFlyingToBucket) {
                                 if(clam.isRare){
-                                    playSound('getrare');
+                                    playSound('getrare',0.5);
                                 }
                                 else{
                                     playSound('get');
