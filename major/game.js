@@ -480,7 +480,9 @@ function drawMinimap() {
     ctx2.lineWidth = 5;   // 邊框寬度
     ctx2.strokeStyle = 'black'; // 邊框顏色
     ctx2.strokeRect(minimapX - 3, minimapY - 3, minimapWidth + 5, minimapHeight + 5);
-    ctx2.drawImage(minimapImage, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    //ctx2.drawImage(minimapImage, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    ctx2.drawImage(background3, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    ctx2.drawImage(background1, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
 
     // 計算玩家在小地圖中的位置，將玩家的世界坐標映射到小地圖的相對位置
     const minimapScaleX = minimapWidth / 4000;  // 小地圖寬度與完整地圖寬度的比例
@@ -504,7 +506,7 @@ function drawMinimap() {
     ctx2.arc(minimapX + playerMinimapX+25, minimapY+50 + playerMinimapY, 10, 0, Math.PI * 2);
     ctx2.fillStyle = 'red';
     ctx2.fill();
-
+    ctx2.drawImage(background2, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
     // 計算角色圖像的縮放大小
     //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
 }
