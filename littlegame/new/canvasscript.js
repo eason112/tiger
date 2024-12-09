@@ -442,11 +442,11 @@ const uiElements = [
                             getUI('beach').alarm=false;
                             playSound('wave');
                             pauseBGM(bgm);
-                            playBGM(bgm2);
+                            playBGM(bgm2,0.5);
                             getUI('beach').tide=true;
                         }
                     }
-                    if(elapsedTime==49){
+                    if(elapsedTime==50){
                         if(this.finalcountdown){
                             playSound('finalcountdown');
                             this.finalcountdown=false;
@@ -499,6 +499,7 @@ const uiElements = [
             this.time=60;
             this.start=false;
             this.timer=null;
+            this.finalcountdown=true;
         },
     },
     {
