@@ -853,8 +853,8 @@ const uiElements = [
                             this.clams.push(newClam);
 
                             // 动画效果
-                           // this.animateClam(newClam);
-                            //this.animateRake(newClam);
+                            this.animateClam(newClam);
+                            this.animateRake(newClam);
                                 
                         }
                     });
