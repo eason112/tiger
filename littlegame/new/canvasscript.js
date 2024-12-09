@@ -448,7 +448,7 @@ const uiElements = [
                     }
                     if(elapsedTime==50){
                         if(this.finalcountdown){
-                            playSound('finalcountdown',0.5);
+                            playSound('finalcountdown',0.1);
                             this.finalcountdown=false;
                         }
                     }
@@ -739,7 +739,7 @@ const uiElements = [
         generateHoles: function() {
             if(gameState===this.State){
                 if(this.cangeneratehole){
-                    playSound('generatehole');
+                    playSound('generatehole',0.1);
                     holes=[];
                     let holeArray = [];
                     this.clams=[];
@@ -918,7 +918,7 @@ const uiElements = [
                         if (offsetX >= clam.x && offsetX <= clam.x + clam.width && offsetY >= clam.y && offsetY <= clam.y + clam.height&&clam.canget) {
                             if (!clam.isFlyingToBucket) {
                                 if(clam.isRare){
-                                    playSound('getrare',0.3);
+                                    playSound('getrare',0.1);
                                 }
                                 else{
                                     playSound('get');
