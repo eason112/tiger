@@ -322,7 +322,7 @@ const backgroundspeed=0.2;
 function updateGame2() {
     // 更新玩家位置
     if (keys.right) {
-        console.log(player);
+        //console.log(player);
         pet.x = player.x - 100; 
         player.dx = player.speed;
         direction.right=true;
@@ -764,7 +764,7 @@ function isClickInDialog(x, y) {
 }
 
 document.addEventListener('keydown', (e) => {
-    console.log(e.key);
+    //console.log(e.key);
     if (e.key === 'ArrowRight') keys.right = true;
     if (e.key === 'ArrowLeft') keys.left = true;
     if (e.key === 'ArrowUp') keys.up = true;
