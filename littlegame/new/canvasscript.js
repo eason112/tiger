@@ -43,7 +43,7 @@ const otherImages = [
 const soundsToPreload = [
     url5+'/littlegame/new/sound/clickbutton.mp3',
     url5+'/littlegame/new/sound/countdown.mp3',
-    url5+'/littlegame/new/sound/dig.ogg',
+    url5+'/littlegame/new/sound/dig.mp3',
     url5+'/littlegame/new/sound/finalcountdown.mp3',
     url5+'/littlegame/new/sound/generatehole.mp3',
     url5+'/littlegame/new/sound/get.mp3',
@@ -446,7 +446,7 @@ const uiElements = [
                             getUI('beach').tide=true;
                         }
                     }
-                    if(elapsedTime==51){
+                    if(elapsedTime==49){
                         if(this.finalcountdown){
                             playSound('finalcountdown');
                             this.finalcountdown=false;
