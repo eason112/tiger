@@ -442,13 +442,13 @@ const uiElements = [
                             getUI('beach').alarm=false;
                             playSound('wave');
                             pauseBGM(bgm);
-                            playBGM(bgm2,0.5);
+                            playBGM(bgm2,0.3);
                             getUI('beach').tide=true;
                         }
                     }
                     if(elapsedTime==50){
                         if(this.finalcountdown){
-                            playSound('finalcountdown');
+                            playSound('finalcountdown',0.5);
                             this.finalcountdown=false;
                         }
                     }
@@ -918,7 +918,7 @@ const uiElements = [
                         if (offsetX >= clam.x && offsetX <= clam.x + clam.width && offsetY >= clam.y && offsetY <= clam.y + clam.height&&clam.canget) {
                             if (!clam.isFlyingToBucket) {
                                 if(clam.isRare){
-                                    playSound('getrare',0.5);
+                                    playSound('getrare',0.3);
                                 }
                                 else{
                                     playSound('get');
