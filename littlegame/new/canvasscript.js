@@ -88,10 +88,10 @@ const uiElements = [
         State:'gameInfo',
         name: 'startButton', // 开始按钮
         type: 'button', // 元素类型：按钮
-        x: canvas.width / 2,
-        y: canvas.height / 2,
         width: 200,
         height: 80,
+        x: canvas.width / 2,
+        y: canvas.height / 2,
         scale:1,
         text: '開始遊戲',
         fontSize: 40,
@@ -107,10 +107,21 @@ const uiElements = [
         imageHeight: 50,  // 图像的初始高度
         draw: function() {
             if(gameState===this.State){
-
                 canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=canvas.width / 2-this.width/2;
+                const BtnY=canvas.height / 2-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
                 
                 ctx.fillStyle = this.color;
@@ -218,7 +229,21 @@ const uiElements = [
             if(gameState===this.State){
                 //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
+
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
@@ -292,7 +317,20 @@ const uiElements = [
             if(gameState===this.State){
                 //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
@@ -342,7 +380,20 @@ const uiElements = [
             if(gameState===this.State){
                 //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
@@ -671,7 +722,7 @@ const uiElements = [
                                 }
                                 else{
                                     //clam.x += clam.speedX; // x 轴移动
-                                    clam.y -= clam.speedY*4; // y 轴移动
+                                    clam.y -= clam.speedY*2; // y 轴移动
                                 }
 
                                 // 更新速度以模拟重力效果
@@ -1074,7 +1125,20 @@ const uiElements = [
             if(gameState===this.State){
                 //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
@@ -1133,7 +1197,20 @@ const uiElements = [
             if(gameState===this.State){
                 //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
-                ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                ctx.beginPath();
+                ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                ctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                ctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                ctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                ctx.closePath();
+                ctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
