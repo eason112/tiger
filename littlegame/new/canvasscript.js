@@ -442,7 +442,7 @@ const uiElements = [
                             getUI('beach').alarm=false;
                             playSound('wave');
                             pauseBGM(bgm);
-                            playBGM(bgm2,0.3);
+                            playBGM(bgm2,0.1);
                             getUI('beach').tide=true;
                         }
                     }
