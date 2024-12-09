@@ -442,13 +442,13 @@ const uiElements = [
                             getUI('beach').alarm=false;
                             playSound('wave');
                             pauseBGM(bgm);
-                            playBGM(bgm2,0.1);
+                            playBGM(bgm2);
                             getUI('beach').tide=true;
                         }
                     }
                     if(elapsedTime==50){
                         if(this.finalcountdown){
-                            playSound('finalcountdown',0.1);
+                            playSound('finalcountdown');
                             this.finalcountdown=false;
                         }
                     }
@@ -739,7 +739,7 @@ const uiElements = [
         generateHoles: function() {
             if(gameState===this.State){
                 if(this.cangeneratehole){
-                    playSound('generatehole',0.1);
+                    playSound('generatehole');
                     holes=[];
                     let holeArray = [];
                     this.clams=[];
