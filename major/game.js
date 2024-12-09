@@ -486,6 +486,15 @@ function drawMinimap() {
     const minimapScaleX = minimapWidth / 4000;  // 小地圖寬度與完整地圖寬度的比例
     const minimapScaleY = minimapHeight / 940;  // 小地圖高度與完整地圖高度的比例
 
+
+    const NPCMinimapX = npc.x * minimapScaleX;
+    const NPCMinimapY = npc.y * minimapScaleY;
+
+    // 繪製NPC在小地圖上的位置
+    ctx2.beginPath();
+    ctx2.arc(minimapX + NPCMinimapX+25, minimapY+50 + NPCMinimapY, 10, 0, Math.PI * 2);
+    ctx2.fillStyle = 'green';
+    ctx2.fill();
     // 轉換玩家世界座標為小地圖座標
     const playerMinimapX = player.x * minimapScaleX;
     const playerMinimapY = player.y * minimapScaleY;
@@ -495,6 +504,7 @@ function drawMinimap() {
     ctx2.arc(minimapX + playerMinimapX+25, minimapY+50 + playerMinimapY, 10, 0, Math.PI * 2);
     ctx2.fillStyle = 'red';
     ctx2.fill();
+
     // 計算角色圖像的縮放大小
     //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
 }
