@@ -545,6 +545,9 @@ function drawButton() {
             ctx2.beginPath();
             ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, buttonWidth / 2 * scaleFactor, 0, Math.PI * 2);
             ctx2.fill();
+            ctx2.lineWidth = 2;
+            ctx2.strokeStyle = 'black';
+            ctx2.stroke();
 
             // 繪製箭頭
             ctx2.fillStyle = "white";
