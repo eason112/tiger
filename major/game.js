@@ -36,8 +36,8 @@ let background2X = 4000;
 
 const minimapWidth =800;
 const minimapHeight = 188;
-const minimapX = gameCanvas2.width - minimapWidth - 10; // 右上角
-const minimapY = 10;
+const minimapX = gameCanvas2.width - minimapWidth - 130; // 右上角
+const minimapY = 20;
 
 const groundHeight =0;
 let Touches = [];
@@ -293,11 +293,389 @@ const camera = {
 
 const npcDialog = [
     { name: "NPC", text: "你好，巧虎！一起挖蛤蠣吧。" },
+    { name: "NPC", text: "恭喜挖到蛤蠣!" },
 ];
 
 // 當前對話框顯示的對話
 let currentDialogIndex = 0;
 let showDialog = false;
+
+
+let menuOpen = false;  // 用來控制選單是否打開
+let menuX = canvas2.width;  // 選單的初始 X 座標，位於畫面右側外部
+let menuY = 0;  // 選單的初始 X 座標，位於畫面右側外部
+const menuWidth = 300;  // 選單的寬度
+const menuHeight = canvas2.height/2;  // 選單的高度與視窗高度一致
+const menuSpeed = 15;  // 控制選單滑動的速度
+
+
+
+const minimapScale = 1;
+const backgroundspeed=0.2;
+
+function drawMenu() {
+    if (menuOpen) {
+        // 控制選單從右邊滑入
+        if (menuX > canvas2.width - menuWidth) {
+            buttons.forEach(button => {
+                if(button.type=='menu'||button.type=='menuclose')
+                button.x-= menuSpeed;
+            });
+            menuX -= menuSpeed;  // 當選單開啟時，將選單向左移動
+        }
+    } else {
+        // 控制選單滑回右邊
+        if (menuX < canvas2.width) {
+            buttons.forEach(button => {
+                if(button.type=='menu'||button.type=='menuclose')
+                button.x+= menuSpeed;
+            });
+            menuX += menuSpeed;  // 當選單關閉時，將選單向右移動
+        }
+    }
+
+    // 畫選單背景
+    ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";  // 選單背景顏色
+    ctx2.fillRect(menuX, menuY, menuWidth, menuHeight);
+
+    // 畫選單內的按鈕
+    ctx2.fillStyle = "white";
+
+   /* menubuttons.forEach(button => {
+        ctx2.font = button.fontSize;
+        ctx2.fillText(button.text, button.x, button.y);
+    });*/
+}
+
+// 遊戲邏輯
+
+function stopGame() {
+    cancelAnimationFrame(animationFrameId);  // 停止 updateGame
+}
+function startGame() {
+    updateGame2();  // 开始更新
+  }
+// 繪製玩家
+function drawPlayer() {
+    if(emojiOpen){
+        ctx2.drawImage(emojiImage, player.x - camera.x+50, player.y-200, 200, 200);
+    }
+    if (!direction.right) {
+        // 當玩家向左移動，將玩家圖片進行水平翻轉
+        ctx2.save(); // 保存當前狀態
+        ctx2.scale(-1, 1); // 水平翻轉
+        ctx2.drawImage(playerImage, -player.x - player.width + camera.x, player.y, player.width, player.height); // 調整x座標以適應翻轉
+        ctx2.restore(); // 恢復到之前的狀態
+    } else {
+        // 正常顯示玩家
+        ctx2.drawImage(playerImage, player.x - camera.x, player.y, player.width, player.height);
+    }
+}
+
+function drawNPC() {
+    ctx2.drawImage(npcImage, npc.x- camera.x, npc.y, npc.width, npc.height);  // 使用圖片繪製角色
+}
+
+function drawPet() {
+    if (direction.right) {
+        // 當玩家向左移動，將寵物圖片進行水平翻轉
+        ctx2.save(); // 保存當前狀態
+        ctx2.scale(-1, 1); // 水平翻轉
+        ctx2.drawImage(petImage, -pet.x - pet.width + camera.x, pet.y, pet.width, pet.height); // 調整x座標以適應翻轉
+        ctx2.restore(); // 恢復到之前的狀態
+    } else {
+        // 正常顯示
+        ctx2.drawImage(petImage, pet.x - camera.x, pet.y, pet.width, pet.height);
+    }
+}
+
+function drawMinimap() {
+    // 設定小地圖的邊框
+    ctx2.lineWidth = 5;   // 邊框寬度
+    ctx2.strokeStyle = 'black'; // 邊框顏色
+    ctx2.strokeRect(minimapX - 3, minimapY - 3, minimapWidth + 5, minimapHeight + 5);
+    //ctx2.drawImage(minimapImage, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    ctx2.drawImage(background3, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    ctx2.drawImage(background1, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+
+    // 計算玩家在小地圖中的位置，將玩家的世界坐標映射到小地圖的相對位置
+    const minimapScaleX = minimapWidth / 4000;  // 小地圖寬度與完整地圖寬度的比例
+    const minimapScaleY = minimapHeight / 940;  // 小地圖高度與完整地圖高度的比例
+
+
+    const NPCMinimapX = npc.x * minimapScaleX;
+    const NPCMinimapY = npc.y * minimapScaleY;
+
+    // 繪製NPC在小地圖上的位置
+    ctx2.beginPath();
+    ctx2.arc(minimapX + NPCMinimapX+25, minimapY+50 + NPCMinimapY, 10, 0, Math.PI * 2);
+    ctx2.fillStyle = 'green';
+    ctx2.fill();
+    // 轉換玩家世界座標為小地圖座標
+    const playerMinimapX = player.x * minimapScaleX;
+    const playerMinimapY = player.y * minimapScaleY;
+
+    // 繪製玩家在小地圖上的位置
+    ctx2.beginPath();
+    ctx2.arc(minimapX + playerMinimapX+25, minimapY+50 + playerMinimapY, 10, 0, Math.PI * 2);
+    ctx2.fillStyle = 'red';
+    ctx2.fill();
+    ctx2.drawImage(background2, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
+    // 計算角色圖像的縮放大小
+    //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
+}
+// 按鈕的位置和大小（右下角）
+const buttonWidth = 200;
+const buttonHeight = 200;
+const padding = 50;  // 按鈕距離右下角的邊距
+const buttonX = canvas2.width - buttonWidth - padding;
+const buttonY = canvas2.height - buttonHeight - padding;
+let buttonHovered=false;
+
+const emojimenuWidth = 300;  // 選單的寬度
+const emojimenuHeight = 300;  // 選單的高度與視窗高度一致
+let emojimenuOpen = false;  // 用來控制選單是否打開
+let emojimenuX=buttonX-100-emojimenuWidth;  // 選單的初始 X 座標，位於畫面右側外部
+let emojimenuY=buttonY+150-emojimenuHeight;  // 選單的初始 X 座標，位於畫面右側外部
+let emojiOpen=false;
+let emojiImage=new Image();
+let buttons = [
+    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false },// 按鈕2
+    {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false },// 按鈕2
+    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false},// 按鈕1
+    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+]
+
+function getButtonByName(name) {
+    return buttons.find(button => button.name === name);
+}
+
+
+function drawemojiMenu() {
+    if (emojimenuOpen) {
+    
+        // 畫選單背景
+        ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";  // 選單背景顏色
+        ctx2.fillRect(emojimenuX, emojimenuY, emojimenuWidth, emojimenuHeight);
+
+        // 畫選單內的按鈕
+        ctx2.fillStyle = "white";
+
+    }
+}
+function drawButton() {
+    // 繪製按鈕（綠色的圓形背景）
+    buttons.forEach(button => {
+        if(button.draw){
+            ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
+            let scaleFactor = button.buttonClicked ? 0.95 : 1;  // 當點擊時稍微放大
+            if(button.buttonHover) {
+                ctx2.fillStyle = "rgba(0, 0, 0, 0.6)";   
+                canvas2.style.cursor = 'pointer';
+            }
+            else{
+                ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
+                canvas2.style.cursor = 'default';
+            }
+            // 重新繪製圓形按鈕
+            if(button.img){
+                const image = new Image();
+                image.src=button.img;
+                ctx2.drawImage(image,button.x,button.y,button.width*scaleFactor, button.height*scaleFactor )
+            }
+            else{
+                ctx2.beginPath();
+                ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, button.width / 2 * scaleFactor, 0, Math.PI * 2);
+                ctx2.fill();
+                ctx2.lineWidth = 2;
+                ctx2.strokeStyle = 'black';
+                ctx2.stroke();
+            }
+
+
+            // 繪製箭頭
+            if(button.type=='menu'){
+                ctx2.fillStyle = "white";
+                ctx2.font = `${button.fontSize}px Arial`;
+                ctx2.textAlign = "center";
+                ctx2.textBaseline = "middle";
+                ctx2.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2+button.height);
+            }
+            else{
+                ctx2.fillStyle = "white";
+                ctx2.font = `${button.fontSize}px Arial`;
+                ctx2.textAlign = "center";
+                ctx2.textBaseline = "middle";
+                ctx2.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2);
+            }
+        }
+    });   
+}
+
+
+// 開始遊戲
+updateGame2();
+function collisiondetect(){
+    // 檢查角色是否接近NPC
+  const npcDist = Math.sqrt((player.x - npc.x) ** 2 + (player.y - npc.y) ** 2);
+  const isNearNPC = npcDist < 200; // 假設接近範圍為200px
+  
+  if (isNearNPC) {
+    // 顯示對話按鈕，隱藏跳躍按鈕
+    getButtonByName("jump").draw=false;
+    getButtonByName("dialog").draw=true;
+  } else {
+    // 顯示跳躍按鈕，隱藏對話按鈕
+    getButtonByName("jump").draw=true;
+    getButtonByName("dialog").draw=false;
+  }
+}
+
+
+canvas2.addEventListener('mousemove', function(event) {
+    if(!isMobileDevice())
+    handleMouseEvent(event,false);
+});
+
+// 監聽 canvas 上的點擊事件 (適用於桌面端)
+canvas2.addEventListener('mousedown', function(event) {
+    if(!isMobileDevice())
+    handleMouseEvent(event,true);
+});
+
+// 監聽觸控開始事件 (適用於手機端)
+canvas2.addEventListener('touchstart', function(event) {
+    handleTouchEvent(event);
+}, );
+
+
+// 處理滑鼠點擊事件
+function handleMouseEvent(event,ishover) {
+    let rect = canvas2.getBoundingClientRect();
+    let mouseX = (event.clientX - rect.left) * (canvas2.width / rect.width);
+    let mouseY = (event.clientY - rect.top) * (canvas2.height / rect.height);
+    if(ishover) {
+        checkButtonClick(mouseX, mouseY, true);
+        isClickInDialog(mouseX, mouseY);
+    }
+    else checkButtonHover(mouseX, mouseY);
+
+}
+
+// 處理觸控事件
+function handleTouchEvent(event) {
+    // 只取第一個觸控點
+    Array.from(event.touches).forEach(touch =>{
+        //let touch = event.touches[0];
+        let rect = canvas2.getBoundingClientRect();
+        let touchX = (touch.clientX - rect.left) * (canvas2.width / rect.width);
+        let touchY = (touch.clientY - rect.top) * (canvas2.height / rect.height);
+        checkButtonClick(touchX, touchY, false);
+        isClickInDialog(touchX, touchY);
+
+    });
+    event.preventDefault(); // 防止觸摸移動時頁面滾動
+}
+
+// 檢查是否點擊在圓形按鈕上
+function checkButtonClick(x, y, ismouse) {
+    buttons.forEach(button => {
+        if(button.draw){
+            let centerX = button.x + button.width / 2;
+            let centerY = button.y + button.height / 2;
+            let radius = button.width / 2;
+
+            let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+
+            if (distance <= radius) {
+                console.log("點擊在圓形按鈕內部，按鈕" + button.name);
+                if(!ismouse) button.buttonHover=false;
+                button.buttonClicked = true;  // 設置被點擊的按鈕狀態
+                setTimeout(() => {
+                    button.buttonClicked = false;  // 延遲後恢復按鈕原狀
+                }, 200);
+                switch(button.name){
+                    case "jump":{
+                        if (!player.isJumping) {
+                            player.dy = player.jumpPower;
+                            player.isJumping = true;
+                        }
+                        if (!pet.isJumping) {
+                            pet.dy = pet.jumpPower;
+                            pet.isJumping = true;
+                        }
+                        break;
+                    }
+                    case "dialog":{
+                        showDialog=!showDialog;
+                        if(showDialog==false)currentDialogIndex=0;
+                        break;
+                    }
+                    case "menu":{
+                        toggleMenu();
+                        break;
+                    }
+                    case "close":{
+                        toggleMenu();
+                        break;
+                    }
+                    case "emoji":{
+                        toggleemojiMenu();
+                        break;
+                    }                    
+                }
+                if(button.type=='emoji'){
+                    if(emojiOpen==false){
+                        setTimeout(() => {
+                            emojiOpen= false;  // 延遲後恢復按鈕原狀
+                        }, 1000);
+                        emojiOpen=true;
+                        emojiImage.src=button.img;
+                    }
+                }
+            }
+        }
+    });
+}
+function checkButtonHover(x, y) {
+    buttonHovered=false;
+    buttons.forEach(button => {
+        if(button.draw){
+            let centerX = button.x + button.width / 2;
+            let centerY = button.y + button.height / 2;
+            let radius = button.width / 2;
+
+            let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+
+            button.buttonHover = distance <= radius;
+                
+            if ( button.buttonHover) {
+                buttonHovered=true;
+                console.log("hover"+button.name)  // 只要有一個按鈕被 hover，就設置 isHovering 為 true
+            }
+        }
+    });
+    
+}
 
 const dialogBox = {
     width: 800, // 寬度
@@ -306,19 +684,162 @@ const dialogBox = {
     borderRadius: 15, // 圓角半徑
     bgColor: 'rgba(0, 0, 0, 0.5)', // 背景顏色
     borderColor: 'white', // 邊框顏色
+    imageWidth:293,
+    imageHeight:377,
+    get imageX() {
+        return (this.x-this.imageWidth); // 居中對話框
+    },
+    get imageY() {
+        return (this.y-100); // 居中對話框
+    },
     // 直接在這裡設置對話框的位置
     get x() {
         return (canvas2.width - this.width) / 2; // 居中對話框
     },
     get y() {
         return canvas2.height - this.height - 30; // 使對話框靠近畫布底部
-    }
+    },
+    arrowYOffset:0,
+    arrowDirection: 1,
+    arrowSpeed: 0.005
 };
 
+function drawDialogBox() {
+    if (showDialog) {
+        //ctx2.scale(-1, 1); // 水平翻轉
+        ctx2.drawImage(npcImage, dialogBox.imageX, dialogBox.imageY, dialogBox.imageWidth, dialogBox.imageHeight);
+        // 畫背景（圓角矩形）
+        ctx2.fillStyle = dialogBox.bgColor;
+        ctx2.beginPath();
+        ctx2.moveTo(dialogBox.x + dialogBox.borderRadius, dialogBox.y);
+        ctx2.arcTo(dialogBox.x + dialogBox.width, dialogBox.y, dialogBox.x + dialogBox.width, dialogBox.y + dialogBox.height, dialogBox.borderRadius);
+        ctx2.arcTo(dialogBox.x + dialogBox.width, dialogBox.y + dialogBox.height, dialogBox.x, dialogBox.y + dialogBox.height, dialogBox.borderRadius);
+        ctx2.arcTo(dialogBox.x, dialogBox.y + dialogBox.height, dialogBox.x, dialogBox.y, dialogBox.borderRadius);
+        ctx2.arcTo(dialogBox.x, dialogBox.y, dialogBox.x + dialogBox.width, dialogBox.y, dialogBox.borderRadius);
+        ctx2.fill();
 
-const minimapScale = 1;
-const backgroundspeed=0.2;
-// 遊戲邏輯
+        // 畫邊框
+        ctx2.strokeStyle = dialogBox.borderColor;
+        ctx2.lineWidth = 2;
+        ctx2.stroke();
+
+        // 設置字體和顏色
+        ctx2.fillStyle = 'white';
+        ctx2.font = '20px Arial';
+        ctx2.textAlign = 'left';
+        ctx2.textBaseline = 'top';
+
+        // 顯示 NPC 名字
+        ctx2.font = 'bold 30px Arial';
+        ctx2.fillText(npcDialog[currentDialogIndex].name + ":", dialogBox.x + dialogBox.padding, dialogBox.y + dialogBox.padding);
+
+        // 顯示對話文本
+        ctx2.font = '30px Arial';
+        let textX = dialogBox.x + dialogBox.padding;
+        let textY = dialogBox.y + dialogBox.padding + 40;
+
+        // 分割對話文本成多行，避免超出對話框範圍
+        const maxLineWidth = dialogBox.width - 2 * dialogBox.padding;
+        const lines = wrapText(npcDialog[currentDialogIndex].text, maxLineWidth);
+
+        const arrowSize = 20;  // 箭頭的大小
+        const arrowX = dialogBox.x + dialogBox.width - arrowSize - dialogBox.padding;
+        const arrowY = dialogBox.y + dialogBox.height - arrowSize - dialogBox.padding+dialogBox.arrowYOffset;
+
+        dialogBox.arrowYOffset = Math.sin(Date.now() * dialogBox.arrowSpeed) * 5; // 10 為擺動的範圍（最大偏移量）
+
+        ctx2.fillStyle = dialogBox.borderColor;
+        ctx2.beginPath();
+        ctx2.moveTo(arrowX, arrowY); // 箭頭的起點
+        ctx2.lineTo(arrowX + arrowSize, arrowY); // 箭頭的底邊
+        ctx2.lineTo(arrowX + arrowSize / 2, arrowY + arrowSize); // 箭頭的頂點
+        ctx2.closePath();
+        ctx2.fill(); // 填充箭頭顏色
+
+        lines.forEach((line, index) => {
+            ctx2.fillText(line, textX, textY + (index * 25)); // 顯示每行文本
+        });
+    }
+}
+
+// 文字換行處理
+function wrapText(text, maxWidth) {
+    let words = text.split(' ');
+    let line = '';
+    let lines = [];
+
+    words.forEach(word => {
+        let testLine = line + word + ' ';
+        let testWidth = ctx2.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+            lines.push(line);
+            line = word + ' ';
+        } else {
+            line = testLine;
+        }
+    });
+
+    if (line !== '') {
+        lines.push(line);
+    }
+
+    return lines;
+}
+
+// 顯示下一行對話
+function nextDialog() {
+    currentDialogIndex++;
+    if (currentDialogIndex == 1) {
+        //showDialog = false; // 對話結束後隱藏對話框
+        //currentDialogIndex=0;
+        loadGame1();
+    }
+    if (currentDialogIndex >= npcDialog.length) {
+        showDialog = false; // 對話結束後隱藏對話框
+        currentDialogIndex=0;
+        //loadGame1();
+    }
+}
+
+function isClickInDialog(x, y) {
+    if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
+        y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
+        if(showDialog){
+            nextDialog(); 
+        }
+
+    }
+}
+
+
+
+function toggleMenu() {
+    getButtonByName('menu').draw=menuOpen;
+    menuOpen = !menuOpen;  // 切換選單開關狀態
+}
+
+function toggleemojiMenu() {
+    
+    emojimenuOpen = !emojimenuOpen;  // 切換選單開關狀態
+    buttons.forEach(button => {
+        if(button.type=='emoji')
+        button.draw= emojimenuOpen;
+    });
+}
+
+
+document.addEventListener('keydown', (e) => {
+    //console.log(e.key);
+    if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
+    if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
+    if (e.key === 'ArrowUp'||e.key === 'w') keys.up = true;
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === 'ArrowRight'||e.key === 'd') keys.right = false;
+    if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = false;
+    if (e.key === 'ArrowUp'||e.key === 'w') keys.up = false;
+});
 function updateGame2() {
     // 更新玩家位置
     if (keys.right) {
@@ -404,7 +925,10 @@ function updateGame2() {
     ctx2.drawImage(background2, camera.x*1.5, 0, canvas2.width, canvas2.height, 0, 0, canvas2.width, canvas2.height);
         // 繪製第三層背景
     drawMinimap();
+    drawMenu();
+    drawemojiMenu();
     drawButton();
+
     drawJoystick();
     drawDialogBox();
     if (background1X < -4000) {
@@ -438,343 +962,3 @@ function updateGame2() {
     // 重複執行遊戲更新
     animationFrameId = requestAnimationFrame(updateGame2);
 }
-function stopGame() {
-    cancelAnimationFrame(animationFrameId);  // 停止 updateGame
-}
-function startGame() {
-    updateGame2();  // 开始更新
-  }
-// 繪製玩家
-function drawPlayer() {
-    if (!direction.right) {
-        // 當玩家向左移動，將玩家圖片進行水平翻轉
-        ctx2.save(); // 保存當前狀態
-        ctx2.scale(-1, 1); // 水平翻轉
-        ctx2.drawImage(playerImage, -player.x - player.width + camera.x, player.y, player.width, player.height); // 調整x座標以適應翻轉
-        ctx2.restore(); // 恢復到之前的狀態
-    } else {
-        // 正常顯示玩家
-        ctx2.drawImage(playerImage, player.x - camera.x, player.y, player.width, player.height);
-    }
-}
-
-function drawNPC() {
-    ctx2.drawImage(npcImage, npc.x- camera.x, npc.y, npc.width, npc.height);  // 使用圖片繪製角色
-}
-
-function drawPet() {
-    if (direction.right) {
-        // 當玩家向左移動，將寵物圖片進行水平翻轉
-        ctx2.save(); // 保存當前狀態
-        ctx2.scale(-1, 1); // 水平翻轉
-        ctx2.drawImage(petImage, -pet.x - pet.width + camera.x, pet.y, pet.width, pet.height); // 調整x座標以適應翻轉
-        ctx2.restore(); // 恢復到之前的狀態
-    } else {
-        // 正常顯示
-        ctx2.drawImage(petImage, pet.x - camera.x, pet.y, pet.width, pet.height);
-    }
-}
-
-function drawMinimap() {
-    // 設定小地圖的邊框
-    ctx2.lineWidth = 5;   // 邊框寬度
-    ctx2.strokeStyle = 'black'; // 邊框顏色
-    ctx2.strokeRect(minimapX - 3, minimapY - 3, minimapWidth + 5, minimapHeight + 5);
-    //ctx2.drawImage(minimapImage, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
-    ctx2.drawImage(background3, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
-    ctx2.drawImage(background1, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
-
-    // 計算玩家在小地圖中的位置，將玩家的世界坐標映射到小地圖的相對位置
-    const minimapScaleX = minimapWidth / 4000;  // 小地圖寬度與完整地圖寬度的比例
-    const minimapScaleY = minimapHeight / 940;  // 小地圖高度與完整地圖高度的比例
-
-
-    const NPCMinimapX = npc.x * minimapScaleX;
-    const NPCMinimapY = npc.y * minimapScaleY;
-
-    // 繪製NPC在小地圖上的位置
-    ctx2.beginPath();
-    ctx2.arc(minimapX + NPCMinimapX+25, minimapY+50 + NPCMinimapY, 10, 0, Math.PI * 2);
-    ctx2.fillStyle = 'green';
-    ctx2.fill();
-    // 轉換玩家世界座標為小地圖座標
-    const playerMinimapX = player.x * minimapScaleX;
-    const playerMinimapY = player.y * minimapScaleY;
-
-    // 繪製玩家在小地圖上的位置
-    ctx2.beginPath();
-    ctx2.arc(minimapX + playerMinimapX+25, minimapY+50 + playerMinimapY, 10, 0, Math.PI * 2);
-    ctx2.fillStyle = 'red';
-    ctx2.fill();
-    ctx2.drawImage(background2, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
-    // 計算角色圖像的縮放大小
-    //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
-}
-// 按鈕的位置和大小（右下角）
-const buttonWidth = 200;
-const buttonHeight = 200;
-const padding = 50;  // 按鈕距離右下角的邊距
-const buttonX = canvas2.width - buttonWidth - padding;
-const buttonY = canvas2.height - buttonHeight - padding;
-let buttonHovered=false;
-
-let buttons = [
-    {draw:true, name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false },// 按鈕1
-    {draw:false, name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false },// 按鈕2
-]
-
-function getButtonByName(name) {
-    return buttons.find(button => button.name === name);
-}
-
-function drawButton() {
-    // 繪製按鈕（綠色的圓形背景）
-    buttons.forEach(button => {
-        if(button.draw){
-            ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
-            let scaleFactor = button.buttonClicked ? 0.95 : 1;  // 當點擊時稍微放大
-            if(button.buttonHovered) {
-                ctx2.fillStyle = "rgba(0, 0, 0, 0.6)";   
-                canvas2.style.cursor = 'pointer';
-            }
-            else{
-                ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
-                canvas2.style.cursor = 'default';
-            }
-            // 重新繪製圓形按鈕
-            ctx2.beginPath();
-            ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, buttonWidth / 2 * scaleFactor, 0, Math.PI * 2);
-            ctx2.fill();
-            ctx2.lineWidth = 2;
-            ctx2.strokeStyle = 'black';
-            ctx2.stroke();
-
-            // 繪製箭頭
-            ctx2.fillStyle = "white";
-            ctx2.font = `${button.fontSize}px Arial`;
-            ctx2.textAlign = "center";
-            ctx2.textBaseline = "middle";
-            ctx2.fillText(button.text, button.x + button.width / 2, button.y + button.height / 2);
-        }
-    });   
-}
-
-
-// 開始遊戲
-updateGame2();
-function collisiondetect(){
-    // 檢查角色是否接近NPC
-  const npcDist = Math.sqrt((player.x - npc.x) ** 2 + (player.y - npc.y) ** 2);
-  const isNearNPC = npcDist < 200; // 假設接近範圍為200px
-  
-  if (isNearNPC) {
-    // 顯示對話按鈕，隱藏跳躍按鈕
-    getButtonByName("jump").draw=false;
-    getButtonByName("dialog").draw=true;
-  } else {
-    // 顯示跳躍按鈕，隱藏對話按鈕
-    getButtonByName("jump").draw=true;
-    getButtonByName("dialog").draw=false;
-  }
-}
-
-
-canvas2.addEventListener('mousemove', function(event) {
-    if(!isMobileDevice())
-    handleMouseEvent(event,false);
-});
-
-// 監聽 canvas 上的點擊事件 (適用於桌面端)
-canvas2.addEventListener('mousedown', function(event) {
-    if(!isMobileDevice())
-    handleMouseEvent(event,true);
-});
-
-// 監聽觸控開始事件 (適用於手機端)
-canvas2.addEventListener('touchstart', function(event) {
-    handleTouchEvent(event);
-}, );
-
-
-// 處理滑鼠點擊事件
-function handleMouseEvent(event,ishover) {
-    let rect = canvas2.getBoundingClientRect();
-    let mouseX = (event.clientX - rect.left) * (canvas2.width / rect.width);
-    let mouseY = (event.clientY - rect.top) * (canvas2.height / rect.height);
-    if(ishover) {
-        checkButtonClick(mouseX, mouseY, true);
-        isClickInDialog(mouseX, mouseY);
-    }
-    else checkButtonHover(mouseX, mouseY);
-
-}
-
-// 處理觸控事件
-function handleTouchEvent(event) {
-    // 只取第一個觸控點
-    Array.from(event.touches).forEach(touch =>{
-        //let touch = event.touches[0];
-        let rect = canvas2.getBoundingClientRect();
-        let touchX = (touch.clientX - rect.left) * (canvas2.width / rect.width);
-        let touchY = (touch.clientY - rect.top) * (canvas2.height / rect.height);
-        checkButtonClick(touchX, touchY, false);
-        isClickInDialog(touchX, touchY);
-
-    });
-    event.preventDefault(); // 防止觸摸移動時頁面滾動
-}
-
-// 檢查是否點擊在圓形按鈕上
-function checkButtonClick(x, y, ismouse) {
-    buttons.forEach(button => {
-        if(button.draw){
-            let centerX = button.x + button.width / 2;
-            let centerY = button.y + button.height / 2;
-            let radius = button.width / 2;
-
-            let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-
-            if (distance <= radius) {
-                console.log("點擊在圓形按鈕內部，按鈕" + button.name);
-                if(!ismouse) button.buttonHovered=false;
-                button.buttonClicked = true;  // 設置被點擊的按鈕狀態
-                setTimeout(() => {
-                    button.buttonClicked = false;  // 延遲後恢復按鈕原狀
-                }, 200);
-                switch(button.name){
-                    case "jump":{
-                        if (!player.isJumping) {
-                            player.dy = player.jumpPower;
-                            player.isJumping = true;
-                        }
-                        if (!pet.isJumping) {
-                            pet.dy = pet.jumpPower;
-                            pet.isJumping = true;
-                        }
-                        break;
-                    }
-                    case "dialog":{
-                        showDialog=!showDialog;
-                        break;
-                    }
-                }
-            }
-        }
-    });
-}
-function checkButtonHover(x, y) {
-    buttons.forEach(button => {
-        if(button.draw){
-            let centerX = button.x + button.width / 2;
-            let centerY = button.y + button.height / 2;
-            let radius = button.width / 2;
-
-            let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-
-            buttonHovered = distance <= radius;
-                
-            if (buttonHovered) {
-                console.log("hover"+button.name)  // 只要有一個按鈕被 hover，就設置 isHovering 為 true
-            }
-        }
-    });
-        
-}
-function drawDialogBox() {
-    if (showDialog) {
-        // 畫背景（圓角矩形）
-        ctx2.fillStyle = dialogBox.bgColor;
-        ctx2.beginPath();
-        ctx2.moveTo(dialogBox.x + dialogBox.borderRadius, dialogBox.y);
-        ctx2.arcTo(dialogBox.x + dialogBox.width, dialogBox.y, dialogBox.x + dialogBox.width, dialogBox.y + dialogBox.height, dialogBox.borderRadius);
-        ctx2.arcTo(dialogBox.x + dialogBox.width, dialogBox.y + dialogBox.height, dialogBox.x, dialogBox.y + dialogBox.height, dialogBox.borderRadius);
-        ctx2.arcTo(dialogBox.x, dialogBox.y + dialogBox.height, dialogBox.x, dialogBox.y, dialogBox.borderRadius);
-        ctx2.arcTo(dialogBox.x, dialogBox.y, dialogBox.x + dialogBox.width, dialogBox.y, dialogBox.borderRadius);
-        ctx2.fill();
-
-        // 畫邊框
-        ctx2.strokeStyle = dialogBox.borderColor;
-        ctx2.lineWidth = 2;
-        ctx2.stroke();
-
-        // 設置字體和顏色
-        ctx2.fillStyle = 'white';
-        ctx2.font = '20px Arial';
-        ctx2.textAlign = 'left';
-        ctx2.textBaseline = 'top';
-
-        // 顯示 NPC 名字
-        ctx2.font = 'bold 30px Arial';
-        ctx2.fillText(npcDialog[currentDialogIndex].name + ":", dialogBox.x + dialogBox.padding, dialogBox.y + dialogBox.padding);
-
-        // 顯示對話文本
-        ctx2.font = '30px Arial';
-        let textX = dialogBox.x + dialogBox.padding;
-        let textY = dialogBox.y + dialogBox.padding + 40;
-
-        // 分割對話文本成多行，避免超出對話框範圍
-        const maxLineWidth = dialogBox.width - 2 * dialogBox.padding;
-        const lines = wrapText(npcDialog[currentDialogIndex].text, maxLineWidth);
-        
-        lines.forEach((line, index) => {
-            ctx2.fillText(line, textX, textY + (index * 25)); // 顯示每行文本
-        });
-    }
-}
-
-// 文字換行處理
-function wrapText(text, maxWidth) {
-    let words = text.split(' ');
-    let line = '';
-    let lines = [];
-
-    words.forEach(word => {
-        let testLine = line + word + ' ';
-        let testWidth = ctx2.measureText(testLine).width;
-        if (testWidth > maxWidth) {
-            lines.push(line);
-            line = word + ' ';
-        } else {
-            line = testLine;
-        }
-    });
-
-    if (line !== '') {
-        lines.push(line);
-    }
-
-    return lines;
-}
-
-// 顯示下一行對話
-function nextDialog() {
-    currentDialogIndex++;
-    if (currentDialogIndex >= npcDialog.length) {
-        showDialog = false; // 對話結束後隱藏對話框
-        currentDialogIndex=0;
-        loadGame1();
-    }
-}
-
-function isClickInDialog(x, y) {
-    if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
-        y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
-        if(showDialog){
-            nextDialog(); 
-        }
-
-    }
-}
-
-document.addEventListener('keydown', (e) => {
-    //console.log(e.key);
-    if (e.key === 'ArrowRight') keys.right = true;
-    if (e.key === 'ArrowLeft') keys.left = true;
-    if (e.key === 'ArrowUp') keys.up = true;
-});
-
-document.addEventListener('keyup', (e) => {
-    if (e.key === 'ArrowRight') keys.right = false;
-    if (e.key === 'ArrowLeft') keys.left = false;
-    if (e.key === 'ArrowUp') keys.up = false;
-});
