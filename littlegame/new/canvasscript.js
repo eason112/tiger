@@ -1163,6 +1163,8 @@ const uiElements = [
                             element.isPressed=false;
                             element.isHovered=false;
                         });
+                        getUI('beach').canteach1=false;
+                        getUI('beach').canteach2=false;
                         getUI('countdown').reset();
                         getUI('timer').reset();
                         getUI('score').reset();
@@ -1261,7 +1263,7 @@ const uiElements = [
 // 遊戲參數
 
 function updateGame(timestamp){
-    console.log(gameState);
+    //console.log(gameState);
     ctx.clearRect(0, 0, canvas.width, canvas.height); // 清除画布
     drawBackground(timestamp);
 
