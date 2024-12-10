@@ -295,11 +295,22 @@ const npcDialog = [
     { name: "NPC", text: "你好，巧虎！一起挖蛤蠣吧。" },
     { name: "NPC", text: "恭喜挖到蛤蠣!" },
 ];
+const rewardDialog = [
+    { name: "reward", text: "恭喜你獲得新服裝!",img:url2+'/major/images/player.png',imageWidth:293/1.5,imageHeight:377/1.5 },
+    { name: "reward", text: "恭喜你獲得新寵物!",img:url2+'/major/images/NPC.png' ,imageWidth:293/1.5,imageHeight:377/1.5},
+];
+const clothingImage = [
+    { index:0,hasget: true, text: "已穿戴",img:url2+'/major/images/player.png',imageWidth:293,imageHeight:377,weared:true },
+    { index:1,hasget: false, text: "穿戴",img:url2+'/major/images/NPC.png' ,imageWidth:293,imageHeight:377,weared:false},
+];
 
 // 當前對話框顯示的對話
 let currentDialogIndex = 0;
 let showDialog = false;
-
+let currentRewardIndex = 0;
+let showReward = false;
+let currentclothingIndex = 0;  // 當前顯示的圖片索引
+let showclothingBox = false;  // 是否顯示介面
 
 let menuOpen = false;  // 用來控制選單是否打開
 let menuX = canvas2.width;  // 選單的初始 X 座標，位於畫面右側外部
@@ -348,6 +359,131 @@ function drawMenu() {
 }
 
 // 遊戲邏輯
+function updateGame2() {
+    // 更新玩家位置
+    if (keys.right) {
+        //console.log(player);
+        pet.x = player.x - 100; 
+        player.dx = player.speed;
+        direction.right=true;
+    }
+    if (keys.left) {
+        pet.x = player.x + 250; 
+        player.dx = -player.speed;
+        direction.right=false;
+    }
+    if (!keys.right && !keys.left) player.dx = 0;
+
+    if (keys.up && !player.isJumping) {
+        player.dy = player.jumpPower;
+        player.isJumping = true;
+        pet.dy = pet.jumpPower;
+        pet.isJumping = true;
+    }
+
+    // 更新玩家的物理狀態
+    player.x += player.dx;
+    player.y += player.dy;
+    player.dy += player.gravity;
+
+    pet.y+=pet.dy;
+    pet.dy+=pet.gravity;
+
+    // 防止角色移出畫布的左邊或右邊
+    if (player.x < 0) player.x = 0;  // 左邊邊界
+    if (player.x + player.width > background1.width) {
+        player.x = background1.width - player.width;  // 讓角色停在背景的最右邊
+    }
+
+   // 使寵物稍微在玩家右邊
+
+    // 碰撞檢測（玩家與地面）
+    if (player.y >= canvas2.height- groundHeight - player.height) {
+        player.y = canvas2.height - groundHeight- player.height;
+        player.isJumping = false;
+        player.dy = 0;
+    }
+    if (pet.y >= canvas2.height- groundHeight - pet.height-10) {
+        pet.y = canvas2.height - groundHeight- pet.height-10;
+        pet.isJumping = false;
+        pet.dy = 0;
+    }
+
+    /*for (let platform of platforms) {
+        if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
+            player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
+            // 當玩家在平台之上時
+            player.y = platform.y - player.height;
+            player.dy = 0;
+            player.isJumping = false;
+        }
+    }*/
+    
+
+
+    // 更新攝影機位置，使其跟隨玩家
+    camera.x = player.x - canvas2.width /2.25;  // 攝影機X位置跟隨玩家，保持玩家在畫布中央
+
+    // 限制攝影機不會顯示畫布外的區域
+    if (camera.x < 0) camera.x = 0;  // 防止攝影機超出遊戲世界左邊界
+    if (camera.x > background1.width - canvas2.width) camera.x = background1.width - canvas2.width;  // 防止攝影機超出遊戲世界右邊界
+
+    // 清空畫布並繪製背景的一部分
+    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+    // 繪製背景的部分，類似攝影機的視窗
+    ctx2.drawImage(background3, background1X, 0);
+    ctx2.drawImage(background3, background2X, 0);
+    ctx2.drawImage(background1, camera.x, 0, canvas2.width, canvas2.height, 0, 0, canvas2.width, canvas2.height);
+    drawNPC();
+    drawPlayer();
+    drawPet(); // 繪製寵物
+    collisiondetect();
+    
+        // 繪製第二層背景
+    ctx2.drawImage(background2, camera.x*1.5, 0, canvas2.width, canvas2.height, 0, 0, canvas2.width, canvas2.height);
+        // 繪製第三層背景
+    drawMinimap();
+    drawMenu();
+    drawemojiMenu();
+    drawclothing();
+    drawButton();
+
+    drawJoystick();
+    drawDialogBox();
+    drawRewardBox();
+
+    if (background1X < -4000) {
+        background1X = 4000+background2X-backgroundspeed;  // 重置位置，使背景無縫循環
+    }
+    else
+    {
+        background1X -= backgroundspeed;  
+    }
+    if (background2X < -4000) {
+        background2X = 4000+background1X-backgroundspeed;  // 重置位置，使背景無縫循環
+    }
+    else
+    {
+        background2X -= backgroundspeed;  
+    }
+     // 繪製平台
+     /*ctx.fillStyle = 'brown'; // 設置平台顏色
+     for (let platform of platforms) {
+         ctx.fillRect(platform.x - camera.x, platform.y, platform.width, platform.height); // 繪製每個平台
+     }
+ 
+     // 繪製地面
+     ctx.fillStyle = 'green';  // 設定地面的顏色
+     ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);  // 繪製地面*/
+
+    // 繪製玩家
+    
+    // 初始繪製按鈕
+
+    // 重複執行遊戲更新
+    animationFrameId = requestAnimationFrame(updateGame2);
+}
 
 function stopGame() {
     cancelAnimationFrame(animationFrameId);  // 停止 updateGame
@@ -424,6 +560,32 @@ function drawMinimap() {
     // 計算角色圖像的縮放大小
     //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
 }
+const clothingBox = {
+    width: 800, // 寬度
+    height: 800, // 高度
+    padding: 20, // 內邊距
+    borderRadius: 15, // 圓角半徑
+    bgColor: 'rgba(0, 0, 0, 0.5)', // 背景顏色
+    borderColor: 'white', // 邊框顏色
+    get imageX() {
+        return (this.x+this.width/2-clothingImage[currentclothingIndex].imageWidth/2); // 居中對話框
+    },
+    get imageY() {
+        return (this.y+this.height/2-clothingImage[currentclothingIndex].imageHeight/2); // 居中對話框
+    },
+    // 直接在這裡設置對話框的位置
+    get x() {
+        return (canvas2.width - this.width) / 2; // 居中對話框
+    },
+    get y() {
+        return (canvas2.height - this.height)/2; // 使對話框靠近畫布底部
+    },
+    buttonWidth : 200,
+    buttonHeight : 100,
+    arrowSize : 30,  // 左右箭頭的大小
+    closeButtonSize : 100,  // 關閉按鈕的大小
+};
+
 // 按鈕的位置和大小（右下角）
 const buttonWidth = 200;
 const buttonHeight = 200;
@@ -440,29 +602,33 @@ let emojimenuY=buttonY+150-emojimenuHeight;  // 選單的初始 X 座標，位�
 let emojiOpen=false;
 let emojiImage=new Image();
 let buttons = [
-    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false },// 按鈕2
-    {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false },// 按鈕2
-    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false},// 按鈕1
-    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png'},// 按鈕1
+    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
+    {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
+    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"closeclothing",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"clothingright",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"clothingleft",x:clothingBox.x, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"wearclothing",x:clothingBox.x+clothingBox.width/2-100, y: clothingBox.y+clothingBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
 ]
 
 function getButtonByName(name) {
@@ -496,13 +662,18 @@ function drawButton() {
                 ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
                 canvas2.style.cursor = 'default';
             }
+            
             // 重新繪製圓形按鈕
             if(button.img){
                 const image = new Image();
                 image.src=button.img;
                 ctx2.drawImage(image,button.x,button.y,button.width*scaleFactor, button.height*scaleFactor )
             }
-            else{
+            else if(button.type=='clothing'&&button.canclick){
+                ctx2.fillStyle = '#FF0000';
+                ctx2.fillRect(button.x, button.y, button.width, button.height);
+            }
+            else if(button.type!="clothing"){
                 ctx2.beginPath();
                 ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, button.width / 2 * scaleFactor, 0, Math.PI * 2);
                 ctx2.fill();
@@ -512,7 +683,7 @@ function drawButton() {
             }
 
 
-            // 繪製箭頭
+
             if(button.type=='menu'){
                 ctx2.fillStyle = "white";
                 ctx2.font = `${button.fontSize}px Arial`;
@@ -532,8 +703,7 @@ function drawButton() {
 }
 
 
-// 開始遊戲
-updateGame2();
+
 function collisiondetect(){
     // 檢查角色是否接近NPC
   const npcDist = Math.sqrt((player.x - npc.x) ** 2 + (player.y - npc.y) ** 2);
@@ -576,6 +746,7 @@ function handleMouseEvent(event,ishover) {
     if(ishover) {
         checkButtonClick(mouseX, mouseY, true);
         isClickInDialog(mouseX, mouseY);
+        isClickInReward(mouseX, mouseY);
     }
     else checkButtonHover(mouseX, mouseY);
 
@@ -591,6 +762,7 @@ function handleTouchEvent(event) {
         let touchY = (touch.clientY - rect.top) * (canvas2.height / rect.height);
         checkButtonClick(touchX, touchY, false);
         isClickInDialog(touchX, touchY);
+        isClickInReward(touchX, touchY);
 
     });
     event.preventDefault(); // 防止觸摸移動時頁面滾動
@@ -599,7 +771,7 @@ function handleTouchEvent(event) {
 // 檢查是否點擊在圓形按鈕上
 function checkButtonClick(x, y, ismouse) {
     buttons.forEach(button => {
-        if(button.draw){
+        if(button.draw&&button.canclick){
             let centerX = button.x + button.width / 2;
             let centerY = button.y + button.height / 2;
             let radius = button.width / 2;
@@ -641,7 +813,27 @@ function checkButtonClick(x, y, ismouse) {
                     case "emoji":{
                         toggleemojiMenu();
                         break;
-                    }                    
+                    }
+                    case "clothing":{
+                        toggleclothing(true);
+                        break;
+                    }    
+                    case "closeclothing":{
+                        toggleclothing(false);
+                        break;
+                    }  
+                    case "clothingright":{
+                        changeclothing('right');
+                        break;
+                    }   
+                    case "clothingleft":{
+                        changeclothing('left');
+                        break;
+                    }    
+                    case "wearclothing":{
+                        wearclothing();
+                        break;
+                    }                     
                 }
                 if(button.type=='emoji'){
                     if(emojiOpen==false){
@@ -659,7 +851,7 @@ function checkButtonClick(x, y, ismouse) {
 function checkButtonHover(x, y) {
     buttonHovered=false;
     buttons.forEach(button => {
-        if(button.draw){
+        if(button.draw&&button.canclick){
             let centerX = button.x + button.width / 2;
             let centerY = button.y + button.height / 2;
             let radius = button.width / 2;
@@ -762,6 +954,91 @@ function drawDialogBox() {
     }
 }
 
+const rewardBox = {
+    width: 800, // 寬度
+    height: 400, // 高度
+    padding: 20, // 內邊距
+    borderRadius: 15, // 圓角半徑
+    bgColor: 'rgba(0, 0, 0, 0.5)', // 背景顏色
+    borderColor: 'white', // 邊框顏色
+    get imageX() {
+        return (this.x+this.width/2-rewardDialog[currentRewardIndex].imageWidth/2); // 居中對話框
+    },
+    get imageY() {
+        return (this.y+this.height/1.7-rewardDialog[currentRewardIndex].imageHeight/2); // 居中對話框
+    },
+    // 直接在這裡設置對話框的位置
+    get x() {
+        return (canvas2.width - this.width) / 2; // 居中對話框
+    },
+    get y() {
+        return (canvas2.height - this.height)/2; // 使對話框靠近畫布底部
+    },
+    arrowYOffset:0,
+    arrowDirection: 1,
+    arrowSpeed: 0.005
+};
+function drawRewardBox() {
+    
+    if (showReward) {
+        const rewardimage=new Image();
+        rewardimage.src=rewardDialog[currentRewardIndex].img;
+        //ctx2.scale(-1, 1); // 水平翻轉
+        
+        // 畫背景（圓角矩形）
+        ctx2.fillStyle = rewardBox.bgColor;
+        ctx2.beginPath();
+        ctx2.moveTo(rewardBox.x + rewardBox.borderRadius, rewardBox.y);
+        ctx2.arcTo(rewardBox.x + rewardBox.width, rewardBox.y, rewardBox.x + rewardBox.width, rewardBox.y + rewardBox.height, rewardBox.borderRadius);
+        ctx2.arcTo(rewardBox.x + rewardBox.width, rewardBox.y + rewardBox.height, rewardBox.x, rewardBox.y + rewardBox.height, rewardBox.borderRadius);
+        ctx2.arcTo(rewardBox.x, rewardBox.y + rewardBox.height, rewardBox.x, rewardBox.y, rewardBox.borderRadius);
+        ctx2.arcTo(rewardBox.x, rewardBox.y, rewardBox.x + rewardBox.width, rewardBox.y, rewardBox.borderRadius);
+        ctx2.fill();
+
+        ctx2.drawImage(rewardimage, rewardBox.imageX, rewardBox.imageY, rewardDialog[currentRewardIndex].imageWidth, rewardDialog[currentRewardIndex].imageHeight);
+        // 畫邊框
+        ctx2.strokeStyle = rewardBox.borderColor;
+        ctx2.lineWidth = 2;
+        ctx2.stroke();
+
+        // 設置字體和顏色
+        ctx2.fillStyle = 'white';
+        ctx2.textAlign = 'center';
+        ctx2.textBaseline = 'middle';
+
+        // 顯示 NPC 名字
+        //ctx2.font = 'bold 30px Arial';
+        //ctx2.fillText(rewardDialog[currentRewardIndex].name + ":", rewardBox.x + rewardBox.padding, rewardBox.y + rewardBox.padding);
+
+        // 顯示對話文本
+        ctx2.font = 'bold 50px Arial';
+        let textX = rewardBox.x+rewardBox.width/2 ;
+        let textY = rewardBox.y + rewardBox.padding + 40;
+
+        // 分割對話文本成多行，避免超出對話框範圍
+        const maxLineWidth = rewardBox.width - 2 * rewardBox.padding;
+        const lines = wrapText(rewardDialog[currentRewardIndex].text, maxLineWidth);
+
+        const arrowSize = 20;  // 箭頭的大小
+        const arrowX = rewardBox.x + rewardBox.width - arrowSize - rewardBox.padding;
+        const arrowY = rewardBox.y + rewardBox.height - arrowSize - rewardBox.padding+rewardBox.arrowYOffset;
+
+        rewardBox.arrowYOffset = Math.sin(Date.now() * rewardBox.arrowSpeed) * 5; // 10 為擺動的範圍（最大偏移量）
+
+        ctx2.fillStyle = rewardBox.borderColor;
+        ctx2.beginPath();
+        ctx2.moveTo(arrowX, arrowY); // 箭頭的起點
+        ctx2.lineTo(arrowX + arrowSize, arrowY); // 箭頭的底邊
+        ctx2.lineTo(arrowX + arrowSize / 2, arrowY + arrowSize); // 箭頭的頂點
+        ctx2.closePath();
+        ctx2.fill(); // 填充箭頭顏色
+
+        lines.forEach((line, index) => {
+            ctx2.fillText(line, textX, textY + (index * 25)); // 顯示每行文本
+        });
+    }
+}
+
 // 文字換行處理
 function wrapText(text, maxWidth) {
     let words = text.split(' ');
@@ -797,15 +1074,53 @@ function nextDialog() {
     if (currentDialogIndex >= npcDialog.length) {
         showDialog = false; // 對話結束後隱藏對話框
         currentDialogIndex=0;
+        showReward=true;
         //loadGame1();
     }
 }
+// 顯示下一行對話
+function nextReward() {
+    currentRewardIndex++;
+    if (currentRewardIndex >= rewardDialog.length) {
+        showReward = false; // 對話結束後隱藏對話框
+        currentRewardIndex=0;
+    }
+}
 
+
+function drawclothing() {
+    if (!showclothingBox) return;
+
+    // 畫背景矩形
+    ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx2.fillRect(clothingBox.x, clothingBox.y, clothingBox.width, clothingBox.height);
+    ctx2.fillStyle = "white";
+    ctx2.font = `bold 80px Arial`;
+    ctx2.textAlign = "center";
+    ctx2.textBaseline = "middle";
+    ctx2.fillText('服裝', clothingBox.x + clothingBox.width / 2, clothingBox.y+80);
+
+    // 畫圖片
+    const image = new Image();
+    image.src=clothingImage[currentclothingIndex].img;
+    ctx2.drawImage(image, clothingBox.imageX, clothingBox.imageY, clothingImage[currentclothingIndex].imageWidth, clothingImage[currentclothingIndex].imageHeight);
+    
+
+}
 function isClickInDialog(x, y) {
     if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
         y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
         if(showDialog){
             nextDialog(); 
+        }
+
+    }
+}
+function isClickInReward(x, y) {
+    if(x >= rewardBox.x && x <= rewardBox.x + rewardBox.width &&
+        y >= rewardBox.y && y <= rewardBox.y + rewardBox.height){
+        if(showReward){
+            nextReward(); 
         }
 
     }
@@ -826,7 +1141,53 @@ function toggleemojiMenu() {
         button.draw= emojimenuOpen;
     });
 }
+function toggleclothing(isopen) {
+    if(isopen){
+        getButtonByName('wearclothing').text=clothingImage[currentclothingIndex].text;
+        getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
+    }
+    else{
+        buttonHovered=false;
+    }
+    showclothingBox = isopen;
+    buttons.forEach(button => {
+        if(button.type=='clothing')
+        button.draw= showclothingBox;
+    });
+    
+}
 
+function changeclothing(direction) {
+    let length=0;
+    clothingImage.forEach(clothing=>{
+        if(clothing.hasget){
+            length++; 
+        }
+    })
+    if (direction === 'left') {
+        currentclothingIndex = (currentclothingIndex - 1 + length) % length;
+        getButtonByName('wearclothing').text=clothingImage[currentclothingIndex].text;
+        getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
+    } else if (direction === 'right') {
+        currentclothingIndex = (currentclothingIndex + 1) % length;
+        getButtonByName('wearclothing').text=clothingImage[currentclothingIndex].text;
+        getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
+    }
+}
+
+function wearclothing() {
+    clothingImage.forEach(clothing=>{
+        clothing.text='穿戴';
+        clothing.weared=false;
+    })
+    clothingImage[currentclothingIndex].text='已穿戴';
+    clothingImage[currentclothingIndex].weared=true;
+    getButtonByName('wearclothing').text=clothingImage[currentclothingIndex].text;
+    getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
+    buttonHovered=false;
+    playerImage.src=clothingImage[currentclothingIndex].img;
+    console.log('穿戴了這個物品:', clothingImage[currentclothingIndex]);
+}
 
 document.addEventListener('keydown', (e) => {
     //console.log(e.key);
@@ -840,125 +1201,7 @@ document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = false;
     if (e.key === 'ArrowUp'||e.key === 'w') keys.up = false;
 });
-function updateGame2() {
-    // 更新玩家位置
-    if (keys.right) {
-        //console.log(player);
-        pet.x = player.x - 100; 
-        player.dx = player.speed;
-        direction.right=true;
-    }
-    if (keys.left) {
-        pet.x = player.x + 250; 
-        player.dx = -player.speed;
-        direction.right=false;
-    }
-    if (!keys.right && !keys.left) player.dx = 0;
 
-    if (keys.up && !player.isJumping) {
-        player.dy = player.jumpPower;
-        player.isJumping = true;
-        pet.dy = pet.jumpPower;
-        pet.isJumping = true;
-    }
+// 開始遊戲
+updateGame2();
 
-    // 更新玩家的物理狀態
-    player.x += player.dx;
-    player.y += player.dy;
-    player.dy += player.gravity;
-
-    pet.y+=pet.dy;
-    pet.dy+=pet.gravity;
-
-    // 防止角色移出畫布的左邊或右邊
-    if (player.x < 0) player.x = 0;  // 左邊邊界
-    if (player.x + player.width > background1.width) {
-        player.x = background1.width - player.width;  // 讓角色停在背景的最右邊
-    }
-
-   // 使寵物稍微在玩家右邊
-
-    // 碰撞檢測（玩家與地面）
-    if (player.y >= canvas2.height- groundHeight - player.height) {
-        player.y = canvas2.height - groundHeight- player.height;
-        player.isJumping = false;
-        player.dy = 0;
-    }
-    if (pet.y >= canvas2.height- groundHeight - pet.height-10) {
-        pet.y = canvas2.height - groundHeight- pet.height-10;
-        pet.isJumping = false;
-        pet.dy = 0;
-    }
-
-    /*for (let platform of platforms) {
-        if (player.x + player.width > platform.x && player.x < platform.x + platform.width &&
-            player.y + player.height <= platform.y && player.y + player.height + player.dy >= platform.y) {
-            // 當玩家在平台之上時
-            player.y = platform.y - player.height;
-            player.dy = 0;
-            player.isJumping = false;
-        }
-    }*/
-    
-
-
-    // 更新攝影機位置，使其跟隨玩家
-    camera.x = player.x - canvas2.width /2.25;  // 攝影機X位置跟隨玩家，保持玩家在畫布中央
-
-    // 限制攝影機不會顯示畫布外的區域
-    if (camera.x < 0) camera.x = 0;  // 防止攝影機超出遊戲世界左邊界
-    if (camera.x > background1.width - canvas2.width) camera.x = background1.width - canvas2.width;  // 防止攝影機超出遊戲世界右邊界
-
-    // 清空畫布並繪製背景的一部分
-    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-
-    // 繪製背景的部分，類似攝影機的視窗
-    ctx2.drawImage(background3, background1X, 0);
-    ctx2.drawImage(background3, background2X, 0);
-    ctx2.drawImage(background1, camera.x, 0, canvas2.width, canvas2.height, 0, 0, canvas2.width, canvas2.height);
-    drawNPC();
-    drawPlayer();
-    drawPet(); // 繪製寵物
-    collisiondetect();
-    
-        // 繪製第二層背景
-    ctx2.drawImage(background2, camera.x*1.5, 0, canvas2.width, canvas2.height, 0, 0, canvas2.width, canvas2.height);
-        // 繪製第三層背景
-    drawMinimap();
-    drawMenu();
-    drawemojiMenu();
-    drawButton();
-
-    drawJoystick();
-    drawDialogBox();
-    if (background1X < -4000) {
-        background1X = 4000+background2X-backgroundspeed;  // 重置位置，使背景無縫循環
-    }
-    else
-    {
-        background1X -= backgroundspeed;  
-    }
-    if (background2X < -4000) {
-        background2X = 4000+background1X-backgroundspeed;  // 重置位置，使背景無縫循環
-    }
-    else
-    {
-        background2X -= backgroundspeed;  
-    }
-     // 繪製平台
-     /*ctx.fillStyle = 'brown'; // 設置平台顏色
-     for (let platform of platforms) {
-         ctx.fillRect(platform.x - camera.x, platform.y, platform.width, platform.height); // 繪製每個平台
-     }
- 
-     // 繪製地面
-     ctx.fillStyle = 'green';  // 設定地面的顏色
-     ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);  // 繪製地面*/
-
-    // 繪製玩家
-    
-    // 初始繪製按鈕
-
-    // 重複執行遊戲更新
-    animationFrameId = requestAnimationFrame(updateGame2);
-}
