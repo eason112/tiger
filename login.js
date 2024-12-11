@@ -217,7 +217,7 @@ const loginuiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
-                    playSound('clickbutton');
+                    inputField.blur();   // 移除焦點
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
@@ -298,7 +298,7 @@ const loginuiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
-                    playSound('clickbutton');
+                    inputField.blur();   // 移除焦點
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
@@ -1623,13 +1623,14 @@ const loginuiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
-                    playSound('clickbutton');
-                    console.log('click')
+                    console.log('click');
+                    inputField.blur();   // 移除焦點
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
                         focusIndex=this.name;
                         inputField.value =this.inputtext;
+
                         inputField.focus(); // 聚焦到輸入框
                         console.log(focusIndex);
                     }, 200);
