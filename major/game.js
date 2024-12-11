@@ -237,7 +237,8 @@ let player = {
     dy: 0,
     gravity: 1,
     jumpPower: -30,
-    isJumping: false
+    isJumping: false,
+    name: "PlayerName"  // 添加角色名稱屬性
 };
 
 let npc = {
@@ -256,7 +257,8 @@ let pet = {
     dy: 0,
     gravity: 1,
     jumpPower: -25,
-    isJumping: false
+    isJumping: false,
+    wear:false,
 };
 
 
@@ -300,8 +302,12 @@ const rewardDialog = [
     { name: "reward", text: "恭喜你獲得新寵物!",img:url2+'/major/images/NPC.png' ,imageWidth:293/1.5,imageHeight:377/1.5},
 ];
 const clothingImage = [
-    { index:0,hasget: true, text: "已穿戴",img:url2+'/major/images/player.png',imageWidth:293,imageHeight:377,weared:true },
-    { index:1,hasget: false, text: "穿戴",img:url2+'/major/images/NPC.png' ,imageWidth:293,imageHeight:377,weared:false},
+    { index:0,hasget: true,name:"經典", text: "已穿戴",img:url2+'/major/images/player.png',imageWidth:293,imageHeight:377,weared:true },
+    { index:1,hasget: false,name:"海灘", text: "穿戴",img:url2+'/major/images/NPC.png' ,imageWidth:293,imageHeight:377,weared:false},
+];
+const petImages = [
+    { index:0,hasget: true,name:"無", text: "",img:'',imageWidth:293,imageHeight:377,weared:false },
+    { index:1,hasget: false,name:"寄居蟹", text: "穿戴",img:url2+'/major/images/NPC.png',imageWidth:293,imageHeight:377,weared:false },
 ];
 
 // 當前對話框顯示的對話
@@ -311,6 +317,8 @@ let currentRewardIndex = 0;
 let showReward = false;
 let currentclothingIndex = 0;  // 當前顯示的圖片索引
 let showclothingBox = false;  // 是否顯示介面
+let currentpetIndex = 0;  // 當前顯示的圖片索引
+let showpetBox = false;  // 是否顯示介面
 
 let menuOpen = false;  // 用來控制選單是否打開
 let menuX = canvas2.width;  // 選單的初始 X 座標，位於畫面右側外部
@@ -446,7 +454,8 @@ function updateGame2() {
     drawMinimap();
     drawMenu();
     drawemojiMenu();
-    drawclothing();
+    drawclothingbox();
+    drawpetbox();
     drawButton();
 
     drawJoystick();
@@ -493,6 +502,11 @@ function startGame() {
   }
 // 繪製玩家
 function drawPlayer() {
+    ctx2.font = "30px Arial"; // 設定字體大小與類型
+    ctx2.fillStyle = "black"; // 設定文字顏色
+
+    // 繪製角色名稱在角色上方
+    ctx2.fillText(player.name, player.x- camera.x + player.width / 2 , player.y - 10);
     if(emojiOpen){
         ctx2.drawImage(emojiImage, player.x - camera.x+50, player.y-200, 200, 200);
     }
@@ -513,15 +527,17 @@ function drawNPC() {
 }
 
 function drawPet() {
-    if (direction.right) {
-        // 當玩家向左移動，將寵物圖片進行水平翻轉
-        ctx2.save(); // 保存當前狀態
-        ctx2.scale(-1, 1); // 水平翻轉
-        ctx2.drawImage(petImage, -pet.x - pet.width + camera.x, pet.y, pet.width, pet.height); // 調整x座標以適應翻轉
-        ctx2.restore(); // 恢復到之前的狀態
-    } else {
-        // 正常顯示
-        ctx2.drawImage(petImage, pet.x - camera.x, pet.y, pet.width, pet.height);
+    if(pet.wear){
+        if (direction.right) {
+            // 當玩家向左移動，將寵物圖片進行水平翻轉
+            ctx2.save(); // 保存當前狀態
+            ctx2.scale(-1, 1); // 水平翻轉
+            ctx2.drawImage(petImage, -pet.x - pet.width + camera.x, pet.y, pet.width, pet.height); // 調整x座標以適應翻轉
+            ctx2.restore(); // 恢復到之前的狀態
+        } else {
+            // 正常顯示
+            ctx2.drawImage(petImage, pet.x - camera.x, pet.y, pet.width, pet.height);
+        }
     }
 }
 
@@ -585,7 +601,31 @@ const clothingBox = {
     arrowSize : 30,  // 左右箭頭的大小
     closeButtonSize : 100,  // 關閉按鈕的大小
 };
-
+const petBox = {
+    width: 800, // 寬度
+    height: 800, // 高度
+    padding: 20, // 內邊距
+    borderRadius: 15, // 圓角半徑
+    bgColor: 'rgba(0, 0, 0, 0.5)', // 背景顏色
+    borderColor: 'white', // 邊框顏色
+    get imageX() {
+        return (this.x+this.width/2-petImages[currentpetIndex].imageWidth/2); // 居中對話框
+    },
+    get imageY() {
+        return (this.y+this.height/2-petImages[currentpetIndex].imageHeight/2); // 居中對話框
+    },
+    // 直接在這裡設置對話框的位置
+    get x() {
+        return (canvas2.width - this.width) / 2; // 居中對話框
+    },
+    get y() {
+        return (canvas2.height - this.height)/2; // 使對話框靠近畫布底部
+    },
+    buttonWidth : 200,
+    buttonHeight : 100,
+    arrowSize : 30,  // 左右箭頭的大小
+    closeButtonSize : 100,  // 關閉按鈕的大小
+};
 // 按鈕的位置和大小（右下角）
 const buttonWidth = 200;
 const buttonHeight = 200;
@@ -594,7 +634,7 @@ const buttonX = canvas2.width - buttonWidth - padding;
 const buttonY = canvas2.height - buttonHeight - padding;
 let buttonHovered=false;
 
-const emojimenuWidth = 300;  // 選單的寬度
+const emojimenuWidth = 250;  // 選單的寬度
 const emojimenuHeight = 300;  // 選單的高度與視窗高度一致
 let emojimenuOpen = false;  // 用來控制選單是否打開
 let emojimenuX=buttonX-100-emojimenuWidth;  // 選單的初始 X 座標，位於畫面右側外部
@@ -615,20 +655,24 @@ let buttons = [
     {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
     {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
     {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},
+    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 100, height: 100, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},
     {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+90, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+170, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
     {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+90, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+170, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
     {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+115, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+220, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+90, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+170, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
     {draw:showclothingBox, type:"clothing",name:"closeclothing",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
     {draw:showclothingBox, type:"clothing",name:"clothingright",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
     {draw:showclothingBox, type:"clothing",name:"clothingleft",x:clothingBox.x, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
     {draw:showclothingBox, type:"clothing",name:"wearclothing",x:clothingBox.x+clothingBox.width/2-100, y: clothingBox.y+clothingBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"closepet",x:petBox.x+petBox.width-70, y: petBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"petright",x:petBox.x+petBox.width-70, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"petleft",x:petBox.x, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"wearpet",x:petBox.x+petBox.width/2-100, y: petBox.y+petBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
 ]
 
 function getButtonByName(name) {
@@ -669,11 +713,11 @@ function drawButton() {
                 image.src=button.img;
                 ctx2.drawImage(image,button.x,button.y,button.width*scaleFactor, button.height*scaleFactor )
             }
-            else if(button.type=='clothing'&&button.canclick){
+            else if((button.type=='clothing'||button.type=='pet')&&button.canclick){
                 ctx2.fillStyle = '#FF0000';
                 ctx2.fillRect(button.x, button.y, button.width, button.height);
             }
-            else if(button.type!="clothing"){
+            else if(button.type!="clothing"&&button.type!="pet"){
                 ctx2.beginPath();
                 ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, button.width / 2 * scaleFactor, 0, Math.PI * 2);
                 ctx2.fill();
@@ -833,7 +877,32 @@ function checkButtonClick(x, y, ismouse) {
                     case "wearclothing":{
                         wearclothing();
                         break;
-                    }                     
+                    }   
+                    case "pet":{
+                        togglepet(true);
+                        break;
+                    }    
+                    case "closepet":{
+                        togglepet(false);
+                        break;
+                    }  
+                    case "petright":{
+                        changepet('right');
+                        break;
+                    }   
+                    case "petleft":{
+                        changepet('left');
+                        break;
+                    }    
+                    case "wearpet":{
+                        if(getButtonByName('wearpet').text=='穿戴'){
+                            wearpet(true);
+                        }
+                        else{
+                            wearpet(false);
+                        }
+                        break;
+                    }                  
                 }
                 if(button.type=='emoji'){
                     if(emojiOpen==false){
@@ -1074,7 +1143,9 @@ function nextDialog() {
     if (currentDialogIndex >= npcDialog.length) {
         showDialog = false; // 對話結束後隱藏對話框
         currentDialogIndex=0;
-        showReward=true;
+        if(currentRewardIndex==0){
+            showReward=true;
+        }
         //loadGame1();
     }
 }
@@ -1083,12 +1154,15 @@ function nextReward() {
     currentRewardIndex++;
     if (currentRewardIndex >= rewardDialog.length) {
         showReward = false; // 對話結束後隱藏對話框
-        currentRewardIndex=0;
+        clothingImage[clothingImage.findIndex(item => item.name === '海灘')].hasget=true;
+        petImages.splice(0, 1);
+        petImages[petImages.findIndex(item => item.name === '寄居蟹')].hasget=true;
+        getButtonByName('wearpet').canclick=true;
     }
 }
 
 
-function drawclothing() {
+function drawclothingbox() {
     if (!showclothingBox) return;
 
     // 畫背景矩形
@@ -1099,11 +1173,32 @@ function drawclothing() {
     ctx2.textAlign = "center";
     ctx2.textBaseline = "middle";
     ctx2.fillText('服裝', clothingBox.x + clothingBox.width / 2, clothingBox.y+80);
+    ctx2.fillText(clothingImage[currentclothingIndex].name, clothingBox.x + clothingBox.width / 2, clothingBox.y+clothingBox.height-150);
 
     // 畫圖片
     const image = new Image();
     image.src=clothingImage[currentclothingIndex].img;
     ctx2.drawImage(image, clothingBox.imageX, clothingBox.imageY, clothingImage[currentclothingIndex].imageWidth, clothingImage[currentclothingIndex].imageHeight);
+    
+
+}
+function drawpetbox() {
+    if (!showpetBox) return;
+
+    // 畫背景矩形
+    ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx2.fillRect(petBox.x, petBox.y, petBox.width, petBox.height);
+    ctx2.fillStyle = "white";
+    ctx2.font = `bold 80px Arial`;
+    ctx2.textAlign = "center";
+    ctx2.textBaseline = "middle";
+    ctx2.fillText('寵物', petBox.x + petBox.width / 2, petBox.y+80);
+    ctx2.fillText(petImages[currentpetIndex].name, petBox.x + petBox.width / 2, petBox.y+petBox.height-150);
+
+    // 畫圖片
+    const image = new Image();
+    image.src=petImages[currentpetIndex].img;
+    ctx2.drawImage(image, petBox.imageX, petBox.imageY, petImages[currentpetIndex].imageWidth, petImages[currentpetIndex].imageHeight);
     
 
 }
@@ -1156,7 +1251,21 @@ function toggleclothing(isopen) {
     });
     
 }
+function togglepet(isopen) {
+    if(isopen){
+        getButtonByName('wearpet').text=petImages[currentpetIndex].text;
 
+    }
+    else{
+        buttonHovered=false;
+    }
+    showpetBox = isopen;
+    buttons.forEach(button => {
+        if(button.type=='pet')
+        button.draw= showpetBox;
+    });
+    
+}
 function changeclothing(direction) {
     let length=0;
     clothingImage.forEach(clothing=>{
@@ -1174,7 +1283,21 @@ function changeclothing(direction) {
         getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
     }
 }
-
+function changepet(direction) {
+    let length=0;
+    petImages.forEach(pet=>{
+        if(pet.hasget){
+            length++; 
+        }
+    })
+    if (direction === 'left') {
+        currentpetIndex = (currentpetIndex - 1 + length) % length;
+        getButtonByName('wearpet').text=petImages[currentpetIndex].text;
+    } else if (direction === 'right') {
+        currentpetIndex = (currentpetIndex + 1) % length;
+        getButtonByName('wearpet').text=petImages[currentpetIndex].text;
+    }
+}
 function wearclothing() {
     clothingImage.forEach(clothing=>{
         clothing.text='穿戴';
@@ -1187,6 +1310,22 @@ function wearclothing() {
     buttonHovered=false;
     playerImage.src=clothingImage[currentclothingIndex].img;
     console.log('穿戴了這個物品:', clothingImage[currentclothingIndex]);
+}
+function wearpet(iswear) {
+    pet.wear=false;
+    petImages.forEach(pet=>{
+        pet.text='穿戴';
+        pet.weared=false;
+    })
+    getButtonByName('wearpet').text=petImages[currentpetIndex].text;
+    if(iswear){
+        pet.wear=true;
+        petImages[currentpetIndex].text='卸下';
+        petImages[currentpetIndex].weared=true;
+        getButtonByName('wearpet').text=petImages[currentpetIndex].text;
+        petImage.src=petImages[currentpetIndex].img;
+        console.log('穿戴了這個物品:', petImages[currentpetIndex]);
+    }
 }
 
 document.addEventListener('keydown', (e) => {
@@ -1203,5 +1342,5 @@ document.addEventListener('keyup', (e) => {
 });
 
 // 開始遊戲
-updateGame2();
+//updateGame2();
 

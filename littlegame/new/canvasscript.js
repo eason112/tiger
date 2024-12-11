@@ -273,7 +273,7 @@ const uiElements = [
                     playSound('clickbutton');
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        
+                        canvas.style.cursor ='default';
                         playSound('countdown');
                         gameState="gameStart";
                         
@@ -991,7 +991,7 @@ const uiElements = [
                                 }
                                 
                                 clam.isFlyingToBucket = true; // 开始弹起
-                                console.log(this.getclam);
+                                //console.log(this.getclam);
                                 getUI('score').score+=clam.score;
                             }
                         }
@@ -1157,6 +1157,7 @@ const uiElements = [
                     this.isPressed=true;
                     playSound('clickbutton');
                     setTimeout(() => {
+                        canvas.style.cursor ='default';
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         gameState="gameStart";
                         uiElements.forEach(element => {
@@ -1344,23 +1345,6 @@ function drawGameInfo() {
 
 
 
-// 顯示遊戲結束畫面
-function drawGameOver() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "white";
-  ctx.font = "30px Arial";
-  ctx.textAlign = "center";
-  ctx.fillText("遊戲結束", canvas.width / 2, 100);
-  ctx.fillText(`最終得分: ${score}`, canvas.width / 2, 150);
-
-  ctx.font = "20px Arial";
-  ctx.fillText("點擊重試", canvas.width / 2, 200);
-  ctx.fillText("點擊離開", canvas.width / 2, 250);
-}
 
 // 設置遊戲開始按鈕的點擊事件
 canvas.addEventListener("mousedown", (e) => {

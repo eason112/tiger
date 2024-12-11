@@ -30,7 +30,8 @@ function playSound(type,volume=1) {
 }
 
     // 播放背景音樂
-function playBGM(BGM) {
+function playBGM(BGM,volume=1) {
+    BGM.volume = volume; // 音量範圍是 0.0 到 1.0
     BGM.play();
 }
 

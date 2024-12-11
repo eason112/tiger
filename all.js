@@ -3,13 +3,16 @@ let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
 
 window.onload = function() {
-  hideLoadingScreen();
+  preloadImages();
+  //hideLoadingScreen();
   updateGame();
+  updateLogin();
 };
 
   // 初始化遊戲2的邏輯
 function loadGame2() {
     console.log("已經切換到巧虎遊戲！");
+    document.getElementById('login').style.display = 'none';
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
     startGame();
@@ -84,6 +87,13 @@ const imagesToPreload = [
     url+'/littlegame/new/images/up1.png',
     url+'/littlegame/new/images/up2.png',
     url+'/littlegame/new/images/up3.png',
+    url+'/littlegame/new/images/ball.png',
+    url+'/littlegame/new/images/box.png',
+    url+'/littlegame/new/images/hole.png',
+    url+'/littlegame/new/images/newhole.png',
+    url+'/littlegame/new/images/rareball.png',
+    url+'/littlegame/new/images/teach.png',
+    url+'/littlegame/new/images/tool.png',
 ];
 
 
@@ -94,7 +104,7 @@ function preloadImages() {
         const img = new Image();
         img.src = src;
         img.onload = () => {
-            console.log(img.src);
+            //console.log(img.src);
             loadedImages++;
             // 当所有图片加载完毕后，可以开始渲染或启动动画
             if (loadedImages === imagesToPreload.length) {
@@ -108,24 +118,6 @@ function preloadImages() {
     });
 }
 
-
-
-function loadCSS() {
-  const cssFiles = [
-      url+'/littlegame/new/styles.css',
-      url+'/major/style.css',
-      url+'/style.css'  // 你需要載入的所有CSS檔案
-  ];
-  console.log('所有CSS檔案已經載入');
-  cssFiles.forEach((file) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = file;
-      document.head.appendChild(link);
-  });
-
-  console.log('所有CSS檔案已經載入');
-}
 
 
 
