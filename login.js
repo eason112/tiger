@@ -851,6 +851,9 @@ const loginuiElements = [
                         getloginUI('characterbackground').currentcharacterIndex=0;
                         getloginUI('rightButton').teach=true;
                         getloginUI('chooseButton').teach=false;
+                        getloginUI('nameButton').teach=false;
+                        getloginUI('nameinput').teach=true;
+                        getloginUI('nameinput').inputtext='';
                         playercharacter=0;
                         loginState="character";
                         //loadGame2();
@@ -1164,15 +1167,18 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginuiElements.forEach(element => {
-                            element.isPressed=false;
-                            element.isHovered=false;
-                        });
-                        loginbuttonHover=false;
-                        playercharacter=getloginUI('characterbackground').currentcharacterIndex;
-                        //this.teach=false;
-                        loginState='name';
-                        console.log(playercharacter);
+                        if(this.teach){
+                           
+                            loginuiElements.forEach(element => {
+                                element.isPressed=false;
+                                element.isHovered=false;
+                            });
+                            loginbuttonHover=false;
+                            playercharacter=getloginUI('characterbackground').currentcharacterIndex;
+                            //this.teach=false;
+                            loginState='name';
+                            console.log(playercharacter);
+                        }
                     }, 200);
                     
                     
@@ -1271,9 +1277,11 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginbuttonHover=false;
-                        getloginUI('characterbackground').changecharacter('left');
-
+                        if(this.teach){
+                           
+                            //loginbuttonHover=false;
+                            getloginUI('characterbackground').changecharacter('left');
+                            }
                     }, 200);
                     console.log('开始游戏');
                     
@@ -1372,8 +1380,11 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginbuttonHover=false;
-                        getloginUI('characterbackground').changecharacter('right');
+                        if(this.teach){
+                            
+                            //loginbuttonHover=false;
+                            getloginUI('characterbackground').changecharacter('right');
+                            }
                     }, 200);
                     console.log('开始游戏');
                     
@@ -1473,15 +1484,17 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginuiElements.forEach(element => {
-                            element.isPressed=false;
-                            element.isHovered=false;
-                        });
-                        loginbuttonHover=false;
-                        getloginUI('characterbackground').currentcharacterIndex=0;
-                        playercharacter=0;
-                        loginState='login';
-
+                        if(this.teach){
+                            
+                            loginuiElements.forEach(element => {
+                                element.isPressed=false;
+                                element.isHovered=false;
+                            });
+                            loginbuttonHover=false;
+                            getloginUI('characterbackground').currentcharacterIndex=0;
+                            playercharacter=0;
+                            loginState='login';
+                        }
                     }, 200);
                     
                     
@@ -1756,23 +1769,25 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginuiElements.forEach(element => {
-                            element.isPressed=false;
-                            element.isHovered=false;
-                        });
-                        loginbuttonHover=false;
-                        console.log(getloginUI('nameinput').inputtext);
-                        playername=getloginUI('nameinput').inputtext;
-                        player.name=playername;
-                        playerImage.src=characterImage[playercharacter].img;
-                        loading=true;
-                        loginState='end';
-                        //showLoadingScreen();
-                        setTimeout(() => {
-                            loadGame2();
-                            loading=false;
-                        }, 3000);
-                        
+                        if(this.teach){
+                            
+                            loginuiElements.forEach(element => {
+                                element.isPressed=false;
+                                element.isHovered=false;
+                            });
+                            loginbuttonHover=false;
+                            console.log(getloginUI('nameinput').inputtext);
+                            playername=getloginUI('nameinput').inputtext;
+                            player.name=playername;
+                            playerImage.src=characterImage[playercharacter].img;
+                            loading=true;
+                            loginState='end';
+                            //showLoadingScreen();
+                            setTimeout(() => {
+                                loadGame2();
+                                loading=false;
+                            }, 3000);
+                        }
                         //loadGame2();
                     }, 200);
                     
@@ -1873,16 +1888,19 @@ const loginuiElements = [
                     console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        loginuiElements.forEach(element => {
-                            element.isPressed=false;
-                            element.isHovered=false;
-                        });
-                        loginbuttonHover=false;
-                        console.log(getloginUI('nameinput').inputtext);
-                        getloginUI('nameinput').inputtext=''
-                        getloginUI('nameButton').teach=false;
-                        getloginUI('nameinput').teach=true;
-                        loginState='character';
+                        if(this.teach){
+
+                            loginuiElements.forEach(element => {
+                                element.isPressed=false;
+                                element.isHovered=false;
+                            });
+                            loginbuttonHover=false;
+                            console.log(getloginUI('nameinput').inputtext);
+                            getloginUI('nameinput').inputtext=''
+                            getloginUI('nameButton').teach=false;
+                            getloginUI('nameinput').teach=true;
+                            loginState='character';
+                        }
                     }, 200);
                     
                     
