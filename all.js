@@ -48,6 +48,14 @@ function loadGame1() {
     //document.getElementById('game1-stylesheet').disabled = false;
     //document.getElementById('game1-script').disabled = true;
   }
+  function loadlogin() {
+    console.log("已經切換到巧虎遊戲！");
+    document.getElementById('game1').style.display = 'none';
+    document.getElementById('game2').style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+    stopGame();
+
+}
 
     // 動態載入遊戲1的所有JavaScript
 function loadGame1Scripts() {
@@ -121,7 +129,11 @@ function preloadImages() {
 
 
 
-
+function showLoadingScreen() {
+  document.getElementById('loadingScreen').style.display = 'block';
+  
+  //document.getElementById('gameScreen').style.display = 'block';
+}
 
 function hideLoadingScreen() {
   document.getElementById('loadingScreen').style.display = 'none';

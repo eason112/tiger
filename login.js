@@ -11,7 +11,7 @@ let currentLoginIndex = 0;
 
 let loading=false;
 
-let loginState = "start"; // 可選 "start","login", "experience", "line", "character", "name"
+let loginState = "end"; // 可選 "start","login", "experience", "line", "character", "name","end"
 let loginbuttonHover=false;
 let loginInputHover=false;
 const loginImages = [
@@ -126,7 +126,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//startButton
     {
         State:'login',
         name: 'loginbackground', // 开始按钮
@@ -157,7 +157,7 @@ const loginuiElements = [
 
             }
         },
-    },
+    },//loginbackground
     {
         State:'login',
         name: 'account', // 开始按钮
@@ -238,7 +238,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//account
     {
         State:'login',
         name: 'password', // 开始按钮
@@ -319,7 +319,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//password
     {
         State:'login',
         name: 'loginButton', // 开始按钮
@@ -396,7 +396,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//loginButton
     {
         State:'login',
         name: 'forgetButton', // 开始按钮
@@ -473,7 +473,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//forgetButton
     {
         State:'login',
         name: 'registerButton', // 开始按钮
@@ -550,7 +550,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//registerButton
     {
         State:'login',
         name: 'experenceButton', // 开始按钮
@@ -631,6 +631,7 @@ const loginuiElements = [
                         });
                         loginbuttonHover=false;
                         loginState="experience";
+                        getloginUI('password').inputtext='';
                         //loadGame2();
                     }, 200);
                     console.log('开始游戏');
@@ -652,7 +653,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//experenceButton
     {
         State:'experience',
         name: 'experiencebackground', // 开始按钮
@@ -683,7 +684,7 @@ const loginuiElements = [
 
             }
         },
-    },
+    },//experiencebackground
     {
         State:'experience',
         name: 'experienceInfo', // 游戏说明界面
@@ -706,7 +707,7 @@ const loginuiElements = [
                 loginctx.fillText(this.text, this.x, this.y);
             }
         }
-    },
+    },//experienceInfo
     {
         State:'experience',
         name: 'yesButton', // 开始按钮
@@ -783,7 +784,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//yesButton
     {
         State:'experience',
         name: 'noButton', // 开始按钮
@@ -847,6 +848,10 @@ const loginuiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
+                        getloginUI('characterbackground').currentcharacterIndex=0;
+                        getloginUI('rightButton').teach=true;
+                        getloginUI('chooseButton').teach=false;
+                        playercharacter=0;
                         loginState="character";
                         //loadGame2();
                     }, 200);
@@ -860,7 +865,7 @@ const loginuiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         },
-    },
+    },//noButton
     {
         State:'line',
         name: 'linebackground', // 开始按钮
@@ -891,7 +896,7 @@ const loginuiElements = [
 
             }
         },
-    },
+    },//linebackground
     {
         State:'line',
         name: 'lineInfo', // 游戏说明界面
@@ -914,7 +919,7 @@ const loginuiElements = [
                 loginctx.fillText(this.text, this.x, this.y);
             }
         }
-    },
+    },//lineInfo
     {
         State:'line',
         name: 'lineButton', // 开始按钮
@@ -991,7 +996,12 @@ const loginuiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
+                        getloginUI('characterbackground').currentcharacterIndex=0;
+                        getloginUI('rightButton').teach=true;
+                        getloginUI('chooseButton').teach=false;
+                        playercharacter=0;
                         loginState="character";
+
                         //loadGame2();
                     }, 200);
                     console.log('开始游戏');
@@ -1013,7 +1023,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//lineButton
     {
         State:'character',
         name: 'characterbackground', // 开始按钮
@@ -1070,10 +1080,13 @@ const loginuiElements = [
                 this.currentcharacterIndex = (this.currentcharacterIndex - 1 + length) % length;
             } else if (direction === 'right') {
                 this.currentcharacterIndex = (this.currentcharacterIndex + 1) % length;
-
+            }
+            if(this.currentcharacterIndex==3){
+                getloginUI('rightButton').teach=false;
+                getloginUI('chooseButton').teach=true;
             }
         }
-    },
+    },//characterbackground
     {
         State:'character',
         name: 'chooseButton', // 开始按钮
@@ -1157,6 +1170,7 @@ const loginuiElements = [
                         });
                         loginbuttonHover=false;
                         playercharacter=getloginUI('characterbackground').currentcharacterIndex;
+                        //this.teach=false;
                         loginState='name';
                         console.log(playercharacter);
                     }, 200);
@@ -1179,7 +1193,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//chooseButton
     {
         State:'character',
         name: 'leftButton', // 开始按钮
@@ -1280,7 +1294,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//leftButton
     {
         State:'character',
         name: 'rightButton', // 开始按钮
@@ -1306,7 +1320,7 @@ const loginuiElements = [
         image: new Image(),  // 用来存储图像对象
         imageWidth: 50,  // 图像的初始宽度
         imageHeight: 50,  // 图像的初始高度
-        teach:false,
+        teach:true,
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
@@ -1380,7 +1394,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//rightButton
     {
         State:'character',
         name: 'characterbackButton', // 开始按钮
@@ -1488,7 +1502,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//characterbackButton
     {
         State:'name',
         name: 'namebackground', // 开始按钮
@@ -1537,7 +1551,7 @@ const loginuiElements = [
                 loginctx.drawImage(this.image, this.imageX, this.imageY, characterImage[playercharacter].imageWidth, characterImage[playercharacter].imageHeight);
             }
         },
-    },
+    },//namebackground
     {
         State:'name',
         name: 'nameinput', // 开始按钮
@@ -1568,7 +1582,7 @@ const loginuiElements = [
         image: new Image(),  // 用来存储图像对象
         imageWidth: 50,  // 图像的初始宽度
         imageHeight: 50,  // 图像的初始高度
-        teach:false,
+        teach:true,
         intervalId:null,
         draw: function() {
             if(loginState===this.State){
@@ -1633,6 +1647,8 @@ const loginuiElements = [
 
                         inputField.focus(); // 聚焦到輸入框
                         console.log(focusIndex);
+                        this.teach=false;
+                        getloginUI('nameButton').teach=true;
                     }, 200);
                     /*this.intervalId = setInterval(() => {
                         this.cursorVisible = !this.cursorVisible;
@@ -1661,7 +1677,7 @@ const loginuiElements = [
             clearInterval(this.intervalId);
         }
 
-    },
+    },//nameinput
     {
         State:'name',
         name: 'nameButton', // 开始按钮
@@ -1750,9 +1766,11 @@ const loginuiElements = [
                         player.name=playername;
                         playerImage.src=characterImage[playercharacter].img;
                         loading=true;
+                        loginState='end';
                         //showLoadingScreen();
                         setTimeout(() => {
                             loadGame2();
+                            loading=false;
                         }, 3000);
                         
                         //loadGame2();
@@ -1776,7 +1794,7 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//nameButton
     {
         State:'name',
         name: 'namebackButton', // 开始按钮
@@ -1862,6 +1880,8 @@ const loginuiElements = [
                         loginbuttonHover=false;
                         console.log(getloginUI('nameinput').inputtext);
                         getloginUI('nameinput').inputtext=''
+                        getloginUI('nameButton').teach=false;
+                        getloginUI('nameinput').teach=true;
                         loginState='character';
                     }, 200);
                     
@@ -1883,6 +1903,127 @@ const loginuiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
+    },//namebackButton
+    {
+        State:'end',
+        name: 'homeButton', // 开始按钮
+        type: 'button', // 元素类型：按钮
+        width: 200,
+        height: 80,
+        x: logincanvas.width / 2,
+        y: logincanvas.height/1.1,
+        scale:1,
+        text: '回首頁',
+        fontSize: 40,
+        color: 'white',
+        backgroundColor: '#00aaff',
+        isPressed: false,  // 添加一个标记按下状态的属性
+        isHovered: false,  // 模拟 hover 效果
+        teachscale: 1,  // 控制图像的缩放
+        scaleDirection: 1,  // 控制缩放方向，1 为放大，-1 为缩小
+        scaleSpeed: 0.01,  // 控制缩放的速度
+        image: new Image(),  // 用来存储图像对象
+        imageWidth: 50,  // 图像的初始宽度
+        imageHeight: 50,  // 图像的初始高度
+        draw: function() {
+            if(loginState===this.State){
+                logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
+                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                const radius=15;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
+
+                loginctx.beginPath();
+                loginctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
+                loginctx.arcTo(BtnX + this.width, BtnY, BtnX + this.width, BtnY + this.height, radius); // 右上角
+                loginctx.arcTo(BtnX + this.width, BtnY + this.height, BtnX, BtnY + this.height, radius); // 右下角
+                loginctx.arcTo(BtnX, BtnY + this.height, BtnX, BtnY, radius); // 左下角
+                loginctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
+                loginctx.closePath();
+                loginctx.fill(); // 填充颜色
+                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+
+                
+                loginctx.fillStyle = this.color;
+                loginctx.font = `${this.fontSize*this.scale}px Arial`;
+                loginctx.textAlign = 'center';
+                loginctx.textBaseline = 'middle';
+                
+                loginctx.fillText(this.text, this.x, this.y);
+                /*this.updateImageScale();
+                this.image.src=url5+'/littlegame/new/images/teach.png';
+                loginctx.drawImage(
+                    this.image, 
+                    this.x + this.width / 2 - this.imageWidth / 2,  // 图像 X 轴位置：右下角
+                    this.y + this.height / 2 - this.imageHeight / 2,  // 图像 Y 轴位置：右下角
+                    this.imageWidth * this.teachscale,  // 图像的缩放宽度
+                    this.imageHeight * this.teachscale  // 图像的缩放高度
+                );*/
+            }
+        },
+        onClick: function(touchX, touchY) {
+            // 判断点击是否在按钮区域内
+            if(loginState===this.State){
+                if (touchX >= this.x - this.width / 2 &&
+                    touchX <= this.x + this.width / 2 &&
+                    touchY >= this.y - this.height / 2 &&
+                    touchY <= this.y + this.height / 2) {
+                    // 按钮被点击时触发的操作
+                    this.isPressed=true;
+                    playSound('clickbutton');
+                    console.log('click')
+                    setTimeout(() => {
+                        this.isPressed = false;  // 延遲後恢復按鈕原狀
+                        loginState="start";
+                        loginbuttonHover=false;
+                        //loadGame2();
+                    }, 200);
+                    console.log('开始游戏');
+                    
+                }
+            }
+        },
+        setHovered: function(state) {
+            if(loginState===this.State){
+                this.isHovered = state;  // 设置 hover 状态
+            }
+        },
+        updateImageScale: function() {
+            if (this.teachscale >= 1.5) {
+                this.scaleDirection = -1;  // 当达到最大值时开始缩小
+            } else if (this.teachscale <= 1) {
+                this.scaleDirection = 1;  // 当达到最小值时开始放大
+            }
+    
+            this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
+        },
+    },//homeButton
+    {
+        State:'end',
+        name: 'endInfo', // 游戏说明界面
+        type: 'text', // 元素类型：文本
+        x: logincanvas.width / 2,
+        y: logincanvas.height/1.6,
+        text: 'Demo已結束 感謝你的體驗',
+        fontSize: 60,
+        color: 'white',
+        maxLineWidth:10,
+        draw: function() {
+            if(loginState===this.State){
+                loginctx.font = `${this.fontSize}px Arial`;
+                loginctx.textAlign = 'center';
+                loginctx.textBaseline = 'middle';
+                loginctx.lineWidth = 5;  // 外框的寬度
+                loginctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                const lines = wrapText(this.text, this.maxLineWidth);
+                lines.forEach((line, index) => {
+                    loginctx.strokeText(line, this.x-2, this.y-2+index*70); // 繪製外框
+                    loginctx.fillStyle = this.color;
+                    loginctx.fillText(line, this.x, this.y+index*70);
+                });
+                
+            }
+        }
     },
 ]
 // 設定畫布背景
@@ -2027,6 +2168,7 @@ inputField.addEventListener('compositionend', function(event) {
 });
 
 inputField.addEventListener('input', function(event) {
+    if (focusIndex === null) return;
     // 如果還在拼音輸入中，不做處理
     if (isComposing) {
         getloginUI(focusIndex).inputtext= event.target.value;
