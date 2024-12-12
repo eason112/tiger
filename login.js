@@ -254,6 +254,7 @@ const loginuiElements = [
         scale:1,
         text: '會員密碼',
         inputtext:'',
+        passwordtext:'',
         fontSize: 40,
         maxLength:12,
         color: 'white',
@@ -631,7 +632,9 @@ const loginuiElements = [
                         });
                         loginbuttonHover=false;
                         loginState="experience";
+                        console.log(getloginUI('password').passwordtext);
                         getloginUI('password').inputtext='';
+                        getloginUI('password').passwordtext='';
                         //loadGame2();
                     }, 200);
                     console.log('开始游戏');
@@ -2094,6 +2097,15 @@ function drawloading(timestamp){
         // 更新画布
     }
     loginctx.drawImage(loadedBackgrounds[currentBackgroundIndex], 0, 0, logincanvas.width, logincanvas.height);
+    loginctx.font = 'bold 80px Arial';
+    loginctx.textAlign = 'center';
+    loginctx.textBaseline = 'middle';
+    loginctx.lineWidth = 5;  // 外框的寬度
+    loginctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+    loginctx.strokeText('Loading...', logincanvas.width/2-2, logincanvas.height/2-2); // 繪製外框
+    loginctx.fillStyle = 'white';
+    loginctx.fillText('Loading...', logincanvas.width/2, logincanvas.height/2);
+
 }
 
 function drawloginInfo() {
@@ -2208,13 +2220,24 @@ function handleInput(event) {
     else {
         // 如果還沒有達到最大字數，更新文本
         if (currentText.length <= getloginUI(focusIndex).maxLength) {
-            getloginUI(focusIndex).inputtext = currentText;
+            if(focusIndex=='password'){
+                getloginUI(focusIndex).inputtext = '*'.repeat(currentText.length);
+                getloginUI(focusIndex).passwordtext = currentText;
+            }
+            else{
+                getloginUI(focusIndex).inputtext = currentText;
+            }
             //getloginUI(focusIndex).cursorPosition++;
         } else {
             // 如果達到最大字數，截取文本至 maxLength
             getloginUI(focusIndex).inputtext = currentText.slice(0, getloginUI(focusIndex).maxLength);
         }
     }
-    inputField.value = getloginUI(focusIndex).inputtext;
+    if(focusIndex=='password'){
+        inputField.value = getloginUI(focusIndex).passwordtext;
+    }
+    else{
+        inputField.value = getloginUI(focusIndex).inputtext;
+    }
 }
 
