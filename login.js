@@ -631,10 +631,18 @@ const loginuiElements = [
                             element.isHovered=false;
                         });
                         loginbuttonHover=false;
-                        loginState="experience";
+
                         console.log(getloginUI('password').passwordtext);
                         getloginUI('password').inputtext='';
                         getloginUI('password').passwordtext='';
+                        getloginUI('characterbackground').currentcharacterIndex=0;
+                        getloginUI('rightButton').teach=true;
+                        getloginUI('chooseButton').teach=false;
+                        getloginUI('nameButton').teach=false;
+                        getloginUI('nameinput').teach=true;
+                        getloginUI('nameinput').inputtext='';
+                        playercharacter=0;
+                        loginState="experience";
                         //loadGame2();
                     }, 200);
                     console.log('开始游戏');
@@ -851,13 +859,7 @@ const loginuiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
-                        getloginUI('characterbackground').currentcharacterIndex=0;
-                        getloginUI('rightButton').teach=true;
-                        getloginUI('chooseButton').teach=false;
-                        getloginUI('nameButton').teach=false;
-                        getloginUI('nameinput').teach=true;
-                        getloginUI('nameinput').inputtext='';
-                        playercharacter=0;
+
                         loginState="character";
                         //loadGame2();
                     }, 200);
@@ -1002,10 +1004,6 @@ const loginuiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
-                        getloginUI('characterbackground').currentcharacterIndex=0;
-                        getloginUI('rightButton').teach=true;
-                        getloginUI('chooseButton').teach=false;
-                        playercharacter=0;
                         loginState="character";
 
                         //loadGame2();
@@ -1787,6 +1785,8 @@ const loginuiElements = [
                             loginState='end';
                             //showLoadingScreen();
                             setTimeout(() => {
+                                teach.index=0;
+                                teach.canmove=true;
                                 loadGame2();
                                 loading=false;
                             }, 3000);
