@@ -1140,8 +1140,10 @@ function checkButtonClick(x, y, ismouse) {
                 switch(button.name){
                     case "jump":{
                         if(teach.index==1){
-                            teach.index++;
-                            teach.canmove=true;
+                            setTimeout(() => {
+                                teach.index++;
+                                teach.canmove=true;
+                            }, 1000);     
                         }
                         if (!player.isJumping) {
                             player.dy = player.jumpPower;
