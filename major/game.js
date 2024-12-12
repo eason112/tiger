@@ -802,7 +802,7 @@ function drawButton() {
                 ctx2.drawImage(image,button.x,button.y,button.width*scaleFactor, button.height*scaleFactor )
             }
             else if((button.type=='clothing'||button.type=='pet')&&button.canclick){
-                ctx2.fillStyle = '#00aaff';
+                ctx2.fillStyle = button.buttonClicked?'#006394':button.buttonHover?'#0085c7':'#00aaff';
                 ctx2.fillRect(button.x, button.y, button.width, button.height);
             }
             else if(button.type!="clothing"&&button.type!="pet"){
@@ -1037,6 +1037,103 @@ function checkButtonClick(x, y, ismouse) {
                 button.buttonClicked = true;  // 設置被點擊的按鈕狀態
                 setTimeout(() => {
                     button.buttonClicked = false;  // 延遲後恢復按鈕原狀
+                    switch(button.name){
+                        case "menu":{
+                            buttonHovered=false;
+                            if(teach.index==5)teach.index++;
+                            if(teach.index==10)teach.index++;
+                            toggleMenu();
+                            break;
+                        }
+                        case "close":{
+                            toggleMenu();
+                            break;
+                        }
+                        case "emoji":{
+                            if(teach.index==14)teach.index++;
+                            toggleemojiMenu();
+                            break;
+                        }
+                        case "clothing":{
+                            buttonHovered=false;
+                            if(teach.index==6)teach.index++;
+                            toggleMenu();
+                            toggleclothing(true);
+                            togglepet(false);
+                            break;
+                        }    
+                        case "closeclothing":{
+                            buttonHovered=false;
+                            if(teach.index==9)teach.index++;
+                            toggleclothing(false);
+                            break;
+                        }  
+                        case "clothingright":{
+                            if(teach.index==7)teach.index++;
+                            changeclothing('right');
+                            break;
+                        }   
+                        case "clothingleft":{
+                            changeclothing('left');
+                            break;
+                        }    
+                        case "wearclothing":{
+    
+                            if(teach.index==8)teach.index++;
+                            wearclothing();
+                            break;
+                        }   
+                        case "pet":{
+                            buttonHovered=false;
+                            if(teach.index==11)teach.index++;
+                            toggleMenu();
+                            togglepet(true);
+                            toggleclothing(false);
+                            break;
+                        }    
+                        case "closepet":{
+                            buttonHovered=false;
+                            if(teach.index==13)teach.index++;
+                            togglepet(false);
+                            break;
+                        }  
+                        case "petright":{
+                            changepet('right');
+                            break;
+                        }   
+                        case "petleft":{
+                            changepet('left');
+                            break;
+                        }    
+                        case "wearpet":{
+                            if(teach.index==12)teach.index++;
+                            if(getButtonByName('wearpet').text=='穿戴'){
+                                wearpet(true);
+                            }
+                            else{
+                                wearpet(false);
+                            }
+                            break;
+                        }                  
+                    }
+                    if(button.type=='emoji'){
+                        buttonHovered=false;
+                        if(teach.index==15)teach.index++;
+                        toggleemojiMenu();
+                        if(emojiOpen==false){
+                            setTimeout(() => {
+                                emojiOpen= false;  // 延遲後恢復按鈕原狀
+                            }, 1000);
+                            if(teach.index==16){
+                                setTimeout(() => {
+                                    loadlogin();
+                                    resetGame();
+                                }, 2000);
+                            }
+                            emojiOpen=true;
+                            emojiImage.src=button.img;
+                        }
+                    }
 
                 }, 200);
                 switch(button.name){
@@ -1060,101 +1157,6 @@ function checkButtonClick(x, y, ismouse) {
                         showDialog=!showDialog;
                         if(showDialog==false)currentDialogIndex=0;
                         break;
-                    }
-                    case "menu":{
-                        buttonHovered=false;
-                        if(teach.index==5)teach.index++;
-                        if(teach.index==10)teach.index++;
-                        toggleMenu();
-                        break;
-                    }
-                    case "close":{
-                        toggleMenu();
-                        break;
-                    }
-                    case "emoji":{
-                        if(teach.index==14)teach.index++;
-                        toggleemojiMenu();
-                        break;
-                    }
-                    case "clothing":{
-                        buttonHovered=false;
-                        if(teach.index==6)teach.index++;
-                        toggleMenu();
-                        toggleclothing(true);
-                        togglepet(false);
-                        break;
-                    }    
-                    case "closeclothing":{
-                        buttonHovered=false;
-                        if(teach.index==9)teach.index++;
-                        toggleclothing(false);
-                        break;
-                    }  
-                    case "clothingright":{
-                        if(teach.index==7)teach.index++;
-                        changeclothing('right');
-                        break;
-                    }   
-                    case "clothingleft":{
-                        changeclothing('left');
-                        break;
-                    }    
-                    case "wearclothing":{
-
-                        if(teach.index==8)teach.index++;
-                        wearclothing();
-                        break;
-                    }   
-                    case "pet":{
-                        buttonHovered=false;
-                        if(teach.index==11)teach.index++;
-                        toggleMenu();
-                        togglepet(true);
-                        toggleclothing(false);
-                        break;
-                    }    
-                    case "closepet":{
-                        buttonHovered=false;
-                        if(teach.index==13)teach.index++;
-                        togglepet(false);
-                        break;
-                    }  
-                    case "petright":{
-                        changepet('right');
-                        break;
-                    }   
-                    case "petleft":{
-                        changepet('left');
-                        break;
-                    }    
-                    case "wearpet":{
-                        if(teach.index==12)teach.index++;
-                        if(getButtonByName('wearpet').text=='穿戴'){
-                            wearpet(true);
-                        }
-                        else{
-                            wearpet(false);
-                        }
-                        break;
-                    }                  
-                }
-                if(button.type=='emoji'){
-                    buttonHovered=false;
-                    if(teach.index==15)teach.index++;
-                    toggleemojiMenu();
-                    if(emojiOpen==false){
-                        setTimeout(() => {
-                            emojiOpen= false;  // 延遲後恢復按鈕原狀
-                        }, 1000);
-                        if(teach.index==16){
-                            setTimeout(() => {
-                                loadlogin();
-                                resetGame();
-                            }, 2000);
-                        }
-                        emojiOpen=true;
-                        emojiImage.src=button.img;
                     }
                 }
             }
