@@ -33,6 +33,9 @@ minimapImage.src = url2+'/major/images/minimap.png';  // 替換成你的圖像�
 const teachImage = new Image();
 teachImage.src = url2+'/littlegame/new/images/teach.png';  // 替換成你的圖像路徑
 
+const teacharrowImage = new Image();
+teacharrowImage.src = url2+'/major/images/teacharrow.png';  // 替換成你的圖像路徑
+
 
 let background1X = 0;
 let background2X = 4000;
@@ -80,6 +83,7 @@ const teach={
     scaleSpeed: 0.01,  // 控制缩放的速度
     width:100,
     height:100,
+    canmove:true,
 }
 function drawJoystick() {
 
@@ -148,31 +152,43 @@ function isInJoystickArea(x, y) {
 // 更新搖桿狀態
 function updateJoystick(offsetX,offsetY,isstop=false) {
     // 計算搖桿的最大可移動範圍（背景半徑）
-    if(teach.index==0)teach.index++;
-    const maxDistance = joystickBackgroundRadius;
-  
-    // 計算搖桿的偏移量，並限制它在範圍內
-    const deltaX = offsetX - joystickCenter.x;
-    const deltaY = offsetY - joystickCenter.y;
-  
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    if(teach.canmove){
+        if(teach.index==0){
+            setTimeout(() => {
+                teach.canmove=false;
+                isJoystickActive = false;
+                joystickDirection = { x: 0, y: 0 }; // 停止移動
+                keys.right=false;
+                keys.left=false
+                if(teach.index==0)
+                teach.index++;
+            }, 1000);
+        }
+        const maxDistance = joystickBackgroundRadius;
     
-    if (distance < maxDistance) {
-      joystickDirection.x = deltaX / maxDistance;
-      joystickDirection.y = deltaY / maxDistance;
-    } else {
-      const angle = Math.atan2(deltaY, deltaX);
-      joystickDirection.x = Math.cos(angle);
-      joystickDirection.y = Math.sin(angle);
+        // 計算搖桿的偏移量，並限制它在範圍內
+        const deltaX = offsetX - joystickCenter.x;
+        const deltaY = offsetY - joystickCenter.y;
+    
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        if (distance < maxDistance) {
+        joystickDirection.x = deltaX / maxDistance;
+        joystickDirection.y = deltaY / maxDistance;
+        } else {
+        const angle = Math.atan2(deltaY, deltaX);
+        joystickDirection.x = Math.cos(angle);
+        joystickDirection.y = Math.sin(angle);
+        }
+        if(isstop)joystickDirection = { x: 0, y: 0 };
+
+        // 更新搖桿顯示
+        //drawJoystick();
+
+        // 更新角色移動（或其他遊戲控制邏輯）
+        keys.left = joystickDirection.x < -0.2;  // 左邊
+        keys.right = joystickDirection.x > 0.2;  // 右邊
     }
-    if(isstop)joystickDirection = { x: 0, y: 0 };
-
-  // 更新搖桿顯示
-  //drawJoystick();
-
-  // 更新角色移動（或其他遊戲控制邏輯）
-  keys.left = joystickDirection.x < -0.2;  // 左邊
-  keys.right = joystickDirection.x > 0.2;  // 右邊
 
 }
 
@@ -512,7 +528,7 @@ function updateGame2() {
     drawJoystick();
     drawDialogBox();
     drawRewardBox();
-
+    drawArrow();
     if (background1X < -4000) {
         background1X = 4000+background2X-backgroundspeed;  // 重置位置，使背景無縫循環
     }
@@ -718,15 +734,15 @@ let buttons = [
     {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
     {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
     {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
-    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 70, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+235, width: 70, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+370, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,img: url2+'/major/images/ar.png',canclick:true},// 按鈕2
+    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/status.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/clothing.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/pet.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/hint.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/shop.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+320, width: 50, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/history.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/map.png',canclick:true},// 按鈕1
+    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/friend.png',canclick:true},// 按鈕1
     {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 100, height: 100, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},
     {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
     {draw:emojimenuOpen, type:"emoji",name:"laugh2",x:emojimenuX+90, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
@@ -1025,7 +1041,10 @@ function checkButtonClick(x, y, ismouse) {
                 }, 200);
                 switch(button.name){
                     case "jump":{
-                        if(teach.index==1)teach.index++;
+                        if(teach.index==1){
+                            teach.index++;
+                            teach.canmove=true;
+                        }
                         if (!player.isJumping) {
                             player.dy = player.jumpPower;
                             player.isJumping = true;
@@ -1467,7 +1486,35 @@ function isClickInReward(x, y) {
 
     }
 }
+function drawArrow(){
+    if(teach.index==2){
+        const teacharrowX=canvas2.width/1.3;
+        const teacharrowY=canvas2.height/4;
+        let maxX = teacharrowX +100 - teachImage.width / 2;  // 右邊界
+        let minX = teacharrowX - teachImage.width / 2;  // 中心位置
 
+        // 更新動畫進度
+        teach.animationProgress += teach.teachdirection * 0.02; // 控制圖片移動速度
+        let currentX = minX + teach.animationProgress * (maxX - minX);
+        // 當圖片到達右邊界時，直接跳回中間
+        if (teach.animationProgress >= 1) {
+            teach.animationProgress = 0; // 保證圖片停在最右邊
+            currentX=minX;
+            //teachdirection = -1; // 改變方向回到中間
+        }
+
+        // 當圖片到達中間時，改變方向
+        if (teach.animationProgress <= 0) {
+            //animationProgress = 0; // 保證圖片停在最中間
+        }
+
+        // 計算圖片的 X 坐標
+
+
+        // 繪製圖片
+        ctx2.drawImage(teacharrowImage, currentX, teacharrowY - teach.height/4,teach.width*4,teach.height*4);
+    }
+}
 
 
 function toggleMenu() {
