@@ -57,7 +57,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -346,7 +346,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -423,7 +423,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -500,7 +500,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -580,7 +580,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -736,7 +736,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -813,7 +813,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -954,7 +954,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1122,7 +1122,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1232,7 +1232,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1335,7 +1335,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1438,7 +1438,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1723,7 +1723,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1842,7 +1842,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 //logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -1949,7 +1949,7 @@ const loginuiElements = [
         draw: function() {
             if(loginState===this.State){
                 logincanvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                loginctx.fillStyle = this.isPressed ? '#0066cb' :this.isHovered ? '#0066cb': this.backgroundColor;
+                loginctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
                 const BtnY=this.y-this.height/2;
@@ -2045,7 +2045,7 @@ const loginuiElements = [
                 
             }
         }
-    },
+    },//endInfo
 ]
 // 設定畫布背景
 
