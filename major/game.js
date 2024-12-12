@@ -1626,9 +1626,28 @@ function wearpet(iswear) {
 
 document.addEventListener('keydown', (e) => {
     //console.log(e.key);
-    if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
-    if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
-    if (e.key === 'ArrowUp'||e.key === 'w') keys.up = true;
+    if(teach.canmove){
+        if(teach.index==0){
+            setTimeout(() => {
+                teach.canmove=false;
+                keys.right=false;
+                keys.left=false
+                if(teach.index==0)
+                teach.index++;
+            }, 1000);
+        }
+        if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
+        if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
+    }
+    if (e.key === 'ArrowUp'||e.key === 'w') {
+        if(teach.index==1){
+            setTimeout(() => {
+                teach.index++;
+                teach.canmove=true;
+            }, 1000);         
+        }
+        keys.up = true;
+    }
 });
 
 document.addEventListener('keyup', (e) => {
