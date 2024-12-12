@@ -75,7 +75,7 @@ let joystickDirection = { x: 0, y: 0 }; // 左右和上下的控制值
 let joystickhover=false;
 // 設置搖桿背景和按鈕的初始位置
 const teach={
-    index:0,
+    index:-1,
     animationProgress : 0,
     teachdirection : 1,// 1 代表向右，-1 代表向回中間
     teachscale: 1,// 控制图像的缩放
@@ -1627,18 +1627,20 @@ function wearpet(iswear) {
 
 document.addEventListener('keydown', (e) => {
     //console.log(e.key);
-    if(teach.canmove){
-        if(teach.index==0){
-            setTimeout(() => {
-                teach.canmove=false;
-                keys.right=false;
-                keys.left=false
-                if(teach.index==0)
-                teach.index++;
-            }, 1000);
+    if (e.key === 'ArrowRight'||e.key === 'd'||e.key === 'ArrowLeft'||e.key === 'a'){
+        if(teach.canmove){
+            if(teach.index==0){
+                setTimeout(() => {
+                    teach.canmove=false;
+                    keys.right=false;
+                    keys.left=false
+                    if(teach.index==0)
+                    teach.index++;
+                }, 1000);
+            }
+            if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
+            if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
         }
-        if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
-        if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
     }
     if (e.key === 'ArrowUp'||e.key === 'w') {
         if(teach.index==1){
