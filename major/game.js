@@ -841,7 +841,7 @@ function drawButton() {
                     teach.height * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='dialog'&&teach.index==2){
+            else if(button.name=='dialog'&&teach.index==3){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -851,7 +851,7 @@ function drawButton() {
                     teach.height * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='menu'&&(teach.index==5||teach.index==10)){
+            else if(button.name=='menu'&&(teach.index==6||teach.index==11)){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -861,7 +861,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='clothing'&&teach.index==6){
+            else if(button.name=='clothing'&&teach.index==7){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -871,7 +871,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='clothingright'&&teach.index==7){
+            else if(button.name=='clothingright'&&teach.index==8){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -881,7 +881,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='wearclothing'&&teach.index==8){
+            else if(button.name=='wearclothing'&&teach.index==9){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -891,7 +891,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='closeclothing'&&teach.index==9){
+            else if(button.name=='closeclothing'&&teach.index==10){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -901,7 +901,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='pet'&&teach.index==11){
+            else if(button.name=='pet'&&teach.index==12){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -911,7 +911,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='wearpet'&&teach.index==12){
+            else if(button.name=='wearpet'&&teach.index==13){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -921,7 +921,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='closepet'&&teach.index==13){
+            else if(button.name=='closepet'&&teach.index==14){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -931,7 +931,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='emoji'&&teach.index==14){
+            else if(button.name=='emoji'&&teach.index==15){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -941,7 +941,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='laugh'&&teach.index==15){
+            else if(button.name=='laugh'&&teach.index==16){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -964,6 +964,7 @@ function collisiondetect(){
   
   if (isNearNPC) {
     // 顯示對話按鈕，隱藏跳躍按鈕
+    if(teach.index==2)teach.index++;
     getButtonByName("jump").draw=false;
     getButtonByName("dialog").draw=true;
   } else {
@@ -1040,8 +1041,8 @@ function checkButtonClick(x, y, ismouse) {
                     switch(button.name){
                         case "menu":{
                             buttonHovered=false;
-                            if(teach.index==5)teach.index++;
-                            if(teach.index==10)teach.index++;
+                            if(teach.index==6)teach.index++;
+                            if(teach.index==11)teach.index++;
                             toggleMenu();
                             break;
                         }
@@ -1050,13 +1051,13 @@ function checkButtonClick(x, y, ismouse) {
                             break;
                         }
                         case "emoji":{
-                            if(teach.index==14)teach.index++;
+                            if(teach.index==15)teach.index++;
                             toggleemojiMenu();
                             break;
                         }
                         case "clothing":{
                             buttonHovered=false;
-                            if(teach.index==6)teach.index++;
+                            if(teach.index==7)teach.index++;
                             toggleMenu();
                             toggleclothing(true);
                             togglepet(false);
@@ -1064,12 +1065,12 @@ function checkButtonClick(x, y, ismouse) {
                         }    
                         case "closeclothing":{
                             buttonHovered=false;
-                            if(teach.index==9)teach.index++;
+                            if(teach.index==10)teach.index++;
                             toggleclothing(false);
                             break;
                         }  
                         case "clothingright":{
-                            if(teach.index==7)teach.index++;
+                            if(teach.index==8)teach.index++;
                             changeclothing('right');
                             break;
                         }   
@@ -1079,13 +1080,13 @@ function checkButtonClick(x, y, ismouse) {
                         }    
                         case "wearclothing":{
     
-                            if(teach.index==8)teach.index++;
+                            if(teach.index==9)teach.index++;
                             wearclothing();
                             break;
                         }   
                         case "pet":{
                             buttonHovered=false;
-                            if(teach.index==11)teach.index++;
+                            if(teach.index==12)teach.index++;
                             toggleMenu();
                             togglepet(true);
                             toggleclothing(false);
@@ -1093,7 +1094,7 @@ function checkButtonClick(x, y, ismouse) {
                         }    
                         case "closepet":{
                             buttonHovered=false;
-                            if(teach.index==13)teach.index++;
+                            if(teach.index==14)teach.index++;
                             togglepet(false);
                             break;
                         }  
@@ -1106,7 +1107,7 @@ function checkButtonClick(x, y, ismouse) {
                             break;
                         }    
                         case "wearpet":{
-                            if(teach.index==12)teach.index++;
+                            if(teach.index==13)teach.index++;
                             if(getButtonByName('wearpet').text=='穿戴'){
                                 wearpet(true);
                             }
@@ -1118,13 +1119,13 @@ function checkButtonClick(x, y, ismouse) {
                     }
                     if(button.type=='emoji'){
                         buttonHovered=false;
-                        if(teach.index==15)teach.index++;
+                        if(teach.index==16)teach.index++;
                         toggleemojiMenu();
                         if(emojiOpen==false){
                             setTimeout(() => {
                                 emojiOpen= false;  // 延遲後恢復按鈕原狀
                             }, 1000);
-                            if(teach.index==16){
+                            if(teach.index==17){
                                 setTimeout(() => {
                                     loadlogin();
                                     resetGame();
@@ -1153,7 +1154,7 @@ function checkButtonClick(x, y, ismouse) {
                         break;
                     }
                     case "dialog":{
-                        if(teach.index==2)teach.index++;
+                        if(teach.index==3)teach.index++;
                         showDialog=!showDialog;
                         if(showDialog==false)currentDialogIndex=0;
                         break;
@@ -1262,7 +1263,7 @@ function drawDialogBox() {
         ctx2.lineTo(arrowX + arrowSize / 2, arrowY + arrowSize); // 箭頭的頂點
         ctx2.closePath();
         ctx2.fill(); // 填充箭頭顏色
-        if(teach.index==3){
+        if(teach.index==4){
             updateImageScale();
             ctx2.drawImage(
                 teachImage, 
@@ -1357,7 +1358,7 @@ function drawRewardBox() {
         ctx2.closePath();
         ctx2.fill(); // 填充箭頭顏色
 
-        if(teach.index==4){
+        if(teach.index==5){
             updateImageScale();
             ctx2.drawImage(
                 teachImage, 
@@ -1407,7 +1408,7 @@ function nextDialog() {
         loadGame1();
     }
     if (currentDialogIndex >= npcDialog.length) {
-        if(teach.index==3)teach.index++;
+        if(teach.index==4)teach.index++;
         showDialog = false; // 對話結束後隱藏對話框
         currentDialogIndex=0;
         if(currentRewardIndex==0){
@@ -1420,7 +1421,7 @@ function nextDialog() {
 function nextReward() {
     currentRewardIndex++;
     if (currentRewardIndex >= rewardDialog.length) {
-        if(teach.index==4)teach.index++;
+        if(teach.index==5)teach.index++;
         showReward = false; // 對話結束後隱藏對話框
         clothingImage[clothingImage.findIndex(item => item.name === '海灘')].hasget=true;
         petImages.splice(0, 1);
