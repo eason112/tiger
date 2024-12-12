@@ -11,7 +11,7 @@ let currentLoginIndex = 0;
 
 let loading=false;
 
-let loginState = "end"; // 可選 "start","login", "experience", "line", "character", "name","end"
+let loginState = "start"; // 可選 "start","login", "experience", "line", "character", "name","end"
 let loginbuttonHover=false;
 let loginInputHover=false;
 const loginImages = [
