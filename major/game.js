@@ -19,39 +19,46 @@ const background3 = new Image();
 background3.src = url2+'/major/images/back.png';  // 第三層背景
 
 const playerImage = new Image();
-playerImage.src = url2+'/major/images/player.png';
+playerImage.src = url2+'/major/images/player.png';//玩家
 
 const npcImage = new Image();
-npcImage.src = url2+'/major/images/NPC.png';
+npcImage.src = url2+'/major/images/NPC.png';//NPC
 
 const petImage = new Image();
-petImage.src = url2+'/major/images/NPC.png';
+petImage.src = url2+'/major/images/NPC.png';//寵物
 
 const minimapImage = new Image();
-minimapImage.src = url2+'/major/images/minimap.png';  // 替換成你的圖像路徑
+minimapImage.src = url2+'/major/images/minimap.png';  //小地圖
 
 const teachImage = new Image();
-teachImage.src = url2+'/littlegame/new/images/teach.png';  // 替換成你的圖像路徑
+teachImage.src = url2+'/littlegame/new/images/teach.png';  //教學
 
 const teacharrowImage = new Image();
-teacharrowImage.src = url2+'/major/images/teacharrow.png';  // 替換成你的圖像路徑
+teacharrowImage.src = url2+'/major/images/teacharrow.png';  //箭頭
 
-
+//後景移動
 let background1X = 0;
 let background2X = 4000;
 
+//後景移動速度
+const backgroundspeed=0.2;
+
+//小地圖
 const minimapWidth =800;
 const minimapHeight = 188;
 const minimapX = gameCanvas2.width - minimapWidth - 130; // 右上角
 const minimapY = 20;
 
-
-
+//地面高度
 const groundHeight =0;
+
+
 let Touches = [];
-let Touchesindex=[{name:'joystick',id:-1},
-                   {name:'button',id:-1}
+let Touchesindex=[
+    {name:'joystick',id:-1},
+    {name:'button',id:-1}
 ];
+
 function getTouchesByName(name) {
     let touch = Touchesindex.find(touch => touch.name === name);
     return touch; // 如果找到則返回 index，否則返回 null
@@ -60,6 +67,7 @@ function getTouchesByid(id) {
     let touch = Touches.find(touch => touch.identifier === id);
     return touch; // 如果找到則返回 index，否則返回 null
 }
+
 /*const platforms = [
     { x: 100, y: 600, width: 200, height: 100 },
     { x: 700, y: 650, width: 500, height: 100 },
@@ -73,7 +81,8 @@ let isJoystickActive = false;
 let joystickCenter =  { x: joystickBackgroundRadius + 50, y: canvas2.height - joystickBackgroundRadius - 50 } // 中心位置
 let joystickDirection = { x: 0, y: 0 }; // 左右和上下的控制值
 let joystickhover=false;
-// 設置搖桿背景和按鈕的初始位置
+
+//教學參數
 const teach={
     index:-1,
     animationProgress : 0,
@@ -85,6 +94,8 @@ const teach={
     height:100,
     canmove:true,
 }
+
+// 搖桿繪製
 function drawJoystick() {
 
     // 清空畫布
@@ -139,7 +150,7 @@ function drawJoystick() {
         // 繪製圖片
         ctx2.drawImage(teachImage, currentX, joystickCenter.y - teach.height/4,teach.width,teach.height);
     }
-  }
+}
 
 // 檢查鼠標/觸摸點是否在搖桿範圍內
 function isInJoystickArea(x, y) {
@@ -149,6 +160,7 @@ function isInJoystickArea(x, y) {
     return {isInArea: distance <= joystickBackgroundRadius,  // 是否在範圍內
             isInKnob: distance <= joystickKnobRadius}// 判斷是否在搖桿背景的圓形範圍內
 }
+
 // 更新搖桿狀態
 function updateJoystick(offsetX,offsetY,isstop=false) {
     // 計算搖桿的最大可移動範圍（背景半徑）
@@ -182,9 +194,6 @@ function updateJoystick(offsetX,offsetY,isstop=false) {
         }
         if(isstop)joystickDirection = { x: 0, y: 0 };
 
-        // 更新搖桿顯示
-        //drawJoystick();
-
         // 更新角色移動（或其他遊戲控制邏輯）
         keys.left = joystickDirection.x < -0.2;  // 左邊
         keys.right = joystickDirection.x > 0.2;  // 右邊
@@ -192,6 +201,7 @@ function updateJoystick(offsetX,offsetY,isstop=false) {
 
 }
 
+//控制教學圖縮放
 function updateImageScale() {
     if (teach.teachscale >= 1.5) {
         teach.scaleDirection = -1;  // 当达到最大值时开始缩小
@@ -201,6 +211,7 @@ function updateImageScale() {
 
     teach.teachscale += teach.scaleSpeed * teach.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
 }
+
 // 觸發搖桿更新
 document.addEventListener('mousedown', (e) => {
     if(!isMobileDevice()){
@@ -245,7 +256,6 @@ document.addEventListener('mouseup', (e) => {
 canvas2.addEventListener('touchstart', (e) => {
     if(isMobileDevice()){
         Array.from(e.touches).forEach(touch =>{
-        //let touch = e.touches[0];
             let rect = canvas2.getBoundingClientRect();
             let offsetX = (touch.clientX - rect.left) * (canvas2.width / rect.width);
             let offsetY = (touch.clientY - rect.top) * (canvas2.height / rect.height);
@@ -274,7 +284,6 @@ canvas2.addEventListener('touchmove', (e) => {
 canvas2.addEventListener('touchend', (e) => {
     let touch = Array.from(e.changedTouches).find(touch => touch.identifier === getTouchesByName('joystick').id);
     if (touch) {
-        //Touchesindex[0].index=-1;
         getTouchesByName('joystick').id=-1;
         isJoystickActive = false;
         joystickDirection = { x: 0, y: 0 }; // 停止移動
@@ -293,7 +302,7 @@ canvas2.addEventListener('touchcancel', (e) => {
 });
 
 
-// 角色屬性
+//角色屬性
 let player = {
     x: 50,
     y: canvas2.height- groundHeight,
@@ -308,13 +317,16 @@ let player = {
     name: "玩家1"  // 添加角色名稱屬性
 };
 
+//NPC屬性
 let npc = {
     x: 2500,  // NPC的起始X位置
     y: 550 ,  // NPC的Y位置，放在地面之上
     width: 293,  // NPC的寬度
     height: 377, // NPC的高度
+    name:'桃樂比',
 };
 
+//寵物屬性
 let pet = {
     x: player.x - 50, // 寵物的初始位置 (稍微在玩家右側)
     y: player.y, // 寵物與玩家 y 位置一致
@@ -328,7 +340,6 @@ let pet = {
     wear:false,
 };
 
-
 // 控制按鍵
 let keys = {
     right: false,
@@ -336,6 +347,7 @@ let keys = {
     up: false
 };
 
+//移動方向
 let direction = {
     right: true,
 };
@@ -360,33 +372,41 @@ const camera = {
     height: canvas2.height  // 攝影機視窗的高度（等於畫布高度）
 };
 
+//NPC對話框屬性
 const npcDialog = [
-    { name: "NPC", text: "你好，巧虎！一起挖蛤蠣吧。" },
-    { name: "NPC", text: "恭喜挖到蛤蠣!" },
+    { name: "桃樂比", text: "你好，巧虎！一起挖蛤蠣吧。" },
+    { name: "桃樂比", text: "恭喜挖到蛤蠣!" },
 ];
+
+//獎勵對話框屬性
 const rewardDialog = [
     { name: "reward", text: "恭喜你獲得新服裝!",img:url2+'/major/images/player.png',imageWidth:293/1.5,imageHeight:377/1.5 },
     { name: "reward", text: "恭喜你獲得新寵物!",img:url2+'/major/images/NPC.png' ,imageWidth:293/1.5,imageHeight:377/1.5},
 ];
+
+//可獲得服裝屬性
 let clothingImage = [
     { index:0,hasget: true,name:"經典", text: "已穿戴",img:url2+'/major/images/player.png',imageWidth:293,imageHeight:377,weared:true },
     { index:1,hasget: false,name:"海灘", text: "穿戴",img:url2+'/major/images/NPC.png' ,imageWidth:293,imageHeight:377,weared:false},
 ];
+
+//可獲得寵物屬性
 let petImages = [
     { index:0,hasget: true,name:"無", text: "",img:'',imageWidth:293,imageHeight:377,weared:false },
     { index:1,hasget: false,name:"寄居蟹", text: "穿戴",img:url2+'/major/images/NPC.png',imageWidth:293,imageHeight:377,weared:false },
 ];
 
-// 當前對話框顯示的對話
+// 當前介面顯示index&&是否顯示
 let currentDialogIndex = 0;
 let showDialog = false;
 let currentRewardIndex = 0;
 let showReward = false;
-let currentclothingIndex = 0;  // 當前顯示的圖片索引
-let showclothingBox = false;  // 是否顯示介面
-let currentpetIndex = 0;  // 當前顯示的圖片索引
-let showpetBox = false;  // 是否顯示介面
+let currentclothingIndex = 0;
+let showclothingBox = false;
+let currentpetIndex = 0; 
+let showpetBox = false;
 
+//選單屬性
 let menuOpen = false;  // 用來控制選單是否打開
 let menuX = canvas2.width;  // 選單的初始 X 座標，位於畫面右側外部
 let menuY = 0;  // 選單的初始 X 座標，位於畫面右側外部
@@ -395,10 +415,7 @@ const menuHeight = canvas2.height/2;  // 選單的高度與視窗高度一致
 const menuSpeed = 15;  // 控制選單滑動的速度
 
 
-
-const minimapScale = 1;
-const backgroundspeed=0.2;
-
+//選單繪製
 function drawMenu() {
     if (menuOpen) {
         // 控制選單從右邊滑入
@@ -423,21 +440,12 @@ function drawMenu() {
     // 畫選單背景
     ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";  // 選單背景顏色
     ctx2.fillRect(menuX, menuY, menuWidth, menuHeight);
-
-    // 畫選單內的按鈕
-    ctx2.fillStyle = "white";
-
-   /* menubuttons.forEach(button => {
-        ctx2.font = button.fontSize;
-        ctx2.fillText(button.text, button.x, button.y);
-    });*/
 }
 
-// 遊戲邏輯
+//遊戲邏輯
 function updateGame2() {
     // 更新玩家位置
     if (keys.right) {
-        //console.log(player);
         pet.x = player.x - 100; 
         player.dx = player.speed;
         direction.right=true;
@@ -561,13 +569,17 @@ function updateGame2() {
     animationFrameId = requestAnimationFrame(updateGame2);
 }
 
+//暫停遊戲更新
 function stopGame() {
     cancelAnimationFrame(animationFrameId);  // 停止 updateGame
 }
+
+//開始遊戲更新
 function startGame() {
     updateGame2();  // 开始更新
 }
 
+//重製遊戲數據
 function resetGame(){
     player.x=50;
     clothingImage = [
@@ -587,9 +599,9 @@ function resetGame(){
     getButtonByName('wearpet').canclick=false;
 }
 
-// 繪製玩家
+//繪製玩家
 function drawPlayer() {
-    ctx2.font = "30px Arial"; // 設定字體大小與類型
+    ctx2.font = "bold 30px Arial"; // 設定字體大小與類型
     ctx2.fillStyle = "black"; // 設定文字顏色
     ctx2.textAlign = 'center';
     ctx2.textBaseline = 'middle';
@@ -610,10 +622,26 @@ function drawPlayer() {
     }
 }
 
+//繪製NPC
 function drawNPC() {
+    ctx2.font = "bold 30px Arial"; // 設定字體大小與類型
+    ctx2.fillStyle = "white"; // 設定文字顏色
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
+    ctx2.lineWidth = 5;  // 外框的寬度
+    ctx2.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+    ctx2.strokeText(npc.name, npc.x- camera.x + npc.width / 2, npc.y - 10); // 繪製外框
+    ctx2.fillText(npc.name, npc.x- camera.x + npc.width / 2 , npc.y - 10);
+    if(currentRewardIndex==0){
+        ctx2.font = "bold 60px Arial"; // 設定字體大小與類型
+        ctx2.fillStyle = "yellow"; // 設定文字顏色
+        ctx2.strokeText("!", npc.x- camera.x + npc.width / 2, npc.y - 70); // 繪製外框
+        ctx2.fillText("!", npc.x- camera.x + npc.width / 2 , npc.y - 70);
+    }
     ctx2.drawImage(npcImage, npc.x- camera.x, npc.y, npc.width, npc.height);  // 使用圖片繪製角色
 }
 
+//繪製寵物
 function drawPet() {
     if(pet.wear){
         if (direction.right) {
@@ -629,6 +657,7 @@ function drawPet() {
     }
 }
 
+//繪製小地圖
 function drawMinimap() {
     // 設定小地圖的邊框
     ctx2.lineWidth = 5;   // 邊框寬度
@@ -661,9 +690,9 @@ function drawMinimap() {
     ctx2.fillStyle = 'red';
     ctx2.fill();
     ctx2.drawImage(background2, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
-    // 計算角色圖像的縮放大小
-    //minimapCtx.drawImage(playerImage, playerMinimapX , playerMinimapY, 293/10, 377/5);
 }
+
+//服裝介面屬性
 const clothingBox = {
     width: 800, // 寬度
     height: 800, // 高度
@@ -689,6 +718,8 @@ const clothingBox = {
     arrowSize : 30,  // 左右箭頭的大小
     closeButtonSize : 100,  // 關閉按鈕的大小
 };
+
+//寵物介面屬性
 const petBox = {
     width: 800, // 寬度
     height: 800, // 高度
@@ -714,6 +745,7 @@ const petBox = {
     arrowSize : 30,  // 左右箭頭的大小
     closeButtonSize : 100,  // 關閉按鈕的大小
 };
+
 // 按鈕的位置和大小（右下角）
 const buttonWidth = 200;
 const buttonHeight = 200;
@@ -722,6 +754,7 @@ const buttonX = canvas2.width - buttonWidth - padding;
 const buttonY = canvas2.height - buttonHeight - padding;
 let buttonHovered=false;
 
+//表情符號按鈕屬性
 const emojimenuWidth = 250;  // 選單的寬度
 const emojimenuHeight = 300;  // 選單的高度與視窗高度一致
 let emojimenuOpen = false;  // 用來控制選單是否打開
@@ -729,6 +762,8 @@ let emojimenuX=buttonX-100-emojimenuWidth;  // 選單的初始 X 座標，位於
 let emojimenuY=buttonY+150-emojimenuHeight;  // 選單的初始 X 座標，位於畫面右側外部
 let emojiOpen=false;
 let emojiImage=new Image();
+
+//所有按鈕屬性
 let buttons = [
     {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
     {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
@@ -763,25 +798,23 @@ let buttons = [
     {draw:showpetBox, type:"pet",name:"wearpet",x:petBox.x+petBox.width/2-100, y: petBox.y+petBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
 ]
 
+//得到按鈕
 function getButtonByName(name) {
     return buttons.find(button => button.name === name);
 }
 
-
+//繪製表情符號介面
 function drawemojiMenu() {
     if (emojimenuOpen) {
-    
         // 畫選單背景
         ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";  // 選單背景顏色
         ctx2.fillRect(emojimenuX, emojimenuY, emojimenuWidth, emojimenuHeight);
-
-        // 畫選單內的按鈕
-        ctx2.fillStyle = "white";
-
     }
 }
+
+//繪製按鈕
 function drawButton() {
-    // 繪製按鈕（綠色的圓形背景）
+    // 繪製按鈕
     buttons.forEach(button => {
         if(button.draw){
             ctx2.fillStyle = "rgba(0, 0, 0, 0.5)";   
@@ -955,8 +988,7 @@ function drawButton() {
     });   
 }
 
-
-
+//偵測玩家和NPC是否重疊
 function collisiondetect(){
     // 檢查角色是否接近NPC
   const npcDist = Math.sqrt((player.x - npc.x) ** 2 + (player.y - npc.y) ** 2);
@@ -974,13 +1006,13 @@ function collisiondetect(){
   }
 }
 
-
+// 監聽鼠標移動事件 (適用於桌面端)
 canvas2.addEventListener('mousemove', function(event) {
     if(!isMobileDevice())
     handleMouseEvent(event,false);
 });
 
-// 監聽 canvas 上的點擊事件 (適用於桌面端)
+// 監聽點擊事件 (適用於桌面端)
 canvas2.addEventListener('mousedown', function(event) {
     if(!isMobileDevice())
     handleMouseEvent(event,true);
@@ -990,7 +1022,6 @@ canvas2.addEventListener('mousedown', function(event) {
 canvas2.addEventListener('touchstart', function(event) {
     handleTouchEvent(event);
 }, );
-
 
 // 處理滑鼠點擊事件
 function handleMouseEvent(event,ishover) {
@@ -1022,7 +1053,7 @@ function handleTouchEvent(event) {
     event.preventDefault(); // 防止觸摸移動時頁面滾動
 }
 
-// 檢查是否點擊在圓形按鈕上
+// 檢查是否點擊按鈕
 function checkButtonClick(x, y, ismouse) {
     buttons.forEach(button => {
         if(button.draw&&button.canclick){
@@ -1033,7 +1064,7 @@ function checkButtonClick(x, y, ismouse) {
             let distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
 
             if (distance <= radius) {
-                console.log("點擊在圓形按鈕內部，按鈕" + button.name);
+                console.log("按鈕" + button.name);
                 if(!ismouse) button.buttonHover=false;
                 button.buttonClicked = true;  // 設置被點擊的按鈕狀態
                 setTimeout(() => {
@@ -1166,6 +1197,8 @@ function checkButtonClick(x, y, ismouse) {
         }
     });
 }
+
+// 檢查是否覆蓋按鈕
 function checkButtonHover(x, y) {
     buttonHovered=false;
     buttons.forEach(button => {
@@ -1180,13 +1213,14 @@ function checkButtonHover(x, y) {
                 
             if ( button.buttonHover) {
                 buttonHovered=true;
-                console.log("hover"+button.name)  // 只要有一個按鈕被 hover，就設置 isHovering 為 true
+                //console.log("hover"+button.name)  // 只要有一個按鈕被 hover，就設置 isHovering 為 true
             }
         }
     });
     
 }
 
+//NPC對話框介面屬性
 const dialogBox = {
     width: 800, // 寬度
     height: 200, // 高度
@@ -1214,6 +1248,7 @@ const dialogBox = {
     arrowSpeed: 0.005
 };
 
+//繪製NPC對話框
 function drawDialogBox() {
     if (showDialog) {
         //ctx2.scale(-1, 1); // 水平翻轉
@@ -1281,6 +1316,7 @@ function drawDialogBox() {
     }
 }
 
+//獎勵對話框屬性
 const rewardBox = {
     width: 800, // 寬度
     height: 400, // 高度
@@ -1305,6 +1341,8 @@ const rewardBox = {
     arrowDirection: 1,
     arrowSpeed: 0.005
 };
+
+//繪製獎勵對話框
 function drawRewardBox() {
     
     if (showReward) {
@@ -1419,6 +1457,7 @@ function nextDialog() {
         //loadGame1();
     }
 }
+
 // 顯示下一行對話
 function nextReward() {
     currentRewardIndex++;
@@ -1432,7 +1471,7 @@ function nextReward() {
     }
 }
 
-
+//繪製服裝介面
 function drawclothingbox() {
     if (!showclothingBox) return;
 
@@ -1453,6 +1492,8 @@ function drawclothingbox() {
     
 
 }
+
+//繪製寵物介面
 function drawpetbox() {
     if (!showpetBox) return;
 
@@ -1473,6 +1514,8 @@ function drawpetbox() {
     
 
 }
+
+//是否點擊NPC對話框
 function isClickInDialog(x, y) {
     if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
         y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
@@ -1482,6 +1525,8 @@ function isClickInDialog(x, y) {
 
     }
 }
+
+//是否點擊獎勵對話框
 function isClickInReward(x, y) {
     if(x >= rewardBox.x && x <= rewardBox.x + rewardBox.width &&
         y >= rewardBox.y && y <= rewardBox.y + rewardBox.height){
@@ -1491,6 +1536,8 @@ function isClickInReward(x, y) {
 
     }
 }
+
+//繪製指示箭頭
 function drawArrow(){
     if(teach.index==2){
         const teacharrowX=canvas2.width/1.3;
@@ -1521,12 +1568,13 @@ function drawArrow(){
     }
 }
 
-
+//開關選單
 function toggleMenu() {
     getButtonByName('menu').draw=menuOpen;
     menuOpen = !menuOpen;  // 切換選單開關狀態
 }
 
+//開關表情符號介面
 function toggleemojiMenu() {
     
     emojimenuOpen = !emojimenuOpen;  // 切換選單開關狀態
@@ -1535,6 +1583,8 @@ function toggleemojiMenu() {
         button.draw= emojimenuOpen;
     });
 }
+
+//開關服裝介面
 function toggleclothing(isopen) {
     if(isopen){
         getButtonByName('wearclothing').text=clothingImage[currentclothingIndex].text;
@@ -1550,6 +1600,8 @@ function toggleclothing(isopen) {
     });
     
 }
+
+//開關寵物介面
 function togglepet(isopen) {
     if(isopen){
         getButtonByName('wearpet').text=petImages[currentpetIndex].text;
@@ -1565,6 +1617,8 @@ function togglepet(isopen) {
     });
     
 }
+
+//更換服裝
 function changeclothing(direction) {
     let length=0;
     clothingImage.forEach(clothing=>{
@@ -1582,6 +1636,8 @@ function changeclothing(direction) {
         getButtonByName('wearclothing').canclick=!clothingImage[currentclothingIndex].weared;
     }
 }
+
+//更換寵物
 function changepet(direction) {
     let length=0;
     petImages.forEach(pet=>{
@@ -1597,6 +1653,8 @@ function changepet(direction) {
         getButtonByName('wearpet').text=petImages[currentpetIndex].text;
     }
 }
+
+//穿戴服裝
 function wearclothing() {
     clothingImage.forEach(clothing=>{
         clothing.text='穿戴';
@@ -1610,6 +1668,8 @@ function wearclothing() {
     playerImage.src=clothingImage[currentclothingIndex].img;
     console.log('穿戴了這個物品:', clothingImage[currentclothingIndex]);
 }
+
+//穿戴寵物
 function wearpet(iswear) {
     pet.wear=false;
     petImages.forEach(pet=>{
@@ -1627,6 +1687,7 @@ function wearpet(iswear) {
     }
 }
 
+//鍵盤移動
 document.addEventListener('keydown', (e) => {
     //console.log(e.key);
     if (e.key === 'ArrowRight'||e.key === 'd'||e.key === 'ArrowLeft'||e.key === 'a'){
@@ -1654,7 +1715,6 @@ document.addEventListener('keydown', (e) => {
         keys.up = true;
     }
 });
-
 document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowRight'||e.key === 'd') keys.right = false;
     if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = false;
