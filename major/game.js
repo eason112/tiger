@@ -97,6 +97,16 @@ const teach={
     canmove:true,
 }
 
+const misson={
+    animationProgress : 0,
+    direction : 1,// 1 代表向右，-1 代表向回中間
+    minianimationProgress : 0,
+    minidirection : 1,// 1 代表向右，-1 代表向回中間
+    scale: 1,// 控制图像的缩放
+    scaleDirection: 1,  // 控制缩放方向，1 为放大，-1 为缩小
+    scaleSpeed: 0.01,  // 控制缩放的速度
+}
+
 // 搖桿繪製
 function drawJoystick() {
 
@@ -331,7 +341,7 @@ let npc = {
     y: 550 ,  // NPC的Y位置，放在地面之上
     width: 293,  // NPC的寬度
     height: 377, // NPC的高度
-    name:'桃樂比',
+    name:'小朋老師',
 };
 
 //寵物屬性
@@ -382,8 +392,8 @@ const camera = {
 
 //NPC對話框屬性
 const npcDialog = [
-    { name: npc.name, text: "你好，巧虎！一起挖蛤蠣吧。" },
-    { name: npc.name, text: "恭喜挖到蛤蠣!" },
+    { name: npc.name, text: "現在是海洋退潮的時間 小朋友們我們今天要來挖蛤蠣喔！",  logo:"!"},
+    { name: npc.name, text: "現在你知道海洋漲潮與退潮的意思了 很棒喔！老師給你一些獎勵", logo:"?"},
 ];
 
 //獎勵對話框屬性
@@ -656,11 +666,28 @@ function drawNPC() {
     ctx2.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
     ctx2.strokeText(npc.name, npc.x- camera.x + npc.width / 2, npc.y - 10); // 繪製外框
     ctx2.fillText(npc.name, npc.x- camera.x + npc.width / 2 , npc.y - 10);
-    if(currentRewardIndex==0){
-        ctx2.font = "bold 60px Arial"; // 設定字體大小與類型
+    if(teach.index<=4){
+        let maxY = npc.y - 150 ;  // 右邊界
+        let minY = npc.y - 100 ;  // 中心位置
+
+        // 更新動畫進度
+        misson.animationProgress += misson.direction * 0.02; // 控制圖片移動速度
+        let currentY = minY + misson.animationProgress * (maxY - minY);
+        // 當圖片到達右邊界時，直接跳回中間
+        if (misson.animationProgress >= 1) {
+            misson.animationProgress = 1; // 保證圖片停在最右邊
+            misson.direction = -1; // 改變方向回到中間
+        }
+
+        // 當圖片到達中間時，改變方向
+        if (misson.animationProgress <= 0) {
+            misson.animationProgress = 0; // 保證圖片停在最中間
+            misson.direction = 1; // 改變方向
+        }
+        ctx2.font = "bold 150px Arial"; // 設定字體大小與類型
         ctx2.fillStyle = "yellow"; // 設定文字顏色
-        ctx2.strokeText("!", npc.x- camera.x + npc.width / 2, npc.y - 70); // 繪製外框
-        ctx2.fillText("!", npc.x- camera.x + npc.width / 2 , npc.y - 70);
+        ctx2.strokeText(npcDialog[currentDialogIndex].logo, npc.x- camera.x + npc.width / 2, currentY); // 繪製外框
+        ctx2.fillText(npcDialog[currentDialogIndex].logo, npc.x- camera.x + npc.width / 2 , currentY);
     }
     ctx2.drawImage(npcImage, npc.x- camera.x, npc.y, npc.width, npc.height);  // 使用圖片繪製角色
 }
@@ -704,6 +731,29 @@ function drawMinimap() {
     ctx2.arc(minimapX + NPCMinimapX+25, minimapY+50 + NPCMinimapY, 10, 0, Math.PI * 2);
     ctx2.fillStyle = 'green';
     ctx2.fill();
+    if(teach.index<=4){
+        let maxY = NPCMinimapY - 70 ;  // 右邊界
+        let minY = NPCMinimapY - 50 ;  // 中心位置
+
+        // 更新動畫進度
+        misson.minianimationProgress += misson.minidirection * 0.02; // 控制圖片移動速度
+        let currentY = minY + misson.minianimationProgress * (maxY - minY);
+        // 當圖片到達右邊界時，直接跳回中間
+        if (misson.minianimationProgress >= 1) {
+            misson.minianimationProgress = 1; // 保證圖片停在最右邊
+            misson.minidirection = -1; // 改變方向回到中間
+        }
+
+        // 當圖片到達中間時，改變方向
+        if (misson.minianimationProgress <= 0) {
+            misson.minianimationProgress = 0; // 保證圖片停在最中間
+            misson.minidirection = 1; // 改變方向
+        }
+        ctx2.font = "bold 60px Arial"; // 設定字體大小與類型
+        ctx2.fillStyle = "yellow"; // 設定文字顏色
+        ctx2.strokeText(npcDialog[currentDialogIndex].logo, minimapX + NPCMinimapX+25, minimapY+50 + currentY); // 繪製外框
+        ctx2.fillText(npcDialog[currentDialogIndex].logo, minimapX + NPCMinimapX+25 , minimapY+50 + currentY);
+    }
     // 轉換玩家世界座標為小地圖座標
     const playerMinimapX = player.x * minimapScaleX;
     const playerMinimapY = player.y * minimapScaleY;
@@ -713,6 +763,7 @@ function drawMinimap() {
     ctx2.arc(minimapX + playerMinimapX+25, minimapY+50 + playerMinimapY, 10, 0, Math.PI * 2);
     ctx2.fillStyle = 'red';
     ctx2.fill();
+
     ctx2.drawImage(background2, 0, 0, 4000, 940, minimapX, minimapY, minimapWidth, minimapHeight);
 }
 
@@ -1398,9 +1449,9 @@ function drawDialogBox() {
         ctx2.fillText(npcDialog[currentDialogIndex].name + ":", dialogBox.x + dialogBox.padding, dialogBox.y + dialogBox.padding);
 
         // 顯示對話文本
-        ctx2.font = '30px Arial';
+        ctx2.font = '40px Arial';
         let textX = dialogBox.x + dialogBox.padding;
-        let textY = dialogBox.y + dialogBox.padding + 40;
+        let textY = dialogBox.y + dialogBox.padding + 50;
 
         // 分割對話文本成多行，避免超出對話框範圍
         const maxLineWidth = dialogBox.width - 2 * dialogBox.padding;
@@ -1430,7 +1481,7 @@ function drawDialogBox() {
             );
         }
         lines.forEach((line, index) => {
-            ctx2.fillText(line, textX, textY + (index * 25)); // 顯示每行文本
+            ctx2.fillText(line, textX, textY + (index * 45)); // 顯示每行文本
         });
     }
 }
@@ -1560,13 +1611,13 @@ function wrapText(text, maxWidth) {
 
 // 顯示下一行對話
 function nextDialog() {
-    currentDialogIndex++;
-    if (currentDialogIndex == 1) {
+    
+    if (currentDialogIndex == 0) {
         video.play();
         isplayvideo=true;
         //createYouTube();
     }
-    if (currentDialogIndex >= npcDialog.length) {
+    if (currentDialogIndex >= npcDialog.length-1) {
         if(teach.index==4)teach.index++;
         showDialog = false; // 對話結束後隱藏對話框
         currentDialogIndex=0;
@@ -1574,6 +1625,9 @@ function nextDialog() {
             showReward=true;
         }
     }
+    setTimeout(()=>{
+        currentDialogIndex++;
+    },200)
 }
 
 // 顯示下一行對話
