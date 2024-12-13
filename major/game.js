@@ -2,7 +2,7 @@ const url2="https://eason112.github.io/tiger";
 //import '../all.js'
 const canvas2 = document.getElementById('gameCanvas2');
 const ctx2 = canvas2.getContext('2d');
-//const video = document.getElementById('myVideo');
+const video = document.getElementById('myVideo');
 
 // 設定畫布大小
 canvas2.width = 2000;
@@ -1452,9 +1452,9 @@ function wrapText(text, maxWidth) {
 function nextDialog() {
     currentDialogIndex++;
     if (currentDialogIndex == 1) {
-        //video.play();
-        //isplayvideo=true;
-        createYouTube();
+        video.play();
+        isplayvideo=true;
+        //createYouTube();
     }
     if (currentDialogIndex >= npcDialog.length) {
         if(teach.index==4)teach.index++;
@@ -1731,7 +1731,7 @@ document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowUp'||e.key === 'w') keys.up = false;
 });
 
-/*function drawVideo() {
+function drawVideo() {
     if (!video.paused && !video.ended) {
         ctx2.drawImage(video, 0, 0, canvas2.width, canvas2.height); // 将视频帧绘制到canvas上
         requestAnimationFrame(drawVideo); // 下一帧继续绘制
@@ -1746,7 +1746,7 @@ document.addEventListener('keyup', (e) => {
 
 video.addEventListener('play', function () {
     drawVideo();
-});*/
+});
 
 let YTplayer=null;
 function createYouTube() {
