@@ -1657,11 +1657,12 @@ function drawclothingbox() {
     // 畫背景矩形
     ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
     ctx2.fillRect(clothingBox.x, clothingBox.y, clothingBox.width, clothingBox.height);
-    ctx2.fillStyle = "red";
+    ctx2.fillStyle = "orange";
     ctx2.font = `bold 80px Arial`;
     ctx2.textAlign = "center";
     ctx2.textBaseline = "middle";
     ctx2.fillText('服裝', clothingBox.x + clothingBox.width / 2, clothingBox.y+80);
+    ctx2.fillStyle = "white";
     ctx2.fillText(clothingImage[currentclothingIndex].name, clothingBox.x + clothingBox.width / 2, clothingBox.y+clothingBox.height-150);
 
     // 畫圖片
@@ -1679,11 +1680,12 @@ function drawpetbox() {
     // 畫背景矩形
     ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
     ctx2.fillRect(petBox.x, petBox.y, petBox.width, petBox.height);
-    ctx2.fillStyle = "red";
+    ctx2.fillStyle = "orange";
     ctx2.font = `bold 80px Arial`;
     ctx2.textAlign = "center";
     ctx2.textBaseline = "middle";
     ctx2.fillText('寵物', petBox.x + petBox.width / 2, petBox.y+80);
+    ctx2.fillStyle = "white";
     ctx2.fillText(petImages[currentpetIndex].name, petBox.x + petBox.width / 2, petBox.y+petBox.height-150);
 
     // 畫圖片
@@ -1700,13 +1702,13 @@ function drawarbox() {
     // 畫背景矩形
     ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
     ctx2.fillRect(ARBox.x, ARBox.y, ARBox.width, ARBox.height);
-    ctx2.fillStyle = "red";
+    ctx2.fillStyle = "orange";
     ctx2.font = `bold 80px Arial`;
     ctx2.textAlign = "center";
     ctx2.textBaseline = "middle";
     ctx2.fillText('AR', ARBox.x + ARBox.width / 2, ARBox.y+80);
-    ctx2.fillText(ARImages[currentARIndex].name, ARBox.x + ARBox.width / 2, ARBox.y+ARBox.height-150);
     ctx2.fillStyle = "white";
+    ctx2.fillText(ARImages[currentARIndex].name, ARBox.x + ARBox.width / 2, ARBox.y+ARBox.height-150);
     ctx2.font = `30px Arial`;
     ctx2.fillText('建議使用手機或平板電腦開啟', ARBox.x + ARBox.width / 2, ARBox.y+150);
     ctx2.fillText('獲得完整的AR體驗', ARBox.x + ARBox.width / 2, ARBox.y+180);
