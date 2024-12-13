@@ -56,6 +56,8 @@ const bgm2 = document.getElementById('bgm2');
 
 let score_new = 0;
 let time=0;
+
+
 function getUI(name){
     let UI = uiElements.find(ui => ui.name === name);
     return UI;
@@ -72,7 +74,6 @@ const uiElements = [
         color: 'white',
         draw: function() {
             if(gameState===this.State){
-
                 ctx.font = `${this.fontSize}px Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -83,7 +84,7 @@ const uiElements = [
                 ctx.fillText(this.text, this.x, this.y);
             }
         }
-    },
+    },//gameInfo
     {
         State:'gameInfo',
         name: 'startButton', // 开始按钮
@@ -121,9 +122,7 @@ const uiElements = [
                 ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
                 ctx.closePath();
                 ctx.fill(); // 填充颜色
-                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-
-                
+   
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
                 ctx.textAlign = 'center';
@@ -151,14 +150,11 @@ const uiElements = [
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
                     playSound('clickbutton');
-                    console.log('click')
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
-                        playBGM(bgm);
                         gameState="difficulty";
                         
                     }, 200);
-                    console.log('开始游戏');
                     
                 }
             }
@@ -180,7 +176,7 @@ const uiElements = [
         loadImage: function(src) {
             this.image.src = src;  // 设置图像的路径
         },
-    },
+    },//startButton
     {
         State:'difficulty',
         name: 'gameInfo', // 游戏说明界面
@@ -203,7 +199,7 @@ const uiElements = [
                 ctx.fillText(this.text, this.x, this.y);
             }
         }
-    },
+    },//gameInfo
     {
         State:'difficulty',
         name: 'easyButton', // 开始按钮
@@ -241,8 +237,6 @@ const uiElements = [
                 ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
                 ctx.closePath();
                 ctx.fill(); // 填充颜色
-                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
-
 
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
@@ -278,7 +272,6 @@ const uiElements = [
                         gameState="gameStart";
                         
                     }, 200);
-                    console.log('开始游戏');
                     
                 }
             }
@@ -297,7 +290,7 @@ const uiElements = [
     
             this.teachscale += this.scaleSpeed * this.scaleDirection;  // 使用 scaleSpeed 控制缩放速度
         },
-    },
+    },//easyButton
     {
         State:'difficulty',
         name: 'normalButton', // 开始按钮
@@ -315,7 +308,6 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
-                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
@@ -329,7 +321,6 @@ const uiElements = [
                 ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
                 ctx.closePath();
                 ctx.fill(); // 填充颜色
-                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
@@ -350,7 +341,6 @@ const uiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                     }, 200);
-                    console.log('开始游戏');
                     
                 }
             }
@@ -360,7 +350,7 @@ const uiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         }
-    },
+    },//normalButton
     {
         State:'difficulty',
         name: 'difficultButton', // 开始按钮
@@ -378,7 +368,6 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
-                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
@@ -392,7 +381,6 @@ const uiElements = [
                 ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
                 ctx.closePath();
                 ctx.fill(); // 填充颜色
-                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
@@ -413,7 +401,6 @@ const uiElements = [
                     setTimeout(() => {
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                     }, 200);
-                    console.log('开始游戏');
                     
                 }
             }
@@ -423,7 +410,7 @@ const uiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         }
-    },
+    },//difficultButton
     {
         State:'gameStart',
         name: 'countdown', // 游戏说明界面
@@ -451,7 +438,7 @@ const uiElements = [
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillStyle = this.color;
-                    console.log(this.text[this.index])
+                    //console.log(this.text[this.index])
                     ctx.strokeText(this.text[this.index], this.x, this.y);
                     ctx.fillText(this.text[this.index], this.x, this.y);
                 } else {
@@ -470,7 +457,7 @@ const uiElements = [
             this.index=0;
             this.timer=null;
         },
-    },
+    },//countdown
     {
         State:'gameStart',
         name: 'timer', // 游戏说明界面
@@ -525,7 +512,6 @@ const uiElements = [
                 if (elapsedTime < this.time) {
                     this.index = elapsedTime;  // 更新 index 来显示对应的倒计时数字
                     
-                    console.log()
                      // 計算文字的寬度和高度
                     const textWidth = this.width;
                     const textHeight = this.height;
@@ -567,7 +553,7 @@ const uiElements = [
             this.timer=null;
             this.finalcountdown=true;
         },
-    },
+    },//timer
     {
         State:'gameStart',
         name: 'score', // 游戏说明界面
@@ -583,7 +569,6 @@ const uiElements = [
         draw: function() {
             if(gameState===this.State){
                     
-                    console.log()
                      // 計算文字的寬度和高度
                     const textWidth = this.width;
                     const textHeight = this.height;
@@ -624,7 +609,7 @@ const uiElements = [
         reset: function(){
             this.score=0;
         },
-    },
+    },//score
     {
         State:'gameStart',
         name: 'beach', // 游戏说明界面
@@ -721,22 +706,16 @@ const uiElements = [
                                     clam.y += clam.speedY; // y 轴移动
                                 }
                                 else{
-                                    //clam.x += clam.speedX; // x 轴移动
                                     clam.y -= clam.speedY*2; // y 轴移动
                                 }
 
-                                // 更新速度以模拟重力效果
-                                //clam.speedY += clam.gravity; // 受到重力影响
-                                //console.log(Math.abs(clam.x - this.bucketx))
                                 // 检查是否到达桶子
                                 if (clam.x > this.bucketx&&clam.y>this.buckety ) {
                                     clam.isFlyingToBucket = false;
                                     clam.isget=true;
-                                    //clam.alpha = 0; // 蛤蠣消失
                                     this.getclam++;
                                     if(this.getclam===this.holes.length)
                                         {
-                                            
                                             this.cangeneratehole=true;
                                             this.generateHoles();
                                         }
@@ -1001,7 +980,6 @@ const uiElements = [
         },
         drawscore:function(text,color,x,y,RakeVisible=false) {
                 // 绘制蛤蠣
-            //console.log(123);
             ctx.font = "60px Arial";  // 设置字体样式
             ctx.fillStyle = color;  // 设置文本颜色
             ctx.fillText(text, x, y);  // 绘制文本
@@ -1018,7 +996,6 @@ const uiElements = [
                 } else if (this.scalealarmtextFactor <= 1) {
                     this.scalealarmtextDirection = 1;  // 当达到最小值时开始放大
                 }
-                //console.log(this.scalealarmtextFactor);
                 this.scalealarmtextFactor += this.scaleSpeed * this.scalealarmtextDirection;  // 每帧调整字体缩放因子
 
                 requestAnimationFrame(() => this.animateAlarm());  // 继续下一帧动画
@@ -1060,7 +1037,7 @@ const uiElements = [
         },
         
 
-    },
+    },//beach
     {
         State:'gameOver',
         name: 'gameover', // 游戏说明界面
@@ -1082,7 +1059,7 @@ const uiElements = [
                 ctx.fillText(this.text, this.x+2, this.y+2);
             }
         }
-    },
+    },//gameover
     {
         State:'gameOver',
         name: 'finalscore', // 游戏说明界面
@@ -1105,7 +1082,7 @@ const uiElements = [
                 ctx.fillText(this.text+getUI('score').score, this.x+2, this.y+2);
             }
         }
-    },
+    },//finalscore
     {
         State:'gameOver',
         name: 'againButton', // 开始按钮
@@ -1123,7 +1100,6 @@ const uiElements = [
         isHovered: false,  // 模拟 hover 效果
         draw: function() {
             if(gameState===this.State){
-                //canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
                 ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
                 const radius=15;
                 const BtnX=this.x-this.width/2;
@@ -1137,7 +1113,6 @@ const uiElements = [
                 ctx.arcTo(BtnX, BtnY, BtnX + this.width, BtnY, radius); // 左上角
                 ctx.closePath();
                 ctx.fill(); // 填充颜色
-                //ctx.fillRect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
 
                 ctx.fillStyle = this.color;
                 ctx.font = `${this.fontSize*this.scale}px Arial`;
@@ -1171,7 +1146,6 @@ const uiElements = [
                         getUI('score').reset();
                         getUI('beach').reset();
                     }, 200);
-                    console.log('开始游戏');
                 }
             }
         },
@@ -1180,7 +1154,7 @@ const uiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         }
-    },
+    },//againButton
     {
         State:'gameOver',
         name: 'exitButton', // 开始按钮
@@ -1247,7 +1221,6 @@ const uiElements = [
                         stopBGM(bgm);
                         loadGame2();
                     }, 200);
-                    console.log('开始游戏');
                     
                 }
             }
@@ -1257,7 +1230,7 @@ const uiElements = [
                 this.isHovered = state;  // 设置 hover 状态
             }
         }
-    },
+    },//exitButton
     // 可以继续添加其他界面元素...
 ];
 
@@ -1275,8 +1248,10 @@ function updateGame(timestamp){
     requestAnimationFrame(updateGame);
 
 }
+
 let loadedBackgrounds = [];
 let imagesLoaded = 0;
+
 backgroundImages.forEach((src, index) => {
     let img = new Image();
     img.src = src;
@@ -1290,7 +1265,9 @@ backgroundImages.forEach((src, index) => {
         }
     };
 });
+
 let imagesLoaded2 = 0;
+
 tideImages.forEach((src, index) => {
     let img = new Image();
     img.src = src;
@@ -1322,9 +1299,6 @@ if (imagesLoaded === backgroundImages.length) {
     updateGame();
 }
 
-
-  
-
 function drawBackground(timestamp){
     if (!lastFrameTime) lastFrameTime = timestamp;
     let deltaTime = timestamp - lastFrameTime;
@@ -1342,9 +1316,6 @@ function drawGameInfo() {
         element.draw();
     });
 }
-
-
-
 
 // 設置遊戲開始按鈕的點擊事件
 canvas.addEventListener("mousedown", (e) => {
