@@ -109,6 +109,7 @@ function preloadImages() {
         img.src = src;
         img.onload = () => {
             //console.log(img.src);
+            loginctx.drawImage(img, 0, 0, 10, 10);
             loadedImages++;
             // 当所有图片加载完毕后，可以开始渲染或启动动画
             if (loadedImages === imagesToPreload.length) {
