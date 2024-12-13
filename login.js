@@ -991,6 +991,7 @@ const loginuiElements = [
                 loginctx.textAlign = 'center';
                 loginctx.textBaseline = 'middle';
                 loginctx.fillText(this.text, this.x, this.y-this.height/2.5);
+                loginctx.fillStyle = 'black';
                 loginctx.fillText(characterImage[this.currentcharacterIndex].name, this.x, this.y+this.height/2-200);
 
                 // 畫圖片
@@ -1470,7 +1471,7 @@ const loginuiElements = [
         inputtext:'',
         fontSize: 40,
         maxLength:8,
-        color: 'white',
+        color: 'black',
         backgroundColor: '#00aaff',
         cursorVisible : true,  // 控制光標是否顯示
         cursorPosition : 0,  // 光標的位置，控制字符的插入位置
