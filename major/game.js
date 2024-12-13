@@ -611,6 +611,8 @@ function startGame() {
 function resetGame(){
     player.x=50;
     direction.right=true;
+    background1X=0;
+    background2X=4000;
     clothingImage = [
         { index:0,hasget: true,name:"經典", text: "已穿戴",img:url2+'/major/images/player.png',imageWidth:293,imageHeight:377,weared:true },
         { index:1,hasget: false,name:"海灘", text: "穿戴",img:url2+'/major/images/NPC.png' ,imageWidth:293,imageHeight:377,weared:false},
