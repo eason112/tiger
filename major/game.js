@@ -2,6 +2,7 @@ const url2="https://eason112.github.io/tiger";
 //import '../all.js'
 const canvas2 = document.getElementById('gameCanvas2');
 const ctx2 = canvas2.getContext('2d');
+//const video = document.getElementById('myVideo');
 
 // 設定畫布大小
 canvas2.width = 2000;
@@ -52,6 +53,7 @@ const minimapY = 20;
 //地面高度
 const groundHeight =0;
 
+let isplayvideo=false;
 
 let Touches = [];
 let Touchesindex=[
@@ -154,17 +156,23 @@ function drawJoystick() {
 
 // 檢查鼠標/觸摸點是否在搖桿範圍內
 function isInJoystickArea(x, y) {
-    const deltaX = x - joystickCenter.x;
-    const deltaY = y - joystickCenter.y;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    return {isInArea: distance <= joystickBackgroundRadius,  // 是否在範圍內
-            isInKnob: distance <= joystickKnobRadius}// 判斷是否在搖桿背景的圓形範圍內
+    if(!isplayvideo){
+        const deltaX = x - joystickCenter.x;
+        const deltaY = y - joystickCenter.y;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        return {isInArea: distance <= joystickBackgroundRadius,  // 是否在範圍內
+                isInKnob: distance <= joystickKnobRadius}// 判斷是否在搖桿背景的圓形範圍內
+    }
+    else{
+        return {isInArea: false,  // 是否在範圍內
+                isInKnob: false}// 判斷是否在搖桿背景的圓形範圍內
+    }
 }
 
 // 更新搖桿狀態
 function updateJoystick(offsetX,offsetY,isstop=false) {
     // 計算搖桿的最大可移動範圍（背景半徑）
-    if(teach.canmove){
+    if(teach.canmove&&!isplayvideo){
         if(teach.index==0){
             setTimeout(() => {
                 teach.canmove=false;
@@ -537,6 +545,7 @@ function updateGame2() {
     drawDialogBox();
     drawRewardBox();
     drawArrow();
+
     if (background1X < -4000) {
         background1X = 4000+background2X-backgroundspeed;  // 重置位置，使背景無縫循環
     }
@@ -1056,7 +1065,7 @@ function handleTouchEvent(event) {
 // 檢查是否點擊按鈕
 function checkButtonClick(x, y, ismouse) {
     buttons.forEach(button => {
-        if(button.draw&&button.canclick){
+        if(button.draw&&button.canclick&&!isplayvideo){
             let centerX = button.x + button.width / 2;
             let centerY = button.y + button.height / 2;
             let radius = button.width / 2;
@@ -1146,7 +1155,7 @@ function checkButtonClick(x, y, ismouse) {
                                 wearpet(false);
                             }
                             break;
-                        }                  
+                        }            
                     }
                     if(button.type=='emoji'){
                         buttonHovered=false;
@@ -1202,7 +1211,7 @@ function checkButtonClick(x, y, ismouse) {
 function checkButtonHover(x, y) {
     buttonHovered=false;
     buttons.forEach(button => {
-        if(button.draw&&button.canclick){
+        if(button.draw&&button.canclick&&!isplayvideo){
             let centerX = button.x + button.width / 2;
             let centerY = button.y + button.height / 2;
             let radius = button.width / 2;
@@ -1443,9 +1452,9 @@ function wrapText(text, maxWidth) {
 function nextDialog() {
     currentDialogIndex++;
     if (currentDialogIndex == 1) {
-        //showDialog = false; // 對話結束後隱藏對話框
-        //currentDialogIndex=0;
-        loadGame1();
+        //video.play();
+        //isplayvideo=true;
+        createYouTube();
     }
     if (currentDialogIndex >= npcDialog.length) {
         if(teach.index==4)teach.index++;
@@ -1454,7 +1463,6 @@ function nextDialog() {
         if(currentRewardIndex==0){
             showReward=true;
         }
-        //loadGame1();
     }
 }
 
@@ -1519,7 +1527,7 @@ function drawpetbox() {
 function isClickInDialog(x, y) {
     if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
         y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
-        if(showDialog){
+        if(showDialog&&!isplayvideo){
             nextDialog(); 
         }
 
@@ -1690,29 +1698,31 @@ function wearpet(iswear) {
 //鍵盤移動
 document.addEventListener('keydown', (e) => {
     //console.log(e.key);
-    if (e.key === 'ArrowRight'||e.key === 'd'||e.key === 'ArrowLeft'||e.key === 'a'){
-        if(teach.canmove){
-            if(teach.index==0){
-                setTimeout(() => {
-                    teach.canmove=false;
-                    keys.right=false;
-                    keys.left=false
-                    if(teach.index==0)
-                    teach.index++;
-                }, 1000);
+    if(!isplayvideo){
+        if (e.key === 'ArrowRight'||e.key === 'd'||e.key === 'ArrowLeft'||e.key === 'a'){
+            if(teach.canmove){
+                if(teach.index==0){
+                    setTimeout(() => {
+                        teach.canmove=false;
+                        keys.right=false;
+                        keys.left=false
+                        if(teach.index==0)
+                        teach.index++;
+                    }, 1000);
+                }
+                if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
+                if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
             }
-            if (e.key === 'ArrowRight'||e.key === 'd') keys.right = true;
-            if (e.key === 'ArrowLeft'||e.key === 'a') keys.left = true;
         }
-    }
-    if (e.key === 'ArrowUp'||e.key === 'w') {
-        if(teach.index==1){
-            setTimeout(() => {
-                teach.index++;
-                teach.canmove=true;
-            }, 1000);         
+        if (e.key === 'ArrowUp'||e.key === 'w') {
+            if(teach.index==1){
+                setTimeout(() => {
+                    teach.index++;
+                    teach.canmove=true;
+                }, 1000);         
+            }
+            keys.up = true;
         }
-        keys.up = true;
     }
 });
 document.addEventListener('keyup', (e) => {
@@ -1721,6 +1731,92 @@ document.addEventListener('keyup', (e) => {
     if (e.key === 'ArrowUp'||e.key === 'w') keys.up = false;
 });
 
+/*function drawVideo() {
+    if (!video.paused && !video.ended) {
+        ctx2.drawImage(video, 0, 0, canvas2.width, canvas2.height); // 将视频帧绘制到canvas上
+        requestAnimationFrame(drawVideo); // 下一帧继续绘制
+    }
+    else if (video.ended&&isplayvideo) {
+        loadGame1();
+        video.currentTime = 0; // 将视频时间设置为 0，即回到开始位置
+        isplayvideo=false;
+    }
+    
+}
+
+video.addEventListener('play', function () {
+    drawVideo();
+});*/
+
+let YTplayer=null;
+function createYouTube() {
+    YTplayer = new YT.Player('gameCanvas2', {
+      height: '940',
+      width: '2000',
+      videoId: 'SKOiEpSM8-Q', // 这里是视频的 ID
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+}
+
+
+  // 当播放器准备好时调用
+  function onPlayerReady(event) {
+  
+    event.target.playVideo(); // 播放视频
+  }
+
+  // 监听播放器状态变化
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+        console.log("视频开始播放");
+        startTracking();  // 开始跟踪视频播放
+    }
+    else if (event.data === YT.PlayerState.PAUSED) {
+        console.log("视频暂停");
+        stopTracking();
+    }
+    else if (event.data === YT.PlayerState.ENDED) {
+        console.log("视频播放完毕！");
+        stopTracking();
+        closePlayer();  // 关闭播放器或其他操作
+    }
+  }
+
+
+function closePlayer() {
+    // 通过调用 stopVideo 来停止视频播放
+    // 你可以选择隐藏播放器，或者做其他操作
+    stopTracking();
+    YTplayer.destroy();
+    loadGame1();
+}
+
+function getYTCurrentTime() {
+    let currentTime=0;
+    if(YTplayer!=null){
+    currentTime = YTplayer.getCurrentTime();
+    console.log('当前播放时间: ' + currentTime + ' 秒');
+    }
+    return currentTime;
+  }
+  let trackingInterval;
+  function startTracking() {
+    // 每2000毫秒（2秒）检查一次当前播放时间
+    trackingInterval = setInterval(function() {
+        if(getYTCurrentTime()>=70){
+            closePlayer();
+        }
+    }, 1000);
+  }
+  function stopTracking() {
+    if (trackingInterval) {
+      clearInterval(trackingInterval);  // 停止定时器
+      console.log("停止视频进度跟踪");
+    }
+  }
 // 開始遊戲
 //updateGame2();
 
