@@ -1,4 +1,4 @@
-const url2="";//https://eason112.github.io/tiger
+const url2="https://eason112.github.io/tiger";//https://eason112.github.io/tiger
 //import '../all.js'
 const canvas2 = document.getElementById('gameCanvas2');
 const ctx2 = canvas2.getContext('2d');
