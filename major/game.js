@@ -1771,15 +1771,15 @@ function createYouTube() {
   // 监听播放器状态变化
   function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
-        console.log("视频开始播放");
+        console.log("开始播放");
         startTracking();  // 开始跟踪视频播放
     }
     else if (event.data === YT.PlayerState.PAUSED) {
-        console.log("视频暂停");
+        console.log("暂停");
         stopTracking();
     }
     else if (event.data === YT.PlayerState.ENDED) {
-        console.log("视频播放完毕！");
+        console.log("播放完毕！");
         stopTracking();
         closePlayer();  // 关闭播放器或其他操作
     }
@@ -1790,8 +1790,10 @@ function closePlayer() {
     // 通过调用 stopVideo 来停止视频播放
     // 你可以选择隐藏播放器，或者做其他操作
     stopTracking();
+    if(YTplayer!=null){
     YTplayer.destroy();
     loadGame1();
+    }
 }
 
 function getYTCurrentTime() {
@@ -1809,12 +1811,12 @@ function getYTCurrentTime() {
         if(getYTCurrentTime()>=70){
             closePlayer();
         }
-    }, 1000);
+    }, 100);
   }
   function stopTracking() {
     if (trackingInterval) {
       clearInterval(trackingInterval);  // 停止定时器
-      console.log("停止视频进度跟踪");
+      console.log("停止进度跟踪");
     }
   }
 // 開始遊戲
