@@ -1,4 +1,4 @@
-const url2="https://eason112.github.io/tiger";
+const url2="";//https://eason112.github.io/tiger
 //import '../all.js'
 const canvas2 = document.getElementById('gameCanvas2');
 const ctx2 = canvas2.getContext('2d');
@@ -382,14 +382,15 @@ const camera = {
 
 //NPC對話框屬性
 const npcDialog = [
-    { name: "桃樂比", text: "你好，巧虎！一起挖蛤蠣吧。" },
-    { name: "桃樂比", text: "恭喜挖到蛤蠣!" },
+    { name: npc.name, text: "你好，巧虎！一起挖蛤蠣吧。" },
+    { name: npc.name, text: "恭喜挖到蛤蠣!" },
 ];
 
 //獎勵對話框屬性
 const rewardDialog = [
     { name: "reward", text: "恭喜你獲得新服裝!",img:url2+'/major/images/player.png',imageWidth:293/1.5,imageHeight:377/1.5 },
     { name: "reward", text: "恭喜你獲得新寵物!",img:url2+'/major/images/NPC.png' ,imageWidth:293/1.5,imageHeight:377/1.5},
+    { name: "reward", text: "恭喜你獲得新AR內容!",img:url2+'/major/images/ARicon.png' ,imageWidth:250,imageHeight:250},
 ];
 
 //可獲得服裝屬性
@@ -404,6 +405,11 @@ let petImages = [
     { index:1,hasget: false,name:"寄居蟹", text: "穿戴",img:url2+'/major/images/NPC.png',imageWidth:293,imageHeight:377,weared:false },
 ];
 
+let ARImages = [
+    { index:0,hasget: true,name:"無", text: "",img:'',imageWidth:293,imageHeight:377,weared:false },
+    { index:1,hasget: false,name:"海灘巧虎", text: "開啟",img:url2+'/major/images/ARicon.png',imageWidth:300,imageHeight:300,weared:false },
+];
+
 // 當前介面顯示index&&是否顯示
 let currentDialogIndex = 0;
 let showDialog = false;
@@ -413,6 +419,8 @@ let currentclothingIndex = 0;
 let showclothingBox = false;
 let currentpetIndex = 0; 
 let showpetBox = false;
+let currentARIndex = 0; 
+let showARBox = false;
 
 //選單屬性
 let menuOpen = false;  // 用來控制選單是否打開
@@ -539,6 +547,7 @@ function updateGame2() {
     drawemojiMenu();
     drawclothingbox();
     drawpetbox();
+    drawarbox();
     drawButton();
 
     drawJoystick();
@@ -599,13 +608,19 @@ function resetGame(){
         { index:0,hasget: true,name:"無", text: "",img:'',imageWidth:293,imageHeight:377,weared:false },
         { index:1,hasget: false,name:"寄居蟹", text: "穿戴",img:url2+'/major/images/NPC.png',imageWidth:293,imageHeight:377,weared:false },
     ];
+    ARImages = [
+        { index:0,hasget: true,name:"無", text: "",img:'',imageWidth:293,imageHeight:377,weared:false },
+        { index:1,hasget: false,name:"海灘巧虎", text: "開啟",img:url2+'/major/images/ARicon.png',imageWidth:250,imageHeight:250,weared:false },
+    ];
     teach.index=0;
     currentDialogIndex = 0;
     currentRewardIndex = 0;
     currentclothingIndex = 0;  // 當前顯示的圖片索引
     currentpetIndex = 0;  // 當前顯示的圖片索引
+    currentARIndex = 0;  // 當前顯示的圖片索引
     pet.wear=false;
     getButtonByName('wearpet').canclick=false;
+    getButtonByName('openar').canclick=false;
 }
 
 //繪製玩家
@@ -755,6 +770,33 @@ const petBox = {
     closeButtonSize : 100,  // 關閉按鈕的大小
 };
 
+const ARBox = {
+    width: 800, // 寬度
+    height: 800, // 高度
+    padding: 20, // 內邊距
+    borderRadius: 15, // 圓角半徑
+    bgColor: 'rgba(0, 0, 0, 0.5)', // 背景顏色
+    borderColor: 'white', // 邊框顏色
+    get imageX() {
+        return (this.x+this.width/2-ARImages[currentARIndex].imageWidth/2); // 居中對話框
+    },
+    get imageY() {
+        return (this.y+this.height/2-ARImages[currentARIndex].imageHeight/2); // 居中對話框
+    },
+    // 直接在這裡設置對話框的位置
+    get x() {
+        return (canvas2.width - this.width) / 2; // 居中對話框
+    },
+    get y() {
+        return (canvas2.height - this.height)/2; // 使對話框靠近畫布底部
+    },
+    buttonWidth : 200,
+    buttonHeight : 100,
+    arrowSize : 30,  // 左右箭頭的大小
+    closeButtonSize : 100,  // 關閉按鈕的大小
+};
+
+
 // 按鈕的位置和大小（右下角）
 const buttonWidth = 200;
 const buttonHeight = 200;
@@ -805,6 +847,10 @@ let buttons = [
     {draw:showpetBox, type:"pet",name:"petright",x:petBox.x+petBox.width-70, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
     {draw:showpetBox, type:"pet",name:"petleft",x:petBox.x, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
     {draw:showpetBox, type:"pet",name:"wearpet",x:petBox.x+petBox.width/2-100, y: petBox.y+petBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
+    {draw:showARBox, type:"ar",name:"closear",x:ARBox.x+ARBox.width-70, y: ARBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showARBox, type:"ar",name:"arright",x:ARBox.x+ARBox.width-70, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showARBox, type:"ar",name:"arleft",x:ARBox.x, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
+    {draw:showARBox, type:"ar",name:"openar",x:ARBox.x+ARBox.width/2-100, y: ARBox.y+ARBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕
 ]
 
 //得到按鈕
@@ -843,11 +889,11 @@ function drawButton() {
                 image.src=button.img;
                 ctx2.drawImage(image,button.x,button.y,button.width*scaleFactor, button.height*scaleFactor )
             }
-            else if((button.type=='clothing'||button.type=='pet')&&button.canclick){
+            else if((button.type=='clothing'||button.type=='pet'||button.type=='ar')&&button.canclick){
                 ctx2.fillStyle = button.buttonClicked?'#006394':button.buttonHover?'#0085c7':'#00aaff';
                 ctx2.fillRect(button.x, button.y, button.width, button.height);
             }
-            else if(button.type!="clothing"&&button.type!="pet"){
+            else if(button.type!="clothing"&&button.type!="pet"&&button.type!="ar"){
                 ctx2.beginPath();
                 ctx2.arc(button.x + button.width / 2, button.y + button.height / 2, button.width / 2 * scaleFactor, 0, Math.PI * 2);
                 ctx2.fill();
@@ -893,7 +939,7 @@ function drawButton() {
                     teach.height * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='menu'&&(teach.index==6||teach.index==11)){
+            else if(button.name=='menu'&&(teach.index==6||teach.index==11||teach.index==15)){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -973,7 +1019,7 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='emoji'&&teach.index==15){
+            else if(button.name=='ar'&&teach.index==16){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -983,7 +1029,38 @@ function drawButton() {
                     teach.height/2 * teach.teachscale  // 图像的缩放高度
                 );
             }
-            else if(button.name=='laugh'&&teach.index==16){
+            else if(button.name=='openar'&&teach.index==17){
+                updateImageScale();
+                ctx2.drawImage(
+                    teachImage, 
+                    button.x+button.width / 2,  // 图像 X 轴位置：右下角
+                    button.y+button.height / 2,  // 图像 Y 轴位置：右下角
+                    teach.width/2 * teach.teachscale,  // 图像的缩放宽度
+                    teach.height/2 * teach.teachscale  // 图像的缩放高度
+                );
+            }
+            else if(button.name=='closear'&&teach.index==18){
+                updateImageScale();
+                ctx2.drawImage(
+                    teachImage, 
+                    button.x+button.width / 2,  // 图像 X 轴位置：右下角
+                    button.y+button.height / 2,  // 图像 Y 轴位置：右下角
+                    teach.width/2 * teach.teachscale,  // 图像的缩放宽度
+                    teach.height/2 * teach.teachscale  // 图像的缩放高度
+                );
+            }
+
+            else if(button.name=='emoji'&&teach.index==19){
+                updateImageScale();
+                ctx2.drawImage(
+                    teachImage, 
+                    button.x+button.width / 2,  // 图像 X 轴位置：右下角
+                    button.y+button.height / 2,  // 图像 Y 轴位置：右下角
+                    teach.width/2 * teach.teachscale,  // 图像的缩放宽度
+                    teach.height/2 * teach.teachscale  // 图像的缩放高度
+                );
+            }
+            else if(button.name=='laugh'&&teach.index==20){
                 updateImageScale();
                 ctx2.drawImage(
                     teachImage, 
@@ -1083,6 +1160,7 @@ function checkButtonClick(x, y, ismouse) {
                             buttonHovered=false;
                             if(teach.index==6)teach.index++;
                             if(teach.index==11)teach.index++;
+                            if(teach.index==15)teach.index++;
                             toggleMenu();
                             break;
                         }
@@ -1091,7 +1169,7 @@ function checkButtonClick(x, y, ismouse) {
                             break;
                         }
                         case "emoji":{
-                            if(teach.index==15)teach.index++;
+                            if(teach.index==19)teach.index++;
                             toggleemojiMenu();
                             break;
                         }
@@ -1101,6 +1179,7 @@ function checkButtonClick(x, y, ismouse) {
                             toggleMenu();
                             toggleclothing(true);
                             togglepet(false);
+                            togglear(false);
                             break;
                         }    
                         case "closeclothing":{
@@ -1130,6 +1209,7 @@ function checkButtonClick(x, y, ismouse) {
                             toggleMenu();
                             togglepet(true);
                             toggleclothing(false);
+                            togglear(false);
                             break;
                         }    
                         case "closepet":{
@@ -1155,17 +1235,47 @@ function checkButtonClick(x, y, ismouse) {
                                 wearpet(false);
                             }
                             break;
-                        }            
+                        }  
+                        case "ar":{
+                            buttonHovered=false;
+                            if(teach.index==16)teach.index++;
+                            toggleMenu();
+                            togglear(true);
+                            togglepet(false);
+                            toggleclothing(false);
+                            break;
+                        }    
+                        case "closear":{
+                            buttonHovered=false;
+                            if(teach.index==18)teach.index++;
+                            togglear(false);
+                            break;
+                        }  
+                        case "arright":{
+                            changear('right');
+                            break;
+                        }   
+                        case "arleft":{
+                            changear('left');
+                            break;
+                        }    
+                        case "openar":{
+                            if(teach.index==17)teach.index++;
+                            if(getButtonByName('openar').text=='開啟'){
+                                openar();
+                            }
+                            break;
+                        }              
                     }
                     if(button.type=='emoji'){
                         buttonHovered=false;
-                        if(teach.index==16)teach.index++;
+                        if(teach.index==20)teach.index++;
                         toggleemojiMenu();
                         if(emojiOpen==false){
                             setTimeout(() => {
                                 emojiOpen= false;  // 延遲後恢復按鈕原狀
                             }, 1000);
-                            if(teach.index==17){
+                            if(teach.index==21){
                                 setTimeout(() => {
                                     loadlogin();
                                     resetGame();
@@ -1475,7 +1585,10 @@ function nextReward() {
         clothingImage[clothingImage.findIndex(item => item.name === '海灘')].hasget=true;
         petImages.splice(0, 1);
         petImages[petImages.findIndex(item => item.name === '寄居蟹')].hasget=true;
+        ARImages.splice(0, 1);
+        ARImages[ARImages.findIndex(item => item.name === '海灘巧虎')].hasget=true;
         getButtonByName('wearpet').canclick=true;
+        getButtonByName('openar').canclick=true;
     }
 }
 
@@ -1519,6 +1632,27 @@ function drawpetbox() {
     const image = new Image();
     image.src=petImages[currentpetIndex].img;
     ctx2.drawImage(image, petBox.imageX, petBox.imageY, petImages[currentpetIndex].imageWidth, petImages[currentpetIndex].imageHeight);
+    
+
+}
+
+function drawarbox() {
+    if (!showARBox) return;
+
+    // 畫背景矩形
+    ctx2.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx2.fillRect(ARBox.x, ARBox.y, ARBox.width, ARBox.height);
+    ctx2.fillStyle = "white";
+    ctx2.font = `bold 80px Arial`;
+    ctx2.textAlign = "center";
+    ctx2.textBaseline = "middle";
+    ctx2.fillText('AR', ARBox.x + ARBox.width / 2, ARBox.y+80);
+    ctx2.fillText(ARImages[currentARIndex].name, ARBox.x + ARBox.width / 2, ARBox.y+ARBox.height-150);
+
+    // 畫圖片
+    const image = new Image();
+    image.src=ARImages[currentARIndex].img;
+    ctx2.drawImage(image, ARBox.imageX, ARBox.imageY, ARImages[currentARIndex].imageWidth, ARImages[currentARIndex].imageHeight);
     
 
 }
@@ -1626,6 +1760,22 @@ function togglepet(isopen) {
     
 }
 
+function togglear(isopen) {
+    if(isopen){
+        getButtonByName('openar').text=ARImages[currentARIndex].text;
+
+    }
+    else{
+        buttonHovered=false;
+    }
+    showARBox = isopen;
+    buttons.forEach(button => {
+        if(button.type=='ar')
+        button.draw= showARBox;
+    });
+    
+}
+
 //更換服裝
 function changeclothing(direction) {
     let length=0;
@@ -1662,6 +1812,22 @@ function changepet(direction) {
     }
 }
 
+function changear(direction) {
+    let length=0;
+    ARImages.forEach(ar=>{
+        if(ar.hasget){
+            length++; 
+        }
+    })
+    if (direction === 'left') {
+        currentARIndex = (currentARIndex - 1 + length) % length;
+        getButtonByName('openar').text=ARImages[currentARIndex].text;
+    } else if (direction === 'right') {
+        currentARIndex = (currentARIndex + 1) % length;
+        getButtonByName('openar').text=ARImages[currentARIndex].text;
+    }
+}
+
 //穿戴服裝
 function wearclothing() {
     clothingImage.forEach(clothing=>{
@@ -1693,6 +1859,12 @@ function wearpet(iswear) {
         petImage.src=petImages[currentpetIndex].img;
         console.log('穿戴了這個物品:', petImages[currentpetIndex]);
     }
+}
+
+function openar() {
+
+    console.log('開啟了這個AR:', ARImages[currentARIndex]);
+    
 }
 
 //鍵盤移動
@@ -1749,6 +1921,7 @@ video.addEventListener('play', function () {
 });
 
 let YTplayer=null;
+
 function createYouTube() {
     YTplayer = new YT.Player('gameCanvas2', {
       height: '940',
@@ -1763,13 +1936,13 @@ function createYouTube() {
 
 
   // 当播放器准备好时调用
-  function onPlayerReady(event) {
+function onPlayerReady(event) {
   
     event.target.playVideo(); // 播放视频
-  }
+}
 
   // 监听播放器状态变化
-  function onPlayerStateChange(event) {
+function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
         console.log("开始播放");
         startTracking();  // 开始跟踪视频播放
@@ -1783,7 +1956,7 @@ function createYouTube() {
         stopTracking();
         closePlayer();  // 关闭播放器或其他操作
     }
-  }
+}
 
 
 function closePlayer() {
@@ -1803,22 +1976,25 @@ function getYTCurrentTime() {
     console.log('当前播放时间: ' + currentTime + ' 秒');
     }
     return currentTime;
-  }
-  let trackingInterval;
-  function startTracking() {
+}
+
+let trackingInterval;
+
+function startTracking() {
     // 每2000毫秒（2秒）检查一次当前播放时间
     trackingInterval = setInterval(function() {
         if(getYTCurrentTime()>=70){
             closePlayer();
         }
     }, 100);
-  }
-  function stopTracking() {
+}
+
+function stopTracking() {
     if (trackingInterval) {
       clearInterval(trackingInterval);  // 停止定时器
       console.log("停止进度跟踪");
     }
-  }
+}
 // 開始遊戲
 //updateGame2();
 
