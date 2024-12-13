@@ -1616,6 +1616,9 @@ function nextDialog() {
         video.play();
         isplayvideo=true;
         //createYouTube();
+        setTimeout(()=>{
+            currentDialogIndex++;
+        },200)
     }
     if (currentDialogIndex >= npcDialog.length-1) {
         if(teach.index==4)teach.index++;
@@ -1625,9 +1628,7 @@ function nextDialog() {
             showReward=true;
         }
     }
-    setTimeout(()=>{
-        currentDialogIndex++;
-    },200)
+    
 }
 
 // 顯示下一行對話
