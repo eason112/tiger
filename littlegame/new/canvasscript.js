@@ -772,7 +772,7 @@ const uiElements = [
                     ctx.drawImage(this.tideImages[this.tideImageIndex], 0, 0, canvas.width, canvas.height);  
                 }
                 if(this.alarm){
-                    ctx.font = `${this.alarmtextfontSize * this.scalealarmtextFactor}px Arial`;  // 动态字体大小
+                    ctx.font = `bold ${this.alarmtextfontSize * this.scalealarmtextFactor}px Arial`;  // 动态字体大小
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
                     ctx.fillStyle = this.alarmtextcolor;
