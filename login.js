@@ -585,7 +585,7 @@ const loginuiElements = [
                             element.isHovered=false;
                         });
                         loginbuttonHover=false;
-                        //console.log(getloginUI('password').passwordtext);
+                        console.log(getloginUI('password').passwordtext);
                         getloginUI('password').inputtext='';
                         getloginUI('password').passwordtext='';
                         getloginUI('characterbackground').currentcharacterIndex=0;
@@ -2078,7 +2078,13 @@ function handleInput(event) {
             //getloginUI(focusIndex).cursorPosition++;
         } else {
             // 如果達到最大字數，截取文本至 maxLength
-            getloginUI(focusIndex).inputtext = currentText.slice(0, getloginUI(focusIndex).maxLength);
+            if(focusIndex=='password'){
+                getloginUI(focusIndex).inputtext = '*'.repeat(currentText.length);
+                getloginUI(focusIndex).passwordtext = currentText.slice(0, getloginUI(focusIndex).maxLength);
+            }
+            else{
+                getloginUI(focusIndex).inputtext = currentText.slice(0, getloginUI(focusIndex).maxLength);
+            }
         }
     }
     if(focusIndex=='password'){
