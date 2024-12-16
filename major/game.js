@@ -1626,7 +1626,7 @@ function nextDialog() {
         //createYouTube();
         setTimeout(()=>{
             currentDialogIndex++;
-        },200)
+        },1000)
     }
     if (currentDialogIndex >= npcDialog.length-1) {
         if(teach.index==4)teach.index++;
