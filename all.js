@@ -13,6 +13,7 @@ window.onload = function() {
 function loadGame2() {
     console.log("已經切換到主畫面！");
     document.getElementById('login').style.display = 'none';
+    document.getElementById('AR').style.display = 'none';
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
     startGame();
@@ -24,6 +25,13 @@ function loadGame1() {
     document.getElementById('game2').style.display = 'none';
     playBGM(bgm);
     stopGame();
+}
+
+function loadAR() {
+  console.log("已經切換到AR！");
+  document.getElementById('AR').style.display = 'block';
+  document.getElementById('game2').style.display = 'none';
+  stopGame();
 }
 
 function loadlogin() {
@@ -133,3 +141,8 @@ function isMobileDevice() {
   const userAgent = navigator.userAgent.toLowerCase();
   return /iphone|ipod|android|windows phone|blackberry|iemobile/.test(userAgent);
 }
+
+document.getElementById('backButton').addEventListener('click', function() {
+  // 隐藏AR容器
+  loadGame2();
+});

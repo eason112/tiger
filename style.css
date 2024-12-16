@@ -35,15 +35,42 @@
 }
 
 #loginCanvas {
-    background: url('login.png');
+
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
     max-width: 100%;
     max-height: 100%;
-    background-color: #000000;
+    background-color: #006394;
     border: 1px solid #000;
 }
 
-  
+/* AR容器的样式 */
+#arContainer {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 返回按钮的样式 */
+#backButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* 可选：你也可以在这里添加其他样式，例如按钮悬停效果 */
+#backButton:hover {
+  background-color: #ff4500;
+}
+

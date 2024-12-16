@@ -7,7 +7,7 @@
   <!-- <link rel="icon" href="icon.png" type="image/png">-->
   <!-- 引用 遊戲1 的外部 CSS -->
   
-
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script> <!-- 引入A-Frame库 -->
 </head>
 <body>
   <!-- Loading 画面 -->
@@ -41,6 +41,19 @@
         <canvas id="gameCanvas2"></canvas>
     </div>
   </div>
+
+     <!-- AR 体验容器，初始时隐藏 -->
+     <div id="AR" class="game-container" style="display: none;">
+      <div id="arContainer">
+        <a-scene embedded arjs>
+            <!-- AR内容 -->
+        <a-box position="0 0.5 -3" color="#4CC3D9"></a-box>
+        </a-scene>
+      
+          <!-- 返回按钮 -->
+        <button id="backButton">返回</button>
+      </div>
+     </div>
 
   <div id="login" class="game-container" style="display: block;">
     <div id="canvasContainer">
