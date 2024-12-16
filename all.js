@@ -19,8 +19,8 @@ function loadGame2() {
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
     if (arScript) {
-      document.body.removeChild(arScript);
-      arScript = null; // 清除脚本引用
+      //document.body.removeChild(arScript);
+      //arScript = null; // 清除脚本引用
     }
     startGame();
 }
@@ -35,16 +35,16 @@ function loadGame1() {
 
 function loadAR() {
   console.log("已經切換到AR！");
-
+  document.getElementById('AR').style.display = 'block';
+  document.getElementById('game2').style.display = 'none';
   // 检查浏览器是否支持获取相机权限
   arScript = document.createElement('script');
-  arScript.src = "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js";
-  document.body.appendChild(arScript);
-  arScript.onload = function() {
+  //arScript.src = "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js";
+  //document.body.appendChild(arScript);
+ // arScript.onload = function() {
     // 检查浏览器是否支持获取相机权限
-    document.getElementById('AR').style.display = 'block';
-    document.getElementById('game2').style.display = 'none';
-  }
+
+  //}
   stopGame();
   
 }
