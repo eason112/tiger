@@ -1931,6 +1931,7 @@ function wearpet(iswear) {
 
 function openar() {
 
+    loadAR();
     console.log('開啟了這個AR:', ARImages[currentARIndex]);
     
 }
