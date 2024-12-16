@@ -2,7 +2,7 @@ let loadedImages = 0;
 let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
 
-let videoStream = null; // 用于保存媒体流
+let arScript = null; // 用于保存动态加载的AR.js脚本
 
 window.onload = function() {
   preloadImages();
@@ -18,11 +18,10 @@ function loadGame2() {
     document.getElementById('AR').style.display = 'none';
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
-    if (videoStream) {
-      videoStream.getTracks().forEach(track => track.stop()); // 停止所有流的轨道
-      videoStream = null; // 清除媒体流
+    if (arScript) {
+      document.body.removeChild(arScript);
+      arScript = null; // 清除脚本引用
     }
-  
     startGame();
 }
 
@@ -38,28 +37,10 @@ function loadAR() {
   console.log("已經切換到AR！");
   document.getElementById('AR').style.display = 'block';
   document.getElementById('game2').style.display = 'none';
-        // 检查浏览器是否支持获取相机权限
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-          // 请求相机权限
-          navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-              // 保存媒体流
-              videoStream = stream;
-              // 将视频流连接到一个video元素或者直接连接到AR.js使用的摄像头
-              const videoElement = document.querySelector('video');
-              if (videoElement) {
-                videoElement.srcObject = stream;
-              }
-              // 显示AR界面
-              document.getElementById('AR').style.display = 'block';
-            })
-            .catch(function(err) {
-              // 如果用户拒绝权限，显示错误信息
-              alert('请允许访问相机以使用AR功能');
-            });
-        } else {
-          alert('您的浏览器不支持访问相机');
-        }
+  // 检查浏览器是否支持获取相机权限
+  arScript = document.createElement('script');
+  arScript.src = "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js";
+  document.body.appendChild(arScript);
   stopGame();
   
 }
