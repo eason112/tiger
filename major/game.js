@@ -1361,9 +1361,14 @@ function checkButtonClick(x, y, ismouse) {
                     }
                     case "dialog":{
                         if(teach.index==3)teach.index++;
-                        showDialog=!showDialog;
-                        if(showDialog==false)currentDialogIndex=0;
-                        break;
+                        if(currentDialogIndex!=0){
+                            nextDialog();
+                        }
+                        else{
+                            showDialog=!showDialog;
+                            if(showDialog==false)currentDialogIndex=0;
+                            break;
+                        }
                     }
                 }
             }
