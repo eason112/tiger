@@ -1212,64 +1212,82 @@ function checkButtonClick(x, y, ismouse) {
                     switch(button.name){
                         case "menu":{
                             buttonHovered=false;
-                            if(teach.index==6)teach.index++;
-                            if(teach.index==11)teach.index++;
-                            if(teach.index==15)teach.index++;
-                            toggleMenu();
+                            if(teach.index==6||teach.index==11||teach.index==15){
+                                teach.index++;
+                                toggleMenu();
+                            }
                             break;
                         }
                         case "close":{
-                            toggleMenu();
+                            if(teach.index>=20){
+                                toggleMenu();
+                            }
                             break;
                         }
                         case "emoji":{
-                            if(teach.index==19)teach.index++;
-                            toggleemojiMenu();
+                            if(teach.index==19){
+                                teach.index++;
+                                toggleemojiMenu();
+                            }
                             break;
                         }
                         case "clothing":{
                             buttonHovered=false;
-                            if(teach.index==7)teach.index++;
-                            toggleMenu();
-                            toggleclothing(true);
-                            togglepet(false);
-                            togglear(false);
+                            if(teach.index==7){
+                                teach.index++;
+                                toggleMenu();
+                                toggleclothing(true);
+                                togglepet(false);
+                                togglear(false);
+                            }
                             break;
                         }    
                         case "closeclothing":{
                             buttonHovered=false;
-                            if(teach.index==10)teach.index++;
-                            toggleclothing(false);
+                            if(teach.index==10){
+                                teach.index++;
+                                toggleclothing(false);
+                            }
                             break;
                         }  
                         case "clothingright":{
-                            if(teach.index==8)teach.index++;
-                            changeclothing('right');
+                            if(teach.index==8){
+                                teach.index++;
+                                changeclothing('right');
+                            }
                             break;
                         }   
                         case "clothingleft":{
-                            changeclothing('left');
+                            if(teach.index>=20){
+                                changeclothing('left');
+                            }
                             break;
                         }    
                         case "wearclothing":{
     
-                            if(teach.index==9)teach.index++;
-                            wearclothing();
+                            if(teach.index==9){
+                                teach.index++;
+                                wearclothing();
+                            }
                             break;
                         }   
                         case "pet":{
                             buttonHovered=false;
-                            if(teach.index==12)teach.index++;
-                            toggleMenu();
-                            togglepet(true);
-                            toggleclothing(false);
-                            togglear(false);
+                            if(teach.index==12){
+                                teach.index++;
+                                toggleMenu();
+                                togglepet(true);
+                                toggleclothing(false);
+                                togglear(false);
+                            }
                             break;
                         }    
                         case "closepet":{
                             buttonHovered=false;
-                            if(teach.index==14)teach.index++;
-                            togglepet(false);
+                            if(teach.index==14){
+                                teach.index++;
+                                togglepet(false);
+                            }
                             break;
                         }  
                         case "petright":{
@@ -1281,28 +1299,34 @@ function checkButtonClick(x, y, ismouse) {
                             break;
                         }    
                         case "wearpet":{
-                            if(teach.index==13)teach.index++;
-                            if(getButtonByName('wearpet').text=='穿戴'){
-                                wearpet(true);
-                            }
-                            else{
-                                wearpet(false);
+                            if(teach.index==13){
+                                teach.index++;
+                                if(getButtonByName('wearpet').text=='穿戴'){
+                                    wearpet(true);
+                                }
+                                else{
+                                    wearpet(false);
+                                }
                             }
                             break;
                         }  
                         case "ar":{
                             buttonHovered=false;
-                            if(teach.index==16)teach.index++;
-                            toggleMenu();
-                            togglear(true);
-                            togglepet(false);
-                            toggleclothing(false);
+                            if(teach.index==16){
+                                teach.index++;
+                                toggleMenu();
+                                togglear(true);
+                                togglepet(false);
+                                toggleclothing(false);
+                            }
                             break;
                         }    
                         case "closear":{
                             buttonHovered=false;
-                            if(teach.index==18)teach.index++;
-                            togglear(false);
+                            if(teach.index==18){
+                                teach.index++;
+                                togglear(false);
+                            }
                             break;
                         }  
                         case "arright":{
@@ -1314,10 +1338,12 @@ function checkButtonClick(x, y, ismouse) {
                             break;
                         }    
                         case "openar":{
-                            if(teach.index==17)teach.index++;
+                            if(teach.index==17){
+                                teach.index++;
                             if(getButtonByName('openar').text=='開啟'){
                                 openar();
                             }
+                        }
                             break;
                         }              
                     }
@@ -1360,14 +1386,16 @@ function checkButtonClick(x, y, ismouse) {
                         break;
                     }
                     case "dialog":{
-                        if(teach.index==3)teach.index++;
-                        if(currentDialogIndex!=0){
-                            nextDialog();
-                        }
-                        else{
-                            showDialog=!showDialog;
-                            if(showDialog==false)currentDialogIndex=0;
-                            break;
+                        if(teach.index==3){
+                            teach.index++;
+                            if(currentDialogIndex!=0){
+                                nextDialog();
+                            }
+                            else{
+                                showDialog=!showDialog;
+                                if(showDialog==false)currentDialogIndex=0;
+                                break;
+                            }
                         }
                     }
                 }
