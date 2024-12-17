@@ -507,6 +507,7 @@ const uiElements = [
                     }
                     if(elapsedTime>=60){
                         gameState="gameOver";
+                        this.sendLinemessage(getUI('score').score);
                     }
                 }
                 if (elapsedTime < this.time) {
@@ -546,6 +547,22 @@ const uiElements = [
                     ctx.fillText((this.time - elapsedTime)+'秒', this.x+2, this.y+2); // 繪製文字
                 }
             }
+        },
+        sendLinemessage: function (score){
+            axios({
+                method: 'post', // 請求方法
+                url: ' http://35.201.197.7/api/public/api/line', // 請求目標
+                data: { // 請求體
+                  score: score,
+                  game: '有生命的大海'
+                },
+                headers: {
+                  'Accept': 'application/json',//確保識別為api請求
+                  'Content-Type': 'application/json',//如果有指定格式
+                  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8zNS4yMDEuMTk3LjdcL2FwaVwvcHVibGljXC9hcGlcL3JlZ2lzdGVyIiwiaWF0IjoxNzM0NDE3NzYyLCJleHAiOjQ4ODgwMTc3NjIsIm5iZiI6MTczNDQxNzc2MiwianRpIjoibXM4YTh5NFhxeUdoTUg5VyIsInN1YiI6MTgsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkifQ.obHGa2qM517N9VGN1MgRM2XAyGgO6iXqpFIL9T95aO8' // Bearer 跟 token 中間有一個空格
+                }
+              });
+          console.log(score);
         },
         reset: function(){
             this.time=60;
