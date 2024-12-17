@@ -1,7 +1,7 @@
 let loadedImages = 0;
 let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
-
+let hasloadGame2=false;
 //let arScript = null; // 用于保存动态加载的AR.js脚本
 
 window.onload = function() {
@@ -13,6 +13,7 @@ window.onload = function() {
 
   // 初始化遊戲2的邏輯
 function loadGame2() {
+  if(!hasloadGame2){
     console.log("已經切換到主畫面！");
     document.getElementById('login').style.display = 'none';
     //document.getElementById('AR').style.display = 'none';
@@ -23,14 +24,19 @@ function loadGame2() {
       //arScript = null; // 清除脚本引用
     }*/
     startGame();
+    hasloadGame2=true;
+  }
 }
 
 function loadGame1() {
+  if(hasloadGame2){
     console.log("已經切換到小遊戲！");
     document.getElementById('game1').style.display = 'block';
     document.getElementById('game2').style.display = 'none';
     playBGM(bgm);
     stopGame();
+    hasloadGame2=false;
+  }
 }
 
 function loadAR() {
@@ -38,7 +44,7 @@ function loadAR() {
   //document.getElementById('AR').style.display = 'block';
   //document.getElementById('game2').style.display = 'none';
   // 检查浏览器是否支持获取相机权限
-  window.open("https://eason112.github.io/tiger/AR/index.html", "_blank");
+  window.open(url+"/AR/index.html", "_blank");
   //arScript.src = "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js";
   //document.body.appendChild(arScript);
  // arScript.onload = function() {
