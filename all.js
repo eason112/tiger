@@ -2,7 +2,7 @@ let loadedImages = 0;
 let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
 
-let arScript = null; // 用于保存动态加载的AR.js脚本
+//let arScript = null; // 用于保存动态加载的AR.js脚本
 
 window.onload = function() {
   preloadImages();
@@ -15,13 +15,13 @@ window.onload = function() {
 function loadGame2() {
     console.log("已經切換到主畫面！");
     document.getElementById('login').style.display = 'none';
-    document.getElementById('AR').style.display = 'none';
+    //document.getElementById('AR').style.display = 'none';
     document.getElementById('game1').style.display = 'none';
     document.getElementById('game2').style.display = 'block';
-    if (arScript) {
+    /*if (arScript) {
       //document.body.removeChild(arScript);
       //arScript = null; // 清除脚本引用
-    }
+    }*/
     startGame();
 }
 
@@ -35,17 +35,17 @@ function loadGame1() {
 
 function loadAR() {
   console.log("已經切換到AR！");
-  document.getElementById('AR').style.display = 'block';
-  document.getElementById('game2').style.display = 'none';
+  //document.getElementById('AR').style.display = 'block';
+  //document.getElementById('game2').style.display = 'none';
   // 检查浏览器是否支持获取相机权限
-  arScript = document.createElement('script');
+  window.open("https://eason112.github.io/tiger/AR/index.html", "_blank");
   //arScript.src = "https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js";
   //document.body.appendChild(arScript);
  // arScript.onload = function() {
     // 检查浏览器是否支持获取相机权限
 
   //}
-  stopGame();
+  //stopGame();
   
 }
 
@@ -157,7 +157,7 @@ function isMobileDevice() {
   return /iphone|ipod|android|windows phone|blackberry|iemobile/.test(userAgent);
 }
 
-document.getElementById('backButton').addEventListener('click', function() {
+/*document.getElementById('backButton').addEventListener('click', function() {
   // 隐藏AR容器
   loadGame2();
-});
+});*/
