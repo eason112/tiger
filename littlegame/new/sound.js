@@ -49,3 +49,34 @@ function stopBGM(BGM){
     BGM.pause();
     BGM.currentTime=0;
 }
+
+function playSoundloop(type,volume=1) {
+    // 根據音效類型動態創建新的 audio 元素
+    const audio = new Audio();
+
+    // 設置音效來源
+    audio.src = soundEffects[type];
+    audio.loop=true;
+    // 設定音量
+    audio.volume = volume;
+
+    // 播放音效
+    if (!audio.paused) {
+        return;
+    }
+    audio.play();
+
+    // 音效播放完成後釋放資源（可選）
+    /*audio.onended = function() {
+      audio = null;
+    };*/
+}
+
+function stopSoundloop(type) {
+    const audio = new Audio();
+
+    // 設置音效來源
+    audio.src = soundEffects[type];
+    audio.pause();
+    audio.currentTime = 0; // 確保音效回到起始點，避免重複播放時聽到音效開頭
+}
