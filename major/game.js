@@ -1206,6 +1206,7 @@ function checkButtonClick(x, y, ismouse) {
             if (distance <= radius) {
                 console.log("按鈕" + button.name);
                 if(!ismouse) button.buttonHover=false;
+                playSound('clickbutton');
                 button.buttonClicked = true;  // 設置被點擊的按鈕狀態
                 setTimeout(() => {
                     button.buttonClicked = false;  // 延遲後恢復按鈕原狀
@@ -2092,6 +2093,8 @@ function stopTracking() {
       console.log("停止进度跟踪");
     }
 }
+
+
 // 開始遊戲
 //updateGame2();
 
