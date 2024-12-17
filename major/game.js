@@ -472,19 +472,19 @@ function drawMenu() {
 function updateGame2() {
     // 更新玩家位置
     if (keys.right) {
-        playSoundloop('generatehole');
+        playSoundloop();
         pet.x = player.x - 100; 
         player.dx = player.speed;
         direction.right=true;
     }
     if (keys.left) {
-        playSoundloop('generatehole');
+        playSoundloop();
         pet.x = player.x + 250; 
         player.dx = -player.speed;
         direction.right=false;
     }
     if (!keys.right && !keys.left) {
-        stopSoundloop('generatehole');
+        stopSoundloop();
         player.dx = 0;
     }
 
@@ -875,41 +875,41 @@ let emojiImage=new Image();
 
 //所有按鈕屬性
 let buttons = [
-    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true},// 按鈕2
-    {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false,canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,img: url2+'/major/images/ar.png',canclick:true},// 按鈕2
-    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/status.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/clothing.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/pet.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/hint.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/shop.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+320, width: 50, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/history.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/map.png',canclick:true},// 按鈕1
-    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/friend.png',canclick:true},// 按鈕1
-    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 100, height: 100, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},
-    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh2",x:emojimenuX+90, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh3",x:emojimenuX+170, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh4",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh5",x:emojimenuX+90, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh6",x:emojimenuX+170, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh7",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh8",x:emojimenuX+90, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:emojimenuOpen, type:"emoji",name:"laugh9",x:emojimenuX+170, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true},// 按鈕1
-    {draw:showclothingBox, type:"clothing",name:"closeclothing",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showclothingBox, type:"clothing",name:"clothingright",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showclothingBox, type:"clothing",name:"clothingleft",x:clothingBox.x, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showclothingBox, type:"clothing",name:"wearclothing",x:clothingBox.x+clothingBox.width/2-100, y: clothingBox.y+clothingBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
-    {draw:showpetBox, type:"pet",name:"closepet",x:petBox.x+petBox.width-70, y: petBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showpetBox, type:"pet",name:"petright",x:petBox.x+petBox.width-70, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showpetBox, type:"pet",name:"petleft",x:petBox.x, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showpetBox, type:"pet",name:"wearpet",x:petBox.x+petBox.width/2-100, y: petBox.y+petBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕1
-    {draw:showARBox, type:"ar",name:"closear",x:ARBox.x+ARBox.width-70, y: ARBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showARBox, type:"ar",name:"arright",x:ARBox.x+ARBox.width-70, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showARBox, type:"ar",name:"arleft",x:ARBox.x, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true},// 按鈕1
-    {draw:showARBox, type:"ar",name:"openar",x:ARBox.x+ARBox.width/2-100, y: ARBox.y+ARBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false},// 按鈕
+    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
+    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true,sound:'dig'},// 按鈕2
+    {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,img: url2+'/major/images/ar.png',canclick:true,sound:'dig'},// 按鈕2
+    {draw:true, type:"menu",name:"status",x: menuX+menuWidth-180, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "狀態" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/status.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"clothing",x: menuX+menuWidth-80, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "服裝" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/clothing.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"pet",x: menuX+menuWidth-280, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "寵物" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/pet.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"hint",x: menuX+menuWidth-180, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "提示" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/hint.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"shop",x: menuX+menuWidth-80, y: menuY+210, width: 50, height: 50, fontSize: 30, text: "商城" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/shop.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"history",x: menuX+menuWidth-280, y: menuY+320, width: 50, height: 50, fontSize: 30, text: "歷史" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/history.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"map",x: menuX+menuWidth-180, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "地圖" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/map.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"menu",name:"friend",x: menuX+menuWidth-80, y: menuY+320, width: 70, height: 50, fontSize: 30, text: "好友" ,buttonClicked : false ,buttonHover:false,img: url2+'/major/images/friend.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:true, type:"",name:"emoji",x:buttonX-100, y: buttonY+150, width: 100, height: 100, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},
+    {draw:emojimenuOpen, type:"emoji",name:"laugh",x:emojimenuX+10, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh2",x:emojimenuX+90, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh3",x:emojimenuX+170, y: emojimenuY+10, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh4",x:emojimenuX+10, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh5",x:emojimenuX+90, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh6",x:emojimenuX+170, y: emojimenuY+115, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh7",x:emojimenuX+10, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh8",x:emojimenuX+90, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:emojimenuOpen, type:"emoji",name:"laugh9",x:emojimenuX+170, y: emojimenuY+220, width: 70, height: 70, fontSize: 30, text: "" ,buttonClicked : false ,buttonHover:false, img: url2+'/major/images/emoji.png',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"closeclothing",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"clothingright",x:clothingBox.x+clothingBox.width-70, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"clothingleft",x:clothingBox.x, y: clothingBox.y+clothingBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showclothingBox, type:"clothing",name:"wearclothing",x:clothingBox.x+clothingBox.width/2-100, y: clothingBox.y+clothingBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false,sound:'dig'},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"closepet",x:petBox.x+petBox.width-70, y: petBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"petright",x:petBox.x+petBox.width-70, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"petleft",x:petBox.x, y: petBox.y+petBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showpetBox, type:"pet",name:"wearpet",x:petBox.x+petBox.width/2-100, y: petBox.y+petBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false,sound:'dig'},// 按鈕1
+    {draw:showARBox, type:"ar",name:"closear",x:ARBox.x+ARBox.width-70, y: ARBox.y, width: 70, height: 70, fontSize: 50, text: "X" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showARBox, type:"ar",name:"arright",x:ARBox.x+ARBox.width-70, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "▶" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showARBox, type:"ar",name:"arleft",x:ARBox.x, y: ARBox.y+ARBox.height/2, width: 70, height: 70, fontSize: 50, text: "◀" ,buttonClicked : false ,buttonHover:false, img: '',canclick:true,sound:'dig'},// 按鈕1
+    {draw:showARBox, type:"ar",name:"openar",x:ARBox.x+ARBox.width/2-100, y: ARBox.y+ARBox.height-100, width: 200, height: 100, fontSize: 50, text: "" ,buttonClicked : false ,buttonHover:false, img: '',canclick:false,sound:'dig'},// 按鈕
 ]
 
 //得到按鈕
@@ -1211,7 +1211,7 @@ function checkButtonClick(x, y, ismouse) {
             if (distance <= radius) {
                 console.log("按鈕" + button.name);
                 if(!ismouse) button.buttonHover=false;
-                playSound('clickbutton');
+                playSound(button.sound);
                 button.buttonClicked = true;  // 設置被點擊的按鈕狀態
                 setTimeout(() => {
                     button.buttonClicked = false;  // 延遲後恢復按鈕原狀
