@@ -472,16 +472,21 @@ function drawMenu() {
 function updateGame2() {
     // 更新玩家位置
     if (keys.right) {
+        playSoundloop('generatehole');
         pet.x = player.x - 100; 
         player.dx = player.speed;
         direction.right=true;
     }
     if (keys.left) {
+        playSoundloop('generatehole');
         pet.x = player.x + 250; 
         player.dx = -player.speed;
         direction.right=false;
     }
-    if (!keys.right && !keys.left) player.dx = 0;
+    if (!keys.right && !keys.left) {
+        stopSoundloop('generatehole');
+        player.dx = 0;
+    }
 
     if (keys.up && !player.isJumping) {
         player.dy = player.jumpPower;
@@ -1650,6 +1655,7 @@ function wrapText(text, maxWidth) {
 function nextDialog() {
     
     if (currentDialogIndex == 0) {
+        stopBGM(bgm);
         video.play();
         isplayvideo=true;
         //createYouTube();
@@ -1759,6 +1765,7 @@ function isClickInDialog(x, y) {
     if(x >= dialogBox.x && x <= dialogBox.x + dialogBox.width &&
         y >= dialogBox.y && y <= dialogBox.y + dialogBox.height){
         if(showDialog&&!isplayvideo){
+            playSound('dig');
             nextDialog(); 
         }
 
@@ -1770,6 +1777,7 @@ function isClickInReward(x, y) {
     if(x >= rewardBox.x && x <= rewardBox.x + rewardBox.width &&
         y >= rewardBox.y && y <= rewardBox.y + rewardBox.height){
         if(showReward){
+            playSound('dig');
             nextReward(); 
         }
 
