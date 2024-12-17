@@ -9,7 +9,10 @@ const soundEffects = {
     generatehole:url3+'/littlegame/new/sound/generatehole.mp3',
     wave:url3+'/littlegame/new/sound/wave.mp3',
   };
-
+const walk = new Audio();
+walk.src=soundEffects['generatehole'];
+walk.loop=true;
+walk.volume = 0.1;
 function playSound(type,volume=1) {
     // 根據音效類型動態創建新的 audio 元素
     const audio = new Audio();
@@ -50,33 +53,17 @@ function stopBGM(BGM){
     BGM.currentTime=0;
 }
 
-function playSoundloop(type,volume=1) {
-    // 根據音效類型動態創建新的 audio 元素
-    const audio = new Audio();
-
-    // 設置音效來源
-    audio.src = soundEffects[type];
-    audio.loop=true;
-    // 設定音量
-    audio.volume = volume;
+function playSoundloop() {
 
     // 播放音效
-    if (!audio.paused) {
+    if (!walk.paused) {
         return;
     }
-    audio.play();
+    walk.play();
 
-    // 音效播放完成後釋放資源（可選）
-    /*audio.onended = function() {
-      audio = null;
-    };*/
 }
 
-function stopSoundloop(type) {
-    const audio = new Audio();
-
-    // 設置音效來源
-    audio.src = soundEffects[type];
-    audio.pause();
-    audio.currentTime = 0; // 確保音效回到起始點，避免重複播放時聽到音效開頭
+function stopSoundloop() {
+    walk.pause();
+    walk.currentTime = 0; // 確保音效回到起始點，避免重複播放時聽到音效開頭
 }
