@@ -102,8 +102,10 @@ const loginuiElements = [
                     touchY <= this.y + this.height / 2) {
                     // 按钮被点击时触发的操作
                     this.isPressed=true;
+                    
                     playSound('clickbutton');
                     setTimeout(() => {
+                        playBGM(bgm);
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginState="login";
                         loginbuttonHover=false;
@@ -930,6 +932,7 @@ const loginuiElements = [
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginbuttonHover=false;
                         loginState="character";
+                        window.open("https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=2006583270&redirect_uri=http://35.229.172.176/api/public/api/register&state=1321&bot_prompt=aggressive&scope=profile", "_blank");
                     }, 200);
                     
                 }

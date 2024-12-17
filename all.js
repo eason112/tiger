@@ -5,6 +5,7 @@ let hasloadGame2=false;
 //let arScript = null; // 用于保存动态加载的AR.js脚本
 
 window.onload = function() {
+  
   preloadImages();
   //hideLoadingScreen();
   updateGame();
@@ -24,6 +25,8 @@ function loadGame2() {
       //arScript = null; // 清除脚本引用
     }*/
     startGame();
+    stopBGM(bgm);
+    playBGM(bgm);
     hasloadGame2=true;
   }
 }
@@ -33,6 +36,7 @@ function loadGame1() {
     console.log("已經切換到小遊戲！");
     document.getElementById('game1').style.display = 'block';
     document.getElementById('game2').style.display = 'none';
+    stopBGM(bgm);
     playBGM(bgm);
     stopGame();
     hasloadGame2=false;
@@ -61,6 +65,7 @@ function loadlogin() {
     document.getElementById('game2').style.display = 'none';
     document.getElementById('login').style.display = 'block';
     stopGame();
+    stopBGM(bgm);
     hasloadGame2=false;
 }
 
