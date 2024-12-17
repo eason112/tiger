@@ -61,7 +61,7 @@ function loadlogin() {
     document.getElementById('game2').style.display = 'none';
     document.getElementById('login').style.display = 'block';
     stopGame();
-
+    hasloadGame2=false;
 }
 
 // 動態載入遊戲1的所有JavaScript
