@@ -3,6 +3,8 @@ let loadedSounds = 0;
 const url="https://eason112.github.io/tiger";
 let hasloadGame2=false;
 //let arScript = null; // 用于保存动态加载的AR.js脚本
+const loginbgm = document.getElementById('loginbgm');
+const majorbgm = document.getElementById('majorbgm');
 
 window.onload = function() {
   
@@ -26,7 +28,8 @@ function loadGame2() {
     }*/
     startGame();
     stopBGM(bgm);
-    playBGM(bgm);
+    stopBGM(loginbgm);
+    playBGM(majorbgm,0.5);
     hasloadGame2=true;
   }
 }
@@ -36,8 +39,8 @@ function loadGame1() {
     console.log("已經切換到小遊戲！");
     document.getElementById('game1').style.display = 'block';
     document.getElementById('game2').style.display = 'none';
-    stopBGM(bgm);
-    playBGM(bgm);
+    stopBGM(majorbgm);
+    playBGM(bgm,0.5);
     stopGame();
     hasloadGame2=false;
   }
@@ -65,7 +68,8 @@ function loadlogin() {
     document.getElementById('game2').style.display = 'none';
     document.getElementById('login').style.display = 'block';
     stopGame();
-    stopBGM(bgm);
+    stopBGM(majorbgm);
+    playBGM(loginbgm,0.5);
     hasloadGame2=false;
 }
 

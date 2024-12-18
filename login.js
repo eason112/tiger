@@ -105,7 +105,7 @@ const loginuiElements = [
                     
                     playSound('clickbutton');
                     setTimeout(() => {
-                        playBGM(bgm);
+                        playBGM(loginbgm,0.5);
                         this.isPressed = false;  // 延遲後恢復按鈕原狀
                         loginState="login";
                         loginbuttonHover=false;
