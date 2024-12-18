@@ -8,9 +8,12 @@ const soundEffects = {
     getrare:url3+'/littlegame/new/sound/getrare.mp3',
     generatehole:url3+'/littlegame/new/sound/generatehole.mp3',
     wave:url3+'/littlegame/new/sound/wave.mp3',
+    majorclick:url3+'/littlegame/new/sound/majorclick.mp3',
+    jump:url3+'/littlegame/new/sound/jump.mp3',
+    walk:url3+'/littlegame/new/sound/walk.mp3',
   };
 const walk = new Audio();
-walk.src=soundEffects['generatehole'];
+walk.src=soundEffects['walk'];
 walk.loop=true;
 walk.volume = 0.1;
 function playSound(type,volume=1) {

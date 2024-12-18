@@ -495,7 +495,7 @@ const uiElements = [
                             getUI('beach').alarm=false;
                             playSound('wave');
                             pauseBGM(bgm);
-                            playBGM(bgm2);
+                            playBGM(bgm2,0.5);
                             getUI('beach').tide=true;
                         }
                     }
@@ -780,7 +780,7 @@ const uiElements = [
                         }
                         if(this.tideImageIndex===tideImages.length){
                             this.tideImageIndex=-1;
-                            playBGM(bgm);
+                            playBGM(bgm,0.5);
                             this.tide=false;
                             this.canteach1=false;
                         }
