@@ -639,6 +639,7 @@ function resetGame(){
     pet.wear=false;
     getButtonByName('wearpet').canclick=false;
     getButtonByName('openar').canclick=false;
+    stopSoundloop();
 }
 
 //繪製玩家
@@ -875,8 +876,8 @@ let emojiImage=new Image();
 
 //所有按鈕屬性
 let buttons = [
-    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
-    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true,sound:'dig'},// 按鈕2
+    {draw:true ,type:"",name:"jump",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "↑" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'jump'},// 按鈕1
+    {draw:false, type:"",name:"dialog",x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight, fontSize: 60, text: "對話" ,buttonClicked : false,buttonHover:false ,canclick:true,sound:'majorclick'},// 按鈕2
     {draw:true, type:"",name:"menu",x: canvas2.width-110, y: 10, width: 100, height: 100, fontSize: 35, text: "選單" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
     {draw:true, type:"menuclose",name:"close",x: menuX+menuWidth-60, y:menuY+10, width: 50, height: 50, fontSize: 30, text: "X" ,buttonClicked : false ,buttonHover:false,canclick:true,sound:'dig'},// 按鈕1
     {draw:true, type:"menu",name:"ar",x: menuX+menuWidth-280, y: menuY+100, width: 50, height: 50, fontSize: 30, text: "AR" ,buttonClicked : false,buttonHover:false ,img: url2+'/major/images/ar.png',canclick:true,sound:'dig'},// 按鈕2
@@ -1655,7 +1656,7 @@ function wrapText(text, maxWidth) {
 function nextDialog() {
     
     if (currentDialogIndex == 0) {
-        stopBGM(bgm);
+        stopBGM(majorbgm);
         video.play();
         isplayvideo=true;
         //createYouTube();
