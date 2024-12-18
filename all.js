@@ -29,7 +29,7 @@ function loadGame2() {
     startGame();
     stopBGM(bgm);
     stopBGM(loginbgm);
-    playBGM(majorbgm,0.5);
+    playBGM(majorbgm,0.3);
     hasloadGame2=true;
   }
 }
@@ -136,6 +136,15 @@ const imagesToPreload = [
     url+'/major/images/shop.png',
     url+'/major/images/status.png',
     url+'/major/images/teacharrow.png',
+    url+'/major/images/emoji1.png',
+    url+'/major/images/emoji2.png',
+    url+'/major/images/emoji3.png',
+    url+'/major/images/emoji4.png',
+    url+'/major/images/emoji5.png',
+    url+'/major/images/emoji6.png',
+    url+'/major/images/emoji7.png',
+    url+'/major/images/emoji8.png',
+    url+'/major/images/emoji9.png',
 ];
 
 
