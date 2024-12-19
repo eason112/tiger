@@ -65,10 +65,32 @@ function getUI(name){
 const uiElements = [
     {
         State:'gameInfo',
+        name: 'gamename', // 游戏说明界面
+        type: 'text', // 元素类型：文本
+        x: canvas.width / 2, 
+        y: canvas.height / 6,
+        text: '有生命的大海',
+        fontSize: 100,
+        color: 'white',
+        draw: function() {
+            if(gameState===this.State){
+                ctx.font = `${this.fontSize}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.lineWidth = 5;  // 外框的寬度
+                ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                ctx.strokeText(this.text, this.x-2, this.y-2); // 繪製外框
+                ctx.fillStyle = this.color;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+    },//gamename
+    {
+        State:'gameInfo',
         name: 'gameInfo', // 游戏说明界面
         type: 'text', // 元素类型：文本
         x: canvas.width / 2, 
-        y: canvas.height / 4,
+        y: canvas.height / 3.2,
         text: '遊戲說明',
         fontSize: 60,
         color: 'white',
@@ -87,17 +109,61 @@ const uiElements = [
     },//gameInfo
     {
         State:'gameInfo',
+        name: 'gametext', // 游戏说明界面
+        type: 'text', // 元素类型：文本
+        x: canvas.width / 2, 
+        y: canvas.height / 2.3,
+        text: '小朋友們 我們來挖蛤蠣吧！',
+        fontSize: 40,
+        color: 'white',
+        draw: function() {
+            if(gameState===this.State){
+                ctx.font = `${this.fontSize}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.lineWidth = 5;  // 外框的寬度
+                ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                ctx.strokeText(this.text, this.x-2, this.y-2); // 繪製外框
+                ctx.fillStyle = this.color;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+    },//gametext
+    {
+        State:'gameInfo',
+        name: 'gametext2', // 游戏说明界面
+        type: 'text', // 元素类型：文本
+        x: canvas.width / 2, 
+        y: canvas.height / 1.9,
+        text: '挖蛤蠣的過程中要小心海水漲潮喔！',
+        fontSize: 40,
+        color: 'white',
+        draw: function() {
+            if(gameState===this.State){
+                ctx.font = `${this.fontSize}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.lineWidth = 5;  // 外框的寬度
+                ctx.strokeStyle = 'black';  // 外框顏色，這裡設置為黑色
+                ctx.strokeText(this.text, this.x-2, this.y-2); // 繪製外框
+                ctx.fillStyle = this.color;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+    },//gametext2
+    {
+        State:'gameInfo',
         name: 'startButton', // 开始按钮
         type: 'button', // 元素类型：按钮
         width: 200,
         height: 80,
         x: canvas.width / 2,
-        y: canvas.height / 2,
+        y: canvas.height / 1.2,
         scale:1,
         text: '開始遊戲',
         fontSize: 40,
         color: 'white',
-        backgroundColor: '#f1c40f',
+        backgroundColor: '#00aaff',
         isPressed: false,  // 添加一个标记按下状态的属性
         isHovered: false,  // 模拟 hover 效果
         teachscale: 1,  // 控制图像的缩放
@@ -109,10 +175,10 @@ const uiElements = [
         draw: function() {
             if(gameState===this.State){
                 canvas.style.cursor =this.isHovered ? 'pointer' : 'default';
-                ctx.fillStyle = this.isPressed ? '#ba770b' :this.isHovered ? '#f39c12': this.backgroundColor;
+                ctx.fillStyle = this.isPressed ? '#006394' :this.isHovered ? '#0085c7': this.backgroundColor;
                 const radius=15;
-                const BtnX=canvas.width / 2-this.width/2;
-                const BtnY=canvas.height / 2-this.height/2;
+                const BtnX=this.x-this.width/2;
+                const BtnY=this.y-this.height/2;
 
                 ctx.beginPath();
                 ctx.moveTo(BtnX + radius, BtnY); // 从左上角的圆角开始
